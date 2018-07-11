@@ -46,7 +46,7 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
 {
     QStringList sql;
     //获取库存管理中商品出库情况
-    /*int item_id,item_count;
+    int item_id,item_count;
     if(ui->Sale_item_id_combobox->currentIndex()!=0){
         item_id=ui->Sale_item_id_combobox->currentText().toInt();
         item_count=StorageManage::getRecordNum(
@@ -56,9 +56,9 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     }else {
         item_count=StorageManage::getRecordNum(
                     ui->Sale_dateEdit_start->dateTime(),
-                    ui->Sale_dateEdit_end->dateTime(),
-                    item_id);
-    }*/
+                    ui->Sale_dateEdit_end->dateTime());
+    }
+    ui->Sale_lineEdit_depot_out->setText(QString::number(item_count));
     //统计订单中出库情况
     sql<<"select count(*) from Sale_State ";
     sql<<"join Sale_Order on ";
@@ -77,7 +77,8 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     query.exec(sql.join(""));
     //qDebug()<<query.lastError();
     query.next();
-    ui->Sale_lineEdit_order_out->setText(query.value(0).toString());
+    ui->Sale_lineEdit_order_out->setText(query.record().value(0).toString());
+    //ui->Sale_lineEdit_order_out->setText(query.value(0).toString());
     //统计销售额（已完成）
     sql.clear();
     sql<<"select sum(Sale_Order.Sale_Item_Num * Sale_Order.Sale_Item_Price) from ";
@@ -98,7 +99,8 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     query.exec(sql.join(""));
     //qDebug()<<query.lastError();
     query.next();
-    ui->Sale_lineEdit_turnover->setText(query.value(0).toString());
+
+    ui->Sale_lineEdit_turnover->setText(query.record().value(0).toString());
     //统计销量（已完成）
     sql.clear();
     sql<<"select Sale_Order.Sale_Item_Num from ";
@@ -119,7 +121,7 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     query.exec(sql.join(""));
     //qDebug()<<query.lastError();
     query.next();
-    ui->Sale_lineEdit_volume->setText(query.value(0).toString());
+    ui->Sale_lineEdit_volume->setText(query.record().value(0).toString());
 }
 
 void Sale_Stocktaking_Dialog::on_Sale_pushButton_check_clicked()

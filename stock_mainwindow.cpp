@@ -82,7 +82,7 @@ void stock_MainWindow::stock_get_ProductDetail(Product_Detail &p, int product_id
     query.exec(QString("select * from stock_provider_product where id=%1").arg(product_id));
     qDebug()<<query.lastError();
     query.next();
-    product_id=query.value(1).toInt();
+    provider_id=query.value(1).toInt();
     p.Product_Name=query.value(2).toString();
     p.Product_Price=query.value(3).toFloat();
     query.exec(QString("select * from stock_provider where id=%1").arg(provider_id));

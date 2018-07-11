@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Sale_Widget</class>
  <widget class="QWidget" name="Sale_Widget">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,8 +19,13 @@
     <height>720</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei UI</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>销售给管理系统</string>
+   <string>销售管理系统</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>

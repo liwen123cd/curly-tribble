@@ -9,6 +9,10 @@ Register::Register(QWidget *parent) :
     ui->setupUi(this);
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
     ui->lineEdit_3->setEchoMode(QLineEdit::Password);
+    ui->label_6->setVisible(false);
+    ui->lineEdit_5->setVisible(false);
+    ui->label_7->setVisible(false);
+    ui->lineEdit_6->setVisible(false);
 }
 
 Register::~Register()
@@ -20,8 +24,7 @@ void Register::closeEvent(QCloseEvent *event)
 {
     event->accept();
     this->close();
-    Login *login = new Login;
-    login->show();
+    this->parentWidget()->show();
 }
 
 void Register::on_pushButton_clicked()
@@ -31,6 +34,8 @@ void Register::on_pushButton_clicked()
         QString reg_name = ui->lineEdit->text();
         QString reg_pwd = ui->lineEdit_2->text();
         QString reg_emial = ui->lineEdit_4->text();
+        QString reg_phone = ui->lineEdit_5->text();
+        QString reg_addr = ui->lineEdit_6->text();
         int admin;
         if(ui->comboBox->currentText() == "管理员")
             admin = 1;
@@ -51,6 +56,18 @@ void Register::on_pushButton_clicked()
             QSqlQuery query;
             query.exec(add_sql);
 
+            if(admin == 0)
+            {
+                QString add_seller_sql = QString("insert into Sys_Seller( "
+                                                 "Seller_Name, Seller_Phone, Seller_Addr) ");
+                add_seller_sql += QString("VALUES('%1', '%2', '%3')")
+                        .arg(reg_name)
+                        .arg(reg_phone)
+                        .arg(reg_addr);
+                QSqlQuery query2;
+                query2.exec(add_seller_sql);
+            }
+
             QMessageBox::information(this, "注册成功",
                                      "您已成功注册新用户，请返回去登陆！");
             this->close();
@@ -70,6 +87,8 @@ void Register::on_pushButton_2_clicked()
     ui->lineEdit_2->clear();
     ui->lineEdit_3->clear();
     ui->lineEdit_4->clear();
+    ui->lineEdit_5->clear();
+    ui->lineEdit_6->clear();
 }
 
 /*
@@ -101,4 +120,22 @@ bool Register::textCheck()
             && ui->lineEdit_2->text() == ui->lineEdit_3->text())
         return true;
     return false;
+}
+
+void Register::on_comboBox_currentIndexChanged(int index)
+{
+    if(index == 0)
+    {
+        ui->label_6->setVisible(false);
+        ui->lineEdit_5->setVisible(false);
+        ui->label_7->setVisible(false);
+        ui->lineEdit_6->setVisible(false);
+    }
+    else if(index == 1)
+    {
+        ui->label_6->setVisible(true);
+        ui->lineEdit_5->setVisible(true);
+        ui->label_7->setVisible(true);
+        ui->lineEdit_6->setVisible(true);
+    }
 }

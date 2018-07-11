@@ -492,7 +492,7 @@ void Sale_Widget::Sale_Save_Record()
             //qDebug()<<record.value(0).toString();
             //调用出库函数
             //orderid gai
-            StorageManage::sellOut(record.value(0).toInt(),record.value(5).toInt(),record.value(6).toInt());
+            StorageManage::sellOut(record.value(0).toString(),record.value(5).toInt(),record.value(6).toInt());
         }
         if(-1!=Sale_Sql(sql.join(""))){
             QMessageBox::warning(this,tr("警告"),sql.join(""),QMessageBox::Ok);
