@@ -78,11 +78,7 @@ void createConnectSqlite()
                                  "Sale_Item_ID int,"//外键
                                  "Sale_Item_Num int,"
                                  "Sale_Item_Price float,"
-                                 "Sale_Order_Finished int，"
-                                 "foreign key (Sale_Seller_ID) "
-                                 "references Sys_Seller(Seller_ID),"
-                                 "foreign key (Sale_Item_ID) "
-                                 "references stock_provider_product(id))";
+                                 "Sale_Order_Finished int)";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"
@@ -179,14 +175,14 @@ void createConnectSqlite()
     Sale_Sql(forignSql);
     createTable(createStorageInfoSql, storageInfoTable);
     createTable(createStorageProductSql, storageProductTable);
-    createTable(createOrderRecordSql, storageOrderRecordTable);
-    createTable(mainViewSql, mainView);
+    createTable(createOrderRecordSql, storageOrderRecordTable);    
     createTable(stockPlanSql, stockPlanTable);
     createTable(stockProviderProductSql, stockProviderProductTable);
     createTable(stockPlanDetailSql, stockPlanDetailTable);
     createTable(stockCanceledplanDetailSql, stockCanceledplanDetailTable);
     createTable(stockCanceledplanSql, stockCanceledplanTable);
     createTable(stockProviderSql, stockProviderTable);
+    createTable(mainViewSql, mainView);
 
     //    db.close();
 }
@@ -202,6 +198,7 @@ void createTable(QString createSql, QString tableName)
     QSqlQuery query;
     //    qDebug()<<createSql;
     query.exec(createSql);
+    //qDebug()<<query.lastError();
     if(isTableExist(tableName))
     {
         qDebug()<< tableName+"表已经存在，无须重新创建！";
