@@ -147,17 +147,44 @@ void StorageDialog::getInsert(QString stoName, QString proName, QString amount)
     stoID = query.value(0).toString();
 
     // 检查所填商品是否存在
-    query.exec(QString("select productID from product "
-               "where productName='%1'").arg(proName));
+    query.exec(QString("select id from stock_provider_product "
+                       "where name='%1'").arg(proName));
     if (!query.next()) {
         ui->label_prompt_1->setText("提示：所填商品不存在！");
         return;
     }
     proID = query.value(0).toString();
 
-    // 插入至数据库
-    query.exec(QString("insert into Storage_product "
-               "values(%1,%2,%3)").arg(stoID, proID, amount));
+    // 检查商品数量是否合法
+    query.exec(QString("select remain from Storage_info "
+                       "where storageID=%1").arg(stoID));
+    query.next();
+    int remainSpace = query.value(0).toInt();
+    if (QString(amount).toInt() > remainSpace) {
+        ui->label_prompt_1->setText("提示：仓库空间不足！");
+        return;
+    }
+
+    // 修改仓库剩余空间
+    query.exec(QString("update Storage_info "
+                       "set remain=remain-%1 "
+                       "where storageID=%2").arg(amount, stoID));
+
+    // 检查仓库中是否已有该记录
+    query.exec(QString("select * from Storage_product "
+                       "where storageID=%1 and productID=%2").arg(stoID, proID));
+    if (query.next()) {
+        // 修改库存数据
+        query.exec(QString("update Storage_product "
+                           "set amount=amount+%1 "
+                           "where storageID=%2 and productID=%3").arg(
+                           amount, stoID, proID));
+    } else {
+        // 插入库存数据
+        query.exec(QString("insert into Storage_product "
+                "values(%1,%2,%3)").arg(stoID, proID, amount));
+    }
+
     if (query.lastError().isValid()) {
         qDebug() << query.lastError().text();
         ui->label_prompt_1->setText("提示：添加失败！");
