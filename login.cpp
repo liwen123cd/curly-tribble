@@ -1,9 +1,7 @@
 #include "login.h"
 #include "ui_login.h"
 
-#include "recovepwd.h"
 #include "sys_sqlite.h"
-#include "mainwindow.h"
 
 Login::Login(QWidget *parent) :
     QWidget(parent),
@@ -11,6 +9,11 @@ Login::Login(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
+//    mainw = new MainWindow(this);
+    reg = new Register(this);
+    reg->setWindowFlags(Qt::Window);
+    rp = new RecovePwd(this);
+    rp->setWindowFlags(Qt::Window);
 }
 
 Login::~Login()
@@ -60,21 +63,11 @@ void Login::on_pushButton_clicked()
         //留着跳转到主窗口
 
         Data::is_admin = identify;
-        //qDebug()<<Data::is_admin;
-
-        // 如果是卖家登录，则取数据库查询卖家的信息
-        // 保存在 User 信息中
-
-        //         recordSeller(login_name);
-
-        //        qDebug()<<User::id;
-        //        qDebug()<<User::name;
-        //        qDebug()<<User::phone;
-        //        qDebug()<<User::addr;
-
-        //        User::name = login_name;
-        MainWindow *mainwindow = new MainWindow;
-        mainwindow->show();
+        qDebug()<<Data::is_admin;
+//        MainWindow *mainwindow = new MainWindow;
+//        mainwindow->show();
+        mainw = new MainWindow(this);
+        mainw->show();
         this->hide();
     }
     else if(userCheck(login_name, SYS_USER_NUMBER))
@@ -102,13 +95,13 @@ void Login::on_pushButton_2_clicked()
 
 void Login::on_pushButton_3_clicked()
 {
-    Register *r = new Register;
-    this->close();
-    r->show();
+//    Register *r = new Register;
+    this->hide();
+    reg->show();
 }
 
 void Login::on_pushButton_4_clicked()
 {
-    RecovePwd *rp = new RecovePwd;
+//    RecovePwd *rp = new RecovePwd;
     rp->show();
 }

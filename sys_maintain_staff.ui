@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Sys_Maintain_Staff</class>
  <widget class="QDialog" name="Sys_Maintain_Staff">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>

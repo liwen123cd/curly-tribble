@@ -9,6 +9,8 @@
 #include <QSqlQuery>
 #include "register.h"
 #include "globaldata.h"
+#include "mainwindow.h"
+#include "recovepwd.h"
 
 namespace Ui {
 class Login;
@@ -36,6 +38,9 @@ private slots:
 
 private:
     Ui::Login *ui;
+    MainWindow *mainw;
+    Register *reg;
+    RecovePwd *rp;
 };
 
 #endif // LOGIN_H

@@ -1,7 +1,6 @@
 #include "usermanager.h"
 #include "ui_usermanager.h"
 #include "sys_sqlite.h"
-#include "sys_add_user.h"
 
 UserManager::UserManager(QWidget *parent) :
     QWidget(parent),
