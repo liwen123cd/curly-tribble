@@ -10,10 +10,15 @@
     <height>542</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei UI</family>
+   </font>
   </property>
-  <widget class="QWidget" name="">
+  <property name="windowTitle">
+   <string>商品信息窗口</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>

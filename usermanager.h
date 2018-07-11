@@ -11,6 +11,8 @@
 #include <QLineEdit>
 #include <QLabel>
 
+#include "sys_add_user.h"
+
 class QSqlTableModel;
 namespace Ui {
 class UserManager;
@@ -41,6 +43,7 @@ private slots:
 private:
     Ui::UserManager *ui;
     QSqlTableModel *model;
+    sys_add_user *add;
     void tableModel();
 };
 

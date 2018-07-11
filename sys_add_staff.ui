@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>Sys_Add_Staff</class>
  <widget class="QDialog" name="Sys_Add_Staff">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
-    <height>391</height>
+    <width>485</width>
+    <height>390</height>
    </rect>
   </property>
   <property name="font">
@@ -23,8 +26,8 @@
     <rect>
      <x>30</x>
      <y>60</y>
-     <width>411</width>
-     <height>251</height>
+     <width>421</width>
+     <height>241</height>
     </rect>
    </property>
    <property name="title">
@@ -35,7 +38,7 @@
      <rect>
       <x>260</x>
       <y>30</y>
-      <width>131</width>
+      <width>141</width>
       <height>191</height>
      </rect>
     </property>
