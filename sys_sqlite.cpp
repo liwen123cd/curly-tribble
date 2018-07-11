@@ -78,7 +78,11 @@ void createConnectSqlite()
                                  "Sale_Item_ID int,"//外键
                                  "Sale_Item_Num int,"
                                  "Sale_Item_Price float,"
-                                 "Sale_Order_Finished int)";
+                                 "Sale_Order_Finished int，"
+                                 "foreign key (Sale_Seller_ID) "
+                                 "references Sys_Seller(Seller_ID),"
+                                 "foreign key (Sale_Item_ID) "
+                                 "references stock_provider_product(id))";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"
