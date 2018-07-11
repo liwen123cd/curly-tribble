@@ -5,6 +5,7 @@
 #include <QSqlTableModel>
 #include <unordered_map>
 #include <QTableWidgetItem>
+#include <globaldata.h>
 namespace Ui {
 class stock_MainWindow;
 }
@@ -17,7 +18,7 @@ public:
     #define GLOBAL_USER  0xFFFFFFFF
     explicit stock_MainWindow(QWidget *parent = 0);
     ~stock_MainWindow();
-
+    static void stock_get_ProductDetail(Product_Detail&p,int product_id);
     void set_restSpace();
 public slots:
 

@@ -74,6 +74,22 @@ stock_MainWindow::~stock_MainWindow()
 {
     delete ui;
 }
+
+void stock_MainWindow::stock_get_ProductDetail(Product_Detail &p, int product_id)
+{
+    QSqlQuery query;
+    int provider_id;
+    query.exec(QString("select * from stock_provider_product where id=%1").arg(product_id));
+    qDebug()<<query.lastError();
+    query.next();
+    product_id=query.value(1).toInt();
+    p.Product_Name=query.value(2).toString();
+    p.Product_Price=query.value(3).toFloat();
+    query.exec(QString("select * from stock_provider where id=%1").arg(provider_id));
+    qDebug()<<query.lastError();
+    query.next();
+    p.Product_Provider=query.value(2).toString();
+}
 void stock_MainWindow::on_tabWidget_currentChanged(int index)
 {
     switch (index) {
