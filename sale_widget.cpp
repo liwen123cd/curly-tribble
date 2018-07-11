@@ -27,13 +27,19 @@ Sale_Widget::Sale_Widget(QWidget *parent) :
 {
     ui->setupUi(this);
     //初始化
+    //隐藏管理员用
     ui->Sale_pushButton_recive->hide();
+    ui->Sale_lineEdit_seller_id->hide();
+    ui->label_6->hide();
+    //显示管理员用
     if(Data::is_admin){
         ui->Sale_pushButton_new->setEnabled(false);
         ui->Sale_pushButton_change->setEnabled(false);
         ui->Sale_pushButton_delete->setEnabled(false);
         ui->Sale_pushButton_cancel->setEnabled(false);
         ui->Sale_pushButton_recive->show();
+        ui->Sale_lineEdit_seller_id->show();
+        ui->label_6->show();
     }
     Sale_New_Table();
     ui->tableView->setModel(Sale_Table_Model);
@@ -270,6 +276,10 @@ void Sale_Widget::on_Sale_pushButton_select_order_clicked()
         sql<<QString(" and Sale_Order.Sale_Order_ID='%1'").arg(
                  ui->Sale_lineEdit_order_id->text());
     }
+    if(ui->Sale_lineEdit_seller_id->text()!=""){
+        sql<<QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
+                 ui->Sale_lineEdit_seller_id->text());
+    }
     sql<<" order by Sale_Order.Sale_Order_ID DESC";
     Sale_Sql(sql.join(""));
 
@@ -312,6 +322,10 @@ void Sale_Widget::on_Sale_pushButton_select_number_clicked()
     if(ui->Sale_lineEdit_item_id->text()!=""){
         sql<<QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
                  ui->Sale_lineEdit_item_id->text());
+    }
+    if(ui->Sale_lineEdit_seller_id->text()!=""){
+        sql<<QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
+                 ui->Sale_lineEdit_seller_id->text());
     }
     sql<<" order by Sale_Order.Sale_Item_ID";
     Sale_Sql(sql.join(""));

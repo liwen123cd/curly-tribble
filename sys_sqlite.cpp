@@ -78,7 +78,11 @@ void createConnectSqlite()
                                  "Sale_Item_ID int,"//外键
                                  "Sale_Item_Num int,"
                                  "Sale_Item_Price float,"
-                                 "Sale_Order_Finished int)";
+                                 "Sale_Order_Finished int，"
+                                 "foreign key (Sale_Seller_ID) "
+                                 "references Sys_Seller(Seller_ID),"
+                                 "foreign key (Sale_Item_ID) "
+                                 "references stock_provider_product(id))";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"
@@ -111,29 +115,13 @@ void createConnectSqlite()
 
     // 出库记录表
     static QString createOrderRecordSql = "create table Storage_order_record("
-                                  "orderID integer,"
+                                  "orderID varchar(30),"
                                   "productID integer,"
                                   "orderDate datetime,"
                                   "amount integer,"
                                   "primary key(orderID),"
                                   "foreign key(productID) references stock_provider_product(id)"
                                   ")";
-
-    /*
-    // 卖家信息表
-    static QString seller = "create table Sys_Seller("
-                            "Seller_Id integer,"
-                            "Seller_Name varchar(10),"
-                            "primary key(Seller_Id)"
-                            ")";
-    // 商品信息表
-    static QString product = "create table stock_provider_product("
-                             "id integer,"
-                             "name integer,"
-                             "price float,"
-                             "primary key(id)"
-                             ")";
-    */
 
     // 界面显示view
     static QString mainViewSql = "create view Main_view as "

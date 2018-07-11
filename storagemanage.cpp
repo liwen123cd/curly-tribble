@@ -37,7 +37,7 @@ int StorageManage::restSpace()
 }
 
 // 销售、出库
-int StorageManage::sellOut(int orderID, int productID, int num)
+int StorageManage::sellOut(QString orderID, int productID, int num)
 {
     int restPro;
     QSqlQuery query(db);
@@ -105,7 +105,7 @@ int StorageManage::sellOut(int orderID, int productID, int num)
     QDateTime curTime = QDateTime::currentDateTime();
     query.exec(QString("insert into Storage_order_record "
                        "values(%1,%2,%3,%4)").arg(
-                       QString::number(orderID),
+                       orderID,
                        QString::number(productID),
                        curTime.toString(),
                        QString::number(num)));
@@ -188,7 +188,7 @@ int StorageManage::freeStorage(int sellerID)
 }
 
 // 获取出库记录中某段时间内某商品的总数量
-int StorageManage::getRecordNum(QDateTime startTime, QDateTime endTime, int productID = -1)
+int StorageManage::getRecordNum(QDateTime startTime, QDateTime endTime, int productID)
 {
     int num;
     QSqlQuery query(db);
