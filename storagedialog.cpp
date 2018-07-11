@@ -1,17 +1,19 @@
 #include "storagedialog.h"
 #include "ui_storagedialog.h"
-//#include "dbconn.h"
 #include <QSqlQueryModel>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlError>
+#include <QSqlRelationalTableModel>
+#include <QStringList>
 #include "querydialog.h"
 #include "mysqlquerymodel.h"
 #include "insertdialog.h"
 #include "myitemdelegate.h"
 #include "storagemanage.h"
+#include "stock_mainwindow.h"
 
 int is_admin = 1;
 
@@ -41,8 +43,19 @@ StorageDialog::StorageDialog(QWidget *parent) :
     model->setHeaderData(3, Qt::Horizontal, "数量");
     ui->tableView->setModel(model);
     ui->tableView->setItemDelegate(new MyItemDelegate(this));
-    //ui->tableView->setEditTriggers(QAbstractItemView::DoubleClicked);
     ui->label_record_num->setText("共" + QString::number(model->rowCount()) + "条记录");
+
+    // 处理modelSto
+    modelSto = new QSqlRelationalTableModel(this);
+    modelSto->setTable("Storage_info");
+    modelSto->setRelation(4, QSqlRelation("Sys_Seller", "Seller_Id", "Seller_name"));
+    modelSto->setHeaderData(0, Qt::Horizontal, "仓库ID");
+    modelSto->setHeaderData(1, Qt::Horizontal, "仓库名");
+    modelSto->setHeaderData(2, Qt::Horizontal, "仓库容量");
+    modelSto->setHeaderData(3, Qt::Horizontal, "剩余空间");
+    modelSto->setHeaderData(4, Qt::Horizontal, "拥有者");
+    modelSto->select();
+    ui->tableView_sto->setModel(modelSto);
 
     // 信号与槽的连接
     connect(queryDialog, SIGNAL(sendMsg(QString,QString)),
@@ -147,17 +160,44 @@ void StorageDialog::getInsert(QString stoName, QString proName, QString amount)
     stoID = query.value(0).toString();
 
     // 检查所填商品是否存在
-    query.exec(QString("select productID from product "
-               "where productName='%1'").arg(proName));
+    query.exec(QString("select id from stock_provider_product "
+                       "where name='%1'").arg(proName));
     if (!query.next()) {
         ui->label_prompt_1->setText("提示：所填商品不存在！");
         return;
     }
     proID = query.value(0).toString();
 
-    // 插入至数据库
-    query.exec(QString("insert into Storage_product "
-               "values(%1,%2,%3)").arg(stoID, proID, amount));
+    // 检查商品数量是否合法
+    query.exec(QString("select remain from Storage_info "
+                       "where storageID=%1").arg(stoID));
+    query.next();
+    int remainSpace = query.value(0).toInt();
+    if (QString(amount).toInt() > remainSpace) {
+        ui->label_prompt_1->setText("提示：仓库空间不足！");
+        return;
+    }
+
+    // 修改仓库剩余空间
+    query.exec(QString("update Storage_info "
+                       "set remain=remain-%1 "
+                       "where storageID=%2").arg(amount, stoID));
+
+    // 检查仓库中是否已有该记录
+    query.exec(QString("select * from Storage_product "
+                       "where storageID=%1 and productID=%2").arg(stoID, proID));
+    if (query.next()) {
+        // 修改库存数据
+        query.exec(QString("update Storage_product "
+                           "set amount=amount+%1 "
+                           "where storageID=%2 and productID=%3").arg(
+                           amount, stoID, proID));
+    } else {
+        // 插入库存数据
+        query.exec(QString("insert into Storage_product "
+                "values(%1,%2,%3)").arg(stoID, proID, amount));
+    }
+
     if (query.lastError().isValid()) {
         qDebug() << query.lastError().text();
         ui->label_prompt_1->setText("提示：添加失败！");
@@ -209,17 +249,9 @@ void StorageDialog::on_comboBox_op_activated(const QString &choice)
     if ("出库" == choice) {
         ui->label_product->hide();
         ui->lineEdit_product->hide();
-        ui->label_seller->hide();
-        ui->lineEdit_seller->hide();
-        ui->label_amount->hide();
-        ui->spinBox_amount->hide();
     } else if ("入库" == choice){
         ui->label_product->show();
         ui->lineEdit_product->show();
-        ui->label_seller->show();
-        ui->lineEdit_seller->show();
-        ui->label_amount->show();
-        ui->spinBox_amount->show();
     }
 }
 
@@ -239,8 +271,13 @@ void StorageDialog::on_pushBtn_confirm_clicked()
         }
         QString orderID = ui->lineEdit_record->text();
         QString productID = ui->lineEdit_product->text();
-        QString sellerID = ui->lineEdit_seller->text();
-        int amount = ui->spinBox_amount->text().toInt();
+
+        // 调用接口获取订单内商品所属卖家和数量
+        QStringList list = stock_MainWindow::stock_change_PlanState(
+                    orderID.toInt(), productID.toInt());
+        QString sellerID = list.at(0);
+        int amount = list.at(1).toInt();
+
         // 此处调用接口changeInOrderState(orderID, productID);
         QSqlQuery query(db);
         QSqlQuery modify(db);
@@ -300,4 +337,10 @@ void StorageDialog::on_pushBtn_confirm_clicked()
         qDebug() << "tempOccupied:" << StorageManage::tempOccupied;
         ui->label_prompt_2->setText("提示：出库成功!");
     }
+}
+
+// 刷新仓库界面
+void StorageDialog::on_pushBtn_refresh_clicked()
+{
+    modelSto->select();
 }

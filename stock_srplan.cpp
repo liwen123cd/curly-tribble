@@ -171,11 +171,13 @@ void stock_MainWindow::stock_real_cancel(int rowNum)
     int plan_id=stock_srplan_detail->data(stock_srplan_detail->index(rowNum,1)).toInt();
     int product_id=stock_srplan_detail->data(stock_srplan_detail->index(rowNum,2)).toInt();
     int cnt=stock_srplan_detail->data(stock_srplan_detail->index(rowNum,3)).toInt();
-    storage_space+=cnt;
     float price=stock_srplan_detail->data(stock_srplan_detail->index(rowNum,4)).toFloat();
     QSqlQuery query;
     query.exec(QString("delete from stock_plan_detail where id=%1").arg(id));
     qDebug()<<query.lastError();
+    storage_space+=cnt;
+    StorageManage::changeRemainSpace(prev_storage_space-storage_space);
+    prev_storage_space=storage_space;
     query.exec(QString("select * from stock_plan_detail where plan_id=%1").arg(plan_id));
     qDebug()<<query.lastError();
     if(!query.next())//若已经没有详细记录，则从基本信息表中删除

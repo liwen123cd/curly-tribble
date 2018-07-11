@@ -218,6 +218,8 @@ void stock_MainWindow::stock_mkplan_create()
     total_price=0;
     fee=0;
     set_price_fee();
+    StorageManage::changeRemainSpace(prev_storage_space-storage_space);
+    prev_storage_space=storage_space;
     QSqlDatabase::database().commit();
 }
 void stock_MainWindow::on_pushButton_3_clicked()
