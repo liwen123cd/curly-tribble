@@ -18,8 +18,8 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui(new Ui::stock_MainWindow)
 {
     ui->setupUi(this);
-    user_id=1;
-    storage_space=100;
+    storage_space=StorageManage::restSpace();
+    prev_storage_space=storage_space;
     stock_mkplan_provider=new QSqlQueryModel(this);
     stock_mkplan_product=new QSqlQueryModel(this);
     stock_srplan_basic=new QSqlQueryModel(this);
@@ -49,6 +49,14 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui->tableView_3->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
     ui->tableView_4->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
     ui->tableView_4->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView_6->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView_3->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView_4->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView_2->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView_5->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_2->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     set_provider_visible(true);
     connect(ui->tableView_3,SIGNAL(pressed(QModelIndex)),this,SLOT(stock_tableview_3_clicked(QModelIndex)));
     connect(ui->tableView_2,SIGNAL(pressed(QModelIndex)),this,SLOT(stock_tableview_2_clicked(QModelIndex)));
@@ -66,8 +74,7 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui->lcdNumber_3->setDigitCount(10);
     ui->lcdNumber_3->setSegmentStyle(QLCDNumber::Flat);
     ui->lcdNumber_3->setStyleSheet("border:1px solid black;color: red;background: silver");
-    this->setCentralWidget(ui->horizontalLayoutWidget);
-
+    this->setCentralWidget(ui->tabWidget);
  }
 
 stock_MainWindow::~stock_MainWindow()
@@ -89,6 +96,42 @@ void stock_MainWindow::stock_get_ProductDetail(Product_Detail &p, int product_id
     qDebug()<<query.lastError();
     query.next();
     p.Product_Provider=query.value(2).toString();
+}
+
+QStringList stock_MainWindow::stock_change_PlanState(int plan_id, int product_id)
+{
+    QSqlQuery query;
+    query.exec(QString("select cnt from stock_plan_detail where plan_id=%1 and product_id=%2 and state='进货未完成'").arg(plan_id).arg(product_id));
+    qDebug()<<query.lastError();
+    if(!query.next())
+    {
+        return QStringList();
+    }
+    else
+    {
+        int seller_id;
+        int cnt=query.value(0).toInt();
+        query.exec(QString("select seller_id from stock_plan where id=%1").arg(plan_id));
+        qDebug()<<query.lastError();
+        if(query.next())
+        {
+            seller_id=query.value(0).toInt();
+            int ok=query.exec(QString("update stock_plan_detail set state='进货已完成' where plan_id=%1 and product_id=%2").arg(plan_id).arg(product_id));
+            if(!ok)
+            {
+                qDebug()<<query.lastError();
+                return QStringList();
+            }
+            QStringList ret;
+            ret.push_back(QString::number(seller_id));
+            ret.push_back(QString::number(cnt));
+            return ret;
+        }
+        else
+        {
+            return QStringList();
+        }
+    }
 }
 void stock_MainWindow::on_tabWidget_currentChanged(int index)
 {

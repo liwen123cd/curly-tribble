@@ -66,6 +66,10 @@ private slots:
 
     void on_Sale_pushButton_recive_clicked();
 
+
+
+    void on_Sale_conbobox_order_currentIndexChanged(int index);
+
 private:
     Ui::Sale_Widget *ui;
     QSqlTableModel *Sale_Table_Model;
@@ -83,10 +87,10 @@ private:
     bool Sale_Get_Order_Detail(Sale_Order_Detail&,int);
     //从结构体写入表单，dialog发送信号（带数据）后槽函数执行
     bool Sale_Write_Order_Detail(const Sale_Order_Detail&,int);
-    //查询订单
-    int Sale_Select_Order();
-    //统计订单
-    int Sale_Count_Order();
+    //根据订单种类显示
+    bool Sale_Show_Order(int);
+    //显示所有订单
+    bool Sale_Show_All_Order();
 };
 
 #endif // SALE_WIDGET_H

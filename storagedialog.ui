@@ -36,7 +36,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab_product">
     <attribute name="title">
@@ -264,6 +264,67 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_storage">
+    <attribute name="title">
+     <string>仓库信息</string>
+    </attribute>
+    <widget class="QTableView" name="tableView_sto">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>411</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="gridStyle">
+      <enum>Qt::SolidLine</enum>
+     </property>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>70</number>
+     </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>70</number>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QLabel" name="label_sto_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+      </font>
+     </property>
+     <property name="text">
+      <string>各仓库信息如下：</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushBtn_refresh">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>10</y>
+       <width>41</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>刷新</string>
+     </property>
+    </widget>
+   </widget>
    <widget class="QWidget" name="tab_confirm">
     <attribute name="title">
      <string>入库与出库</string>
@@ -271,9 +332,9 @@
     <widget class="QLabel" name="label_order">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>40</x>
        <y>50</y>
-       <width>91</width>
+       <width>61</width>
        <height>20</height>
       </rect>
      </property>
@@ -289,9 +350,9 @@
     <widget class="QLineEdit" name="lineEdit_record">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>110</x>
        <y>80</y>
-       <width>141</width>
+       <width>241</width>
        <height>20</height>
       </rect>
      </property>
@@ -299,7 +360,7 @@
     <widget class="QLabel" name="label_product">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>40</x>
        <y>130</y>
        <width>61</width>
        <height>20</height>
@@ -317,9 +378,9 @@
     <widget class="QLineEdit" name="lineEdit_product">
      <property name="geometry">
       <rect>
-       <x>40</x>
+       <x>110</x>
        <y>160</y>
-       <width>141</width>
+       <width>241</width>
        <height>20</height>
       </rect>
      </property>
@@ -327,8 +388,8 @@
     <widget class="QPushButton" name="pushBtn_confirm">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>220</y>
+       <x>340</x>
+       <y>240</y>
        <width>81</width>
        <height>23</height>
       </rect>
@@ -394,62 +455,6 @@
      </property>
      <property name="text">
       <string>操作类型：</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_seller">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>50</y>
-       <width>61</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-      </font>
-     </property>
-     <property name="text">
-      <string>卖家编号：</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_seller">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>80</y>
-       <width>141</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_amount">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>130</y>
-       <width>61</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-      </font>
-     </property>
-     <property name="text">
-      <string>货品数量：</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_amount">
-     <property name="geometry">
-      <rect>
-       <x>270</x>
-       <y>160</y>
-       <width>141</width>
-       <height>20</height>
-      </rect>
      </property>
     </widget>
    </widget>

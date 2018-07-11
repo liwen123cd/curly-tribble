@@ -3,12 +3,12 @@
 
 #include <QDialog>
 #include <QSqlDatabase>
-#include <QSqlTableModel>
 #include "mysqlquerymodel.h"
 
 class QSqlQueryModel;
 class QueryDialog;
 class InsertDialog;
+class QSqlRelationalTableModel;
 
 namespace Ui {
 class StorageDialog;
@@ -41,9 +41,12 @@ private slots:
 
     void on_pushBtn_confirm_clicked();
 
+    void on_pushBtn_refresh_clicked();
+
 private:
     Ui::StorageDialog *ui;
     MySqlQueryModel *model;
+    QSqlRelationalTableModel *modelSto;
     QSqlDatabase db;
     QueryDialog *queryDialog;
     InsertDialog *insertDialog;

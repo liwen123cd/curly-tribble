@@ -430,6 +430,33 @@ bool Sale_Widget::Sale_Write_Order_Detail(const Sale_Order_Detail &Detail, int R
     return true;
 }
 
+bool Sale_Widget::Sale_Show_Order(int type)
+{
+    Sale_Show_All_Order();
+    int column=ui->tableView->model()->columnCount();
+    int row=ui->tableView->model()->rowCount();
+    if(type==3){
+        return true;
+    }
+    while(--row!=-1){
+        if(ui->tableView->model()->index(row,column-1).data().toInt()!=type){
+            ui->tableView->hideRow(row);
+        }
+
+    }
+    return true;
+}
+
+bool Sale_Widget::Sale_Show_All_Order()
+{
+    int row=ui->tableView->model()->rowCount();
+    while (--row!=-1) {
+        ui->tableView->showRow(row);
+    }
+    return true;
+}
+
+
 //保存
 void Sale_Widget::on_Sale_pushButton_save_clicked()
 {
@@ -531,11 +558,12 @@ void Sale_Widget::Sale_New_Table()
     Sale_Table_Model->setTable("Sale_Order");
     if(!Data::is_admin){
         //如果不是管理员，显示该卖家订单
+        //qDebug()<<"user is not admin";
         Sale_Table_Model->setFilter(QString("Sale_Seller_ID='%1'").arg(User::id));
     }
     Sale_Table_Model->setSort(0,Qt::DescendingOrder);
     Sale_Table_Model->select();
-
+    //qDebug()<<Sale_Table_Model->lastError();
     //tablemodel样式设置
     Sale_Table_Model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     Sale_Table_Model->setHeaderData(0,Qt::Horizontal,tr("订单号"));
@@ -590,4 +618,10 @@ void Sale_Widget::on_Sale_pushButton_recive_clicked()
     Sale_State_Change(ui->tableView->currentIndex().sibling(
                           ui->tableView->currentIndex().row(),0).data().toString(),
                       QString("签收"));
+}
+
+//槽函数显示某种订单
+void Sale_Widget::on_Sale_conbobox_order_currentIndexChanged(int index)
+{
+    Sale_Show_Order(index);
 }
