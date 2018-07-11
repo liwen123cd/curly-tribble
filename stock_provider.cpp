@@ -26,6 +26,7 @@ void stock_MainWindow::stock_provider_model_init()
     ui->tableView_4->setEditTriggers(QAbstractItemView::NoEditTriggers);
     stock_tableview_3_clicked(stock_provider->index(0,0));
     stock_set_headname();
+
 }
 void stock_MainWindow::stock_set_headname()
 {
@@ -49,6 +50,8 @@ void stock_MainWindow::set_provider_visible(bool b)
     ui->tableView_4->setVisible(b);
     ui->pushButton_7->setVisible(b);
     set_provider_modify(!b);
+    ui->widget->setVisible(b);
+    ui->widget_2->setVisible(!b);
 }
 void stock_MainWindow::set_provider_modify(bool b)
 {
@@ -274,4 +277,16 @@ void stock_MainWindow::stock_tableview_3_clicked(const QModelIndex&index)
     stock_provider_product->setFilter(tr("provider_id='%1'").arg(provider_id));
     stock_provider_product->select();
 
+}
+void stock_MainWindow::on_pushButton_15_clicked()
+{
+    on_pushButton_6_clicked();
+}
+void stock_MainWindow::on_pushButton_16_clicked()
+{
+   on_pushButton_4_clicked();
+}
+void stock_MainWindow::on_pushButton_17_clicked()
+{
+   on_pushButton_5_clicked();
 }

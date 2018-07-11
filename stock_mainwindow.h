@@ -5,7 +5,9 @@
 #include <QSqlTableModel>
 #include <unordered_map>
 #include <QTableWidgetItem>
-#include <globaldata.h>
+#include "globaldata.h"
+#include "usermanager.h"
+#include "storagemanage.h"
 namespace Ui {
 class stock_MainWindow;
 }
@@ -19,6 +21,7 @@ public:
     explicit stock_MainWindow(QWidget *parent = 0);
     ~stock_MainWindow();
     static void stock_get_ProductDetail(Product_Detail&p,int product_id);
+    static QStringList stock_change_PlanState(int plan_id,int product_id);
     void set_restSpace();
 public slots:
 
@@ -43,6 +46,9 @@ public slots:
     void on_pushButton_10_clicked();
     void on_pushButton_clicked();
     void stock_tableview_doubleclicked(const QModelIndex &index);
+    void on_pushButton_15_clicked();
+    void on_pushButton_16_clicked();
+    void on_pushButton_17_clicked();
 private:
     Ui::stock_MainWindow *ui;
     QSqlTableModel*stock_provider;
@@ -54,6 +60,7 @@ private:
     int user_id;
     bool is_admin;
     int  storage_space;
+    int prev_storage_space;
     std::unordered_map<int,int> choosen_id;
     void set_provider_visible(bool b);
     void stock_provider_model_init();
