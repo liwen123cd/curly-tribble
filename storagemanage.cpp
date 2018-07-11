@@ -81,7 +81,7 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
         // 若该记录中商品数量不大于dec，则删除该条记录
         if (curAmount <= dec) {
             modify.exec(QString("delete from Storage_product "
-                                "where storageID=%1 and producrID=%2").arg(stoID, proID));
+                                "where storageID=%1 and productID=%2").arg(stoID, proID));
             if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
         } else {
             // 否则修改该条记录的剩余数量
@@ -93,18 +93,18 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
         }
         // 修改仓库剩余空间值
         modify.exec(QString("update Storage_info "
-                            "set remain=%1"
+                            "set remain=remain+%1 "
                             "where storageID=%2").arg(
                             QString::number(min(curAmount, dec)), stoID));
         if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
         dec -= curAmount;
     }
-    qDebug() << dec;
+    //qDebug() << dec;
 
     // 向出库记录表中增添一条记录
     QDateTime curTime = QDateTime::currentDateTime();
     query.exec(QString("insert into Storage_order_record "
-                       "values(%1,%2,%3,%4)").arg(
+                       "values('%1',%2,'%3',%4)").arg(
                        orderID,
                        QString::number(productID),
                        curTime.toString(),
