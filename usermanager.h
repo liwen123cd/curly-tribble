@@ -10,7 +10,6 @@
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QLabel>
-
 #include "sys_add_user.h"
 
 class QSqlTableModel;
@@ -43,7 +42,7 @@ private slots:
 private:
     Ui::UserManager *ui;
     QSqlTableModel *model;
-    sys_add_user *add;
+    sys_add_user *addUser;
     void tableModel();
 };
 

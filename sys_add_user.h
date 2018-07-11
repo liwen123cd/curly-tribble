@@ -13,7 +13,7 @@ class sys_add_user : public QDialog
     Q_OBJECT
 
 public:
-    explicit sys_add_user(QDialog *parent = 0);
+    explicit sys_add_user(QWidget *parent = 0);
     ~sys_add_user();
 
 private slots:

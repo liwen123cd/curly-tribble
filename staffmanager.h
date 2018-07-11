@@ -5,6 +5,8 @@
 #include <QSqlTableModel>
 #include <QSqlRecord>
 #include "globaldata.h"
+#include "sys_add_staff.h"
+#include "sys_maintain_staff.h"
 
 namespace Ui {
 class StaffManager;
@@ -38,6 +40,8 @@ private slots:
 private:
     Ui::StaffManager *ui;
     QSqlTableModel *model;
+    Sys_Add_Staff *addStaff;
+    Sys_Maintain_Staff *mainTain;
     Staff *staff;
 };
 

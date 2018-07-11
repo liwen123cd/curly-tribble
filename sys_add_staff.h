@@ -24,7 +24,7 @@ class Sys_Add_Staff : public QDialog
     Q_OBJECT
 
 public:
-    explicit Sys_Add_Staff(QDialog *parent = 0);
+    explicit Sys_Add_Staff(QWidget *parent = 0);
     ~Sys_Add_Staff();
 
 private slots:

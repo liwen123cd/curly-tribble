@@ -7,7 +7,8 @@ UserManager::UserManager(QWidget *parent) :
     ui(new Ui::UserManager)
 {
     ui->setupUi(this);
-//    tableModel();
+    //    tableModel();
+    addUser = new sys_add_user(this);
     model = new QSqlTableModel(this);
     model->setTable("Sys_User");
     // 系统管理只能物流公司使用，即管理系统管理员
@@ -61,8 +62,8 @@ void UserManager::on_pushButton_2_clicked()
 
 void UserManager::on_pushButton_clicked()
 {
-    sys_add_user *addUser = new sys_add_user;
     addUser->exec();
+//    add->exec();
     model->select();
 }
 

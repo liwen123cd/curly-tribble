@@ -11,8 +11,15 @@ Sys_Maintain_Staff::Sys_Maintain_Staff(QWidget *parent) :
     ui->lineEdit->installEventFilter(this);
     ui->lineEdit_2->installEventFilter(this);
     init();
-    description = QString(Staff::description + " " + QDateTime::currentDateTime().toString("yyyy-MM-dd"));
-    qDebug()<<description;
+    if(NULL == description)
+    {
+        description = QString(Staff::description + QDateTime::currentDateTime().toString("yyyy-MM-dd"));
+    }
+    else
+    {
+        description += QString(Staff::description + " " + QDateTime::currentDateTime().toString("yyyy-MM-dd"));
+    }
+//    qDebug()<<description;
     ui->label_15->adjustSize();
     ui->label_15->setWordWrap(true);
     ui->label_15->setAlignment(Qt::AlignTop);
@@ -104,6 +111,7 @@ void Sys_Maintain_Staff::statusChange()
     if(Staff::deperment != ui->comboBox->currentText())
     {
         ui->label_21->setText(STATUS_CHANGE);
+        qDebug()<<description;
         description += QString(tr(":从") + Staff::deperment + tr("到") +
                                ui->comboBox->currentText() + " ");
         ui->label_15->setText(description);
@@ -151,6 +159,9 @@ void Sys_Maintain_Staff::on_pushButton_clicked()
             query.bindValue(":Staff_Phone", ui->lineEdit_2->text());
             query.bindValue(":Staff_Description", ui->label_15->text());
             query.bindValue(":Staff_Id", Staff::id);
+
+            qDebug()<<ui->label_15->text();
+
             if(!query.exec())
             {
                 QMessageBox::information(this, "提示",
@@ -164,8 +175,8 @@ void Sys_Maintain_Staff::on_pushButton_clicked()
                                          "您已更新职工信息！");
 //                qDebug() << "updated!";
             }
-            qDebug()<<updateSql;
-            this->close();
+//            qDebug()<<updateSql;
+//            this->close();
         }
         else
         {
@@ -188,7 +199,7 @@ void Sys_Maintain_Staff::positionChange()
                 && ui->comboBox_2->currentText() == POSITION_MANAGER)
         {
             ui->label_22->setText(POSITION_PROMOTE);
-            description += QString(tr(":从") + POSITION_COMMON +
+            description += QString(tr("从") + POSITION_COMMON +
                                    tr("到") + POSITION_MANAGER + " ");
             ui->label_15->setText(description);
         }
@@ -196,7 +207,7 @@ void Sys_Maintain_Staff::positionChange()
                 && ui->comboBox_2->currentText() == POSITION_SECRETARY)
         {
             ui->label_22->setText(POSITION_PROMOTE);
-            description += QString(tr(":从") + POSITION_COMMON +
+            description += QString(tr("从") + POSITION_COMMON +
                                    tr("到") + POSITION_SECRETARY + " ");
             ui->label_15->setText(description);
         }
@@ -204,7 +215,7 @@ void Sys_Maintain_Staff::positionChange()
                 && ui->comboBox_2->currentText() == POSITION_MANAGER)
         {
             ui->label_22->setText(POSITION_PROMOTE);
-            description += QString(tr(":从") + POSITION_SECRETARY +
+            description += QString(tr("从") + POSITION_SECRETARY +
                                    tr("到") + POSITION_MANAGER + " ");
             ui->label_15->setText(description);
         }
@@ -212,7 +223,7 @@ void Sys_Maintain_Staff::positionChange()
                 && ui->comboBox_2->currentText() == POSITION_COMMON)
         {
             ui->label_22->setText(POSITION_DOWN);
-            description += QString(tr(":从") + POSITION_SECRETARY +
+            description += QString(tr("从") + POSITION_SECRETARY +
                                    tr("到") + POSITION_COMMON + " ");
             ui->label_15->setText(description);
         }
@@ -220,7 +231,7 @@ void Sys_Maintain_Staff::positionChange()
                 && ui->comboBox_2->currentText() == POSITION_COMMON)
         {
             ui->label_22->setText(POSITION_DOWN);
-            description += QString(tr(":从") + POSITION_MANAGER +
+            description += QString(tr("从") + POSITION_MANAGER +
                                    tr("到") + POSITION_COMMON + " ");
             ui->label_15->setText(description);
         }
@@ -228,7 +239,7 @@ void Sys_Maintain_Staff::positionChange()
                 && ui->comboBox_2->currentText() == POSITION_SECRETARY)
         {
             ui->label_22->setText(POSITION_DOWN);
-            description += QString(tr(":从") + POSITION_MANAGER +
+            description += QString(tr("从") + POSITION_MANAGER +
                                    tr("到") + POSITION_SECRETARY + " ");
             ui->label_15->setText(description);
         }
@@ -256,9 +267,11 @@ void Sys_Maintain_Staff::on_pushButton_3_clicked()
                                     "Staff_Description = :Staff_Description "
                                     "where Staff_Id = :Staff_Id");
         query.prepare(updateSql);
+        qDebug()<<description+STATUS_LEAVE;
         query.bindValue(":Staff_Status", STATUS_LEAVE);
-        query.bindValue(":Staff_Description", description + STATUS_LEAVE);
+        query.bindValue(":Staff_Description", description + STATUS_LEAVE + " ");
         query.bindValue(":Staff_Id", Staff::id);
+        qDebug()<<description;
         if(!query.exec())
         {
             QMessageBox::information(this, "提示",

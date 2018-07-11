@@ -2,17 +2,17 @@
 #include "ui_sys_add_staff.h"
 #include "sys_sqlite.h"
 
-Sys_Add_Staff::Sys_Add_Staff(QDialog *parent) :
+Sys_Add_Staff::Sys_Add_Staff(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Sys_Add_Staff)
 {
     ui->setupUi(this);
     number = 0;
-    staff_filename = "D://Documents/QtProject/LogisticsManagementSystem/img/na.jpg";
+    staff_filename = "D://Documents/QtProject/curly-tribble/img/na.jpg";
 //    qDebug()<<QDir::currentPath();
 //    qDebug()<<QCoreApplication::applicationDirPath();
     //    QFile(directoryOf("data").absoluteFilePath(number.txt));
-    QFile file("D://Documents/QtProject/LogisticsManagementSystem/number.txt");
+    QFile file("D://Documents/QtProject/curly-tribble/number.txt");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "打开文件失败." << endl;
@@ -68,7 +68,7 @@ void Sys_Add_Staff::on_pushButton_2_clicked()
     qDebug()<<staff_id;
     number++;
     // 将number 值写入文件
-    QFile file("D://Documents/QtProject/LogisticsManagementSystem/number.txt");
+    QFile file("D://Documents/QtProject/curly-tribble/number.txt");
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         qDebug() << "文件打开失败！" << endl;

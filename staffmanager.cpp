@@ -9,6 +9,7 @@ StaffManager::StaffManager(QWidget *parent) :
     ui(new Ui::StaffManager)
 {
     ui->setupUi(this);
+    addStaff = new Sys_Add_Staff(this);
     model = new QSqlTableModel(this);
     model->setTable("Sys_Staff");
     // 系统管理只能物流公司使用，即管理系统管理员
@@ -39,8 +40,8 @@ StaffManager::~StaffManager()
 
 void StaffManager::on_pushButton_clicked()
 {
-    Sys_Add_Staff *add_staff = new Sys_Add_Staff;
-    add_staff->exec();
+    //    Sys_Add_Staff *add_staff = new Sys_Add_Staff;
+    addStaff->exec();
     model->select();
 }
 
@@ -71,10 +72,10 @@ void StaffManager::on_pushButton_2_clicked()
     {
         staff = new Staff;
         QSqlRecord record = model->record(curRow);
-        for(int i = 0; i < 9; i++)
-        {
-            qDebug()<<record.value(i)<<endl;
-        }
+        //        for(int i = 0; i < 9; i++)
+        //        {
+        //            qDebug()<<record.value(i)<<endl;
+        //        }
         staff->id = record.value(0).toString();
         staff->name = record.value(1).toString();
         staff->deperment = record.value(2).toString();
@@ -85,8 +86,9 @@ void StaffManager::on_pushButton_2_clicked()
         staff->image = record.value(7).toString();
         staff->description = record.value(8).toString();
 
-        Sys_Maintain_Staff *sms = new Sys_Maintain_Staff;
-        sms->exec();
+        mainTain = new Sys_Maintain_Staff(this);
+        mainTain->exec();
+        //  sms->exec();
     }
     model->select();
 }
@@ -236,7 +238,6 @@ void StaffManager::on_pushButton_12_clicked()
             {
                 model->submitAll();
             }
-
         }
         else
         {

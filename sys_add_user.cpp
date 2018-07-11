@@ -2,7 +2,7 @@
 #include "ui_sys_add_user.h"
 #include "sys_sqlite.h"
 
-sys_add_user::sys_add_user(QDialog *parent) :
+sys_add_user::sys_add_user(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::sys_add_user)
 {
@@ -52,7 +52,8 @@ void sys_add_user::on_pushButton_clicked()
 
             QMessageBox::information(this, "添加成功",
                                      "您已成功添加新用户！");
-            this->close();
+
+               this->close();
         }
     }
 }
