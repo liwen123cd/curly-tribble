@@ -3,6 +3,7 @@
 #include "ui_sale_detail_dialog.h"
 #include "globaldata.h"
 #include "storagemanage.h"
+#include "stock_mainwindow.h"
 #include <QIntValidator>
 #include <QMessageBox>
 #include <QSqlTableModel>
@@ -133,10 +134,12 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
     //显示商品详细信息
     //测试
     //系统显示商品详细信息（以后目标）调用接口读入
-    ui->Sale_item_name_lineEdit->setText("Item_ID");
+    Product_Detail detail;
+    stock_MainWindow::stock_get_ProductDetail(detail,Item_ID);
+    ui->Sale_item_name_lineEdit->setText(detail.Product_Name);
     ui->Sale_item_count_lineEdit->setText(QString::number(StorageManage::getAmount(Item_ID)));
-    ui->Sale_item_purchase_price_lineEdit->setText("48.9");
-    ui->Sale_item_provider_lineEdit->setText(tr("愉悦之巅"));
+    ui->Sale_item_purchase_price_lineEdit->setText(QString::number(detail.Product_Price));
+    ui->Sale_item_provider_lineEdit->setText(detail.Product_Provider);
     return true;
 }
 //监测函数，判断输入内容是否合法
