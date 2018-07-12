@@ -92,6 +92,8 @@ private:
     bool Sale_Show_Order(int);
     //显示所有订单
     bool Sale_Show_All_Order();
+    //重置页面
+    bool Sale_Reset_Table();
 };
 
 #endif // SALE_WIDGET_H
