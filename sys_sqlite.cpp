@@ -100,6 +100,7 @@ void createConnectSqlite()
                                           "primary key(storageID),"
                                           "foreign key(sellerID) references Sys_Seller(Seller_Id)"
                                           ")";
+
     // 库存商品信息表
     static QString createStorageProductSql = "create table Storage_product("
                                              "storageID integer,"
@@ -195,6 +196,8 @@ void createConnectSqlite()
     createTable(mainViewSql, mainView);
     createTable(sellerViewSql, sellerView);
     Sale_Sql(forignSql);
+    QString sql="insert into Storage_info values(1,'test',100,100,1) ";
+    Sale_Sql(sql);
     //    db.close();
 }
 
@@ -461,7 +464,7 @@ int Sale_Sql(const QString &sql)
 {
     QSqlQuery query;
     query.exec(sql);
-    //qDebug()<<query.lastError();
+    qDebug()<<query.lastError();
     return query.lastError().number();
 }
 
