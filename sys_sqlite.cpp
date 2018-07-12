@@ -4,21 +4,21 @@
 void createConnectSqlite()
 {
     // 查看数据库中可用的驱动
-    qDebug()<<"可用的驱动：";
+    qDebug() << "可用的驱动：";
     QStringList drivers = QSqlDatabase::drivers();
     foreach (QString driver, drivers) {
-        qDebug()<<driver;
+        qDebug() << driver;
     }
 
     // 创建连接，使用默认的SqLite
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("user.db");
-    qDebug()<<db.databaseName();
+    qDebug() << db.databaseName();
     bool ok = db.open();
-    if(ok)
-        qDebug()<<"数据库连接成功";
+    if (ok)
+        qDebug() << "数据库连接成功";
     else
-        qDebug()<<"数据库连接失败";
+        qDebug() << "数据库连接失败";
 
     // 创建数据库表
     // 表名
@@ -31,6 +31,7 @@ void createConnectSqlite()
     QString storageProductTable = "Storage_product";
     QString storageOrderRecordTable = "Storage_order_record";
     QString mainView = "Main_view";
+    QString sellerView = "Seller_View";
     QString stockPlanTable = "stock_plan";
     QString stockProviderTable = "stock_provider";
     QString stockProviderProductTable = "stock_provider_product";
@@ -75,57 +76,66 @@ void createConnectSqlite()
                                  "Sale_Buyer_Tel varchar(20),"
                                  "Sale_Buyer_Address varchar(40),"
                                  "Sale_Seller_ID int," //外键
-                                 "Sale_Item_ID int,"//外键
-                                 "Sale_Item_Num int,"
-                                 "Sale_Item_Price float,"
-                                 "Sale_Order_Finished int)";
+            "Sale_Item_ID int,"//外键
+            "Sale_Item_Num int,"
+            "Sale_Item_Price float,"
+            "Sale_Order_Finished int)";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"
                                  "Sale_Order_ID varchar(30),"//外键
-                                 "Sale_Order_State varchar(20),"
-                                 "Sale_Date datetime,"
-                                 "foreign key (Sale_Order_ID) "
-                                 "references Sale_Order(Sale_Order_ID) on delete cascade)";
+            "Sale_Order_State varchar(20),"
+            "Sale_Date datetime,"
+            "foreign key (Sale_Order_ID) "
+            "references Sale_Order(Sale_Order_ID) on delete cascade)";
     QString forignSql = "PRAGMA foreign_keys = ON";
 
     // 仓库信息表
     static QString createStorageInfoSql = "create table Storage_info("
-                                  "storageID integer,"
-                                  "storageName varchar(10),"
-                                  "capacity integer,"
-                                  "remain integer,"
-                                  "sellerID integer,"
-                                  "primary key(storageID),"
-                                  "foreign key(sellerID) references Sys_Seller(Seller_Id)"
-                                  ")";
+                                          "storageID integer,"
+                                          "storageName varchar(10),"
+                                          "capacity integer,"
+                                          "remain integer,"
+                                          "sellerID integer,"
+                                          "primary key(storageID),"
+                                          "foreign key(sellerID) references Sys_Seller(Seller_Id)"
+                                          ")";
     // 库存商品信息表
     static QString createStorageProductSql = "create table Storage_product("
-                                     "storageID integer,"
-                                     "productID integer,"
-                                     "amount integer,"
-                                     "primary key(storageID,productID),"
-                                     "foreign key(storageID) references Storage_info(storageID),"
-                                     "foreign key(productID) references stock_provider_product(id)"
-                                     ")";
+                                             "storageID integer,"
+                                             "productID integer,"
+                                             "amount integer,"
+                                             "primary key(storageID,productID),"
+                                             "foreign key(storageID) references Storage_info(storageID),"
+                                             "foreign key(productID) references stock_provider_product(id)"
+                                             ")";
 
     // 出库记录表
     static QString createOrderRecordSql = "create table Storage_order_record("
-                                  "orderID varchar(30),"
-                                  "productID integer,"
-                                  "orderDate datetime,"
-                                  "amount integer,"
-                                  "primary key(orderID),"
-                                  "foreign key(productID) references stock_provider_product(id)"
-                                  ")";
+                                          "orderID varchar(30),"
+                                          "productID integer,"
+                                          "orderDate datetime,"
+                                          "amount integer,"
+                                          "primary key(orderID),"
+                                          "foreign key(productID) references stock_provider_product(id)"
+                                          ")";
 
     // 界面显示view
     static QString mainViewSql = "create view Main_view as "
-                               "select si.storageName, s.Seller_Name, p.name, sp.amount "
-                               "from Sys_Seller s, stock_provider_product p, Storage_info si, Storage_product sp "
-                               "where si.sellerID = s.Seller_Id "
-                               "and sp.storageID = si.storageID "
-                               "and sp.productID = p.id";
+                                 "select si.storageName, s.Seller_Name, p.name, sp.amount "
+                                 "from Sys_Seller s, stock_provider_product p, Storage_info si, Storage_product sp "
+                                 "where si.sellerID = s.Seller_Id "
+                                 "and sp.storageID = si.storageID "
+                                 "and sp.productID = p.id";
+
+    // 卖家信息管理显示 view
+    static QString sellerViewSql = "create view Seller_View as "
+                                   "select s.Seller_Id, s.Seller_Name, "
+                                   "s.Seller_Phone, s.Seller_Addr, "
+                                   "si.storageID, si.storageName, si.remain "
+                                   "from Sys_Seller s "
+                                   "left join Storage_info si "
+                                   "on s.Seller_Id = si.sellerID";
 
     QString stockPlanSql = "create table stock_plan("
                            "id int primary key, "
@@ -166,16 +176,16 @@ void createConnectSqlite()
                                          "product_id int, "
                                          "cnt int, "
                                          "price float)";
-//    qDebug()<<createSaleStateSql;
+
+    //    qDebug()<<createSaleStateSql;
     createTable(createUserSql, userTable);
     createTable(createStaffSql, staffTable);
     createTable(createSellerSql, sellerTable);
     createTable(createSaleOrderSql, saleOrderTable);
     createTable(createSaleStateSql, saleStateTable);
-    Sale_Sql(forignSql);
     createTable(createStorageInfoSql, storageInfoTable);
     createTable(createStorageProductSql, storageProductTable);
-    createTable(createOrderRecordSql, storageOrderRecordTable);    
+    createTable(createOrderRecordSql, storageOrderRecordTable);
     createTable(stockPlanSql, stockPlanTable);
     createTable(stockProviderProductSql, stockProviderProductTable);
     createTable(stockPlanDetailSql, stockPlanDetailTable);
@@ -183,7 +193,8 @@ void createConnectSqlite()
     createTable(stockCanceledplanSql, stockCanceledplanTable);
     createTable(stockProviderSql, stockProviderTable);
     createTable(mainViewSql, mainView);
-
+    createTable(sellerViewSql, sellerView);
+    Sale_Sql(forignSql);
     //    db.close();
 }
 
@@ -196,23 +207,17 @@ void createConnectSqlite()
 void createTable(QString createSql, QString tableName)
 {
     QSqlQuery query;
-    //    qDebug()<<createSql;
+    qDebug() << createSql;
     query.exec(createSql);
     //qDebug()<<query.lastError();
-    if(isTableExist(tableName))
-    {
-        qDebug()<< tableName+"表已经存在，无须重新创建！";
-    }
-    else
-    {
-        if(!query.exec(createSql))
-        {
-            qDebug()<<"创建"+ tableName +"表失败！";
-            qDebug()<<query.lastError();
-        }
-        else
-        {
-            qDebug()<<"创建"+ tableName +"表成功！";
+    if (isTableExist(tableName)) {
+        qDebug() << tableName + "表已经存在，无须重新创建！";
+    } else {
+        if (!query.exec(createSql)) {
+            qDebug() << "创建" + tableName + "表失败！";
+            qDebug() << query.lastError();
+        } else {
+            qDebug() << "创建" + tableName + "表成功！";
         }
     }
 
@@ -231,7 +236,7 @@ bool isTableExist(QString tableName)
                 QString(
                     "select count(*) from sqlite_master "
                     "where type='table' and name='%1'").arg(tableName));
-//    qDebug()<<isTableExist;
+    //    qDebug()<<isTableExist;
     return isTableExist;
 }
 
@@ -246,8 +251,7 @@ bool userCheck(QString inputText, int num)
 
     QSqlQuery query;
     QString checkName;
-    switch(num)
-    {
+    switch (num) {
     case SYS_USER_NUMBER:
         checkName = QString("select ifnull("
                             "(select User_Name "
@@ -281,9 +285,8 @@ bool userCheck(QString inputText, int num)
 
     query.exec(checkName);
 
-    while(query.next())
-    {
-        if("0" == query.value(0).toString())
+    while (query.next()) {
+        if ("0" == query.value(0).toString())
             exists = true;
         else
             exists = false;
@@ -308,10 +311,9 @@ bool pwdCheck(QString name, QString inputText)
             .arg(name);
     query.exec(checkName);
 
-    while(query.next())
-    {
-        qDebug()<<query.value(0).toString();
-        if(inputText == query.value(0).toString())
+    while (query.next()) {
+        qDebug() << query.value(0).toString();
+        if (inputText == query.value(0).toString())
             flag = true;
         else
             flag = false;
@@ -337,9 +339,8 @@ bool identityCheck(QString name, int inputText)
             .arg(name);
     query.exec(checkName);
 
-    while(query.next())
-    {
-        if(inputText == query.value(0).toInt())
+    while (query.next()) {
+        if (inputText == query.value(0).toInt())
             flag = true;
         else
             flag = false;
@@ -364,8 +365,7 @@ void recordSeller(QString input)
             .arg(input);
     query.exec(recordSqlSeller);
 
-    while(query.next())
-    {
+    while (query.next()) {
         User::id = query.value(0).toInt();
         User::name = query.value(1).toString();
         User::phone = query.value(2).toString();
@@ -386,7 +386,7 @@ void sqlOperator(QString sql)
 
 /*
  *
- * 根据查询条件来判断职工是否存在
+ * 根据查询条件来判断职工/卖家是否存在
  *
  * */
 bool checkExist(QString input, int number)
@@ -399,30 +399,48 @@ bool checkExist(QString input, int number)
     switch (number) {
     case STAFF_ID_NUMBER:
         checkSql = QString("select ifnull("
-                            "(select Staff_Id "
-                            "from Sys_Staff "
-                            "where Staff_Id = '%1' "
-                            "limit 1), "
-                            "0)")
+                           "(select Staff_Id "
+                           "from Sys_Staff "
+                           "where Staff_Id = '%1' "
+                           "limit 1), "
+                           "0)")
                 .arg(input);
         break;
     case STAFF_DEPENTMENT_NUMBER:
         checkSql = QString("select ifnull("
-                            "(select Staff_Deperment "
-                            "from Sys_Staff "
-                            "where Staff_Deperment = '%1' "
-                            "limit 1), "
-                            "0)")
+                           "(select Staff_Deperment "
+                           "from Sys_Staff "
+                           "where Staff_Deperment = '%1' "
+                           "limit 1), "
+                           "0)")
                 .arg(input);
         break;
     case STAFF_NAME_NUMBER:
         checkSql = QString("select ifnull("
-                            "(select Staff_Name "
-                            "from Sys_Staff "
-                            "where Staff_Name = '%1' "
-                            "limit 1), "
-                            "0)")
+                           "(select Staff_Name "
+                           "from Sys_Staff "
+                           "where Staff_Name = '%1' "
+                           "limit 1), "
+                           "0)")
                 .arg(input);
+        break;
+    case SELLER_ID_NUMBER:
+        checkSql = QString("select ifnull("
+                           "(select Seller_Id "
+                           "from Seller_View "
+                           "where Seller_Id = '%1' "
+                           "limit 1), "
+                           "0)")
+                .arg(input.toInt());
+        break;
+    case STORAGE_ID_NUMBER:
+        checkSql = QString("select ifnull("
+                           "(select storageID "
+                           "from Seller_View "
+                           "where storageID = '%1' "
+                           "limit 1), "
+                           "0)")
+                .arg(input.toInt());
         break;
     default:
         break;
@@ -430,9 +448,8 @@ bool checkExist(QString input, int number)
 
     query.exec(checkSql);
 
-    while(query.next())
-    {
-        if(input == query.value(0).toString())
+    while (query.next()) {
+        if (input == query.value(0).toString())
             flag = true;
         else
             flag = false;
@@ -440,13 +457,37 @@ bool checkExist(QString input, int number)
     return flag;
 }
 
-
 int Sale_Sql(const QString &sql)
 {
-
     QSqlQuery query;
     query.exec(sql);
     //qDebug()<<query.lastError();
     return query.lastError().number();
+}
 
+/**
+ * 如果仓库信息表中卖家ID在卖家表中不存在
+ * 管理员管理卖家信息时只显示卖家信息
+ * 其余信息为空
+ *
+ * **/
+bool sellerViewNull()
+{
+    bool flag;
+    QString checkSql = QString("select count(*) "
+                               "from Seller_View ");
+    qDebug()<<checkSql;
+
+    QSqlQuery query;
+    query.exec(checkSql);
+    while(query.next())
+    {
+//        qDebug()<<query.value(0).toString();
+        if(0 == query.value(0).toInt())
+            flag = true;
+        else
+            flag = false;
+    }
+
+    return flag;
 }

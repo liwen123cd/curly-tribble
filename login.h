@@ -12,7 +12,8 @@
 #include "mainwindow.h"
 #include "recovepwd.h"
 
-namespace Ui {
+namespace Ui
+{
 class Login;
 }
 

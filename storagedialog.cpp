@@ -58,10 +58,10 @@ StorageDialog::StorageDialog(QWidget *parent) :
     ui->tableView_sto->setModel(modelSto);
 
     // 信号与槽的连接
-    connect(queryDialog, SIGNAL(sendMsg(QString,QString)),
-            this, SLOT(getQuery(QString,QString)));
-    connect(insertDialog, SIGNAL(sendMsg(QString,QString,QString)),
-            this, SLOT(getInsert(QString,QString,QString)));
+    connect(queryDialog, SIGNAL(sendMsg(QString, QString)),
+            this, SLOT(getQuery(QString, QString)));
+    connect(insertDialog, SIGNAL(sendMsg(QString, QString, QString)),
+            this, SLOT(getInsert(QString, QString, QString)));
 
     // 判断是否为管理员
     if (0 == is_admin) {
@@ -92,14 +92,14 @@ void StorageDialog::on_comboBox_sto_activated(const QString &stoName)
     QString stoID;
     QSqlQuery query(db);
     model->setQuery(QString("select * from Main_view "
-                    "where storageName='%1'").arg(stoName), db);
+                            "where storageName='%1'").arg(stoName), db);
     query.exec(QString("select storageID from Storage_info "
-               "where storageName='%1'").arg(stoName));
+                       "where storageName='%1'").arg(stoName));
     if (query.next()) {
         stoID = query.value(0).toString();
     }
     query.exec(QString("select remain,capacity from Storage_info "
-               "where storageID=%1").arg(stoID));
+                       "where storageID=%1").arg(stoID));
     if (query.next()) {
         QString remain, record;
         remain += query.value(0).toString() + "/" + query.value(1).toString();
@@ -127,10 +127,10 @@ void StorageDialog::getQuery(QString option, QString content)
 {
     if ("卖家姓名" == option) {
         model->setQuery(QString("select * from Main_view "
-                        "where sellerName='%1'").arg(content), db);
+                                "where sellerName='%1'").arg(content), db);
     } else {
         model->setQuery(QString("select * from Main_view "
-                        "where productName='%1'").arg(content), db);
+                                "where productName='%1'").arg(content), db);
     }
     QString record;
     record += "共" + QString::number(model->rowCount()) + "条记录";
@@ -152,7 +152,7 @@ void StorageDialog::getInsert(QString stoName, QString proName, QString amount)
 
     // 检查所填仓库是否存在
     query.exec(QString("select storageID from Storage_info "
-               "where storageName='%1'").arg(stoName));
+                       "where storageName='%1'").arg(stoName));
     if (!query.next()) {
         ui->label_prompt_1->setText("提示：所填仓库不存在！");
         return;
@@ -191,11 +191,11 @@ void StorageDialog::getInsert(QString stoName, QString proName, QString amount)
         query.exec(QString("update Storage_product "
                            "set amount=amount+%1 "
                            "where storageID=%2 and productID=%3").arg(
-                           amount, stoID, proID));
+                       amount, stoID, proID));
     } else {
         // 插入库存数据
         query.exec(QString("insert into Storage_product "
-                "values(%1,%2,%3)").arg(stoID, proID, amount));
+                           "values(%1,%2,%3)").arg(stoID, proID, amount));
     }
 
     if (query.lastError().isValid()) {
@@ -223,17 +223,17 @@ void StorageDialog::on_pushBtn_del_clicked()
     QString proName = model->data(model->index(curIndex.row(), 2)).toString();
     QSqlQuery query(db);
     query.exec(QString("select storageID from Storage_info "
-               "where storageName='%1'").arg(stoName));
+                       "where storageName='%1'").arg(stoName));
     query.next();
     stoID = query.value(0).toString();
 
     query.exec(QString("select productID from Product "
-               "where productName='%1'").arg(proName));
+                       "where productName='%1'").arg(proName));
     query.next();
     proID = query.value(0).toString();
 
     query.exec(QString("delete from Storage_product "
-               "where storageID=%1 and productID=%2").arg(stoID, proID));
+                       "where storageID=%1 and productID=%2").arg(stoID, proID));
     if (query.lastError().isValid()) {
         qDebug() << query.lastError().text();
         ui->label_prompt_1->setText("提示：删除失败！");
@@ -249,7 +249,7 @@ void StorageDialog::on_comboBox_op_activated(const QString &choice)
     if ("出库" == choice) {
         ui->label_product->hide();
         ui->lineEdit_product->hide();
-    } else if ("入库" == choice){
+    } else if ("入库" == choice) {
         ui->label_product->show();
         ui->lineEdit_product->show();
     }
@@ -274,7 +274,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
 
         // 调用接口获取订单内商品所属卖家和数量
         QStringList list = stock_MainWindow::stock_change_PlanState(
-                    orderID.toInt(), productID.toInt());
+                               orderID.toInt(), productID.toInt());
         QString sellerID = list.at(0);
         int amount = list.at(1).toInt();
 
@@ -307,7 +307,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
                 modify.exec(QString("update Storage_info "
                                     "set remain=%1 "
                                     "where storageID=%2").arg(
-                                    QString::number(remain - dec), stoID));
+                                QString::number(remain - dec), stoID));
                 if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
             }
             // 检查该仓库中是否已有同种商品
@@ -320,14 +320,14 @@ void StorageDialog::on_pushBtn_confirm_clicked()
                 modify.exec(QString("update Storage_product "
                                     "set amount=amount+%1 "
                                     "where storageID=%2 and productID=%3").arg(
-                                    QString::number(temp), stoID, productID));
+                                QString::number(temp), stoID, productID));
                 if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
             } else {
                 qDebug() << "test";
                 // 若该仓库中无同种商品，则添加记录
                 modify.exec(QString("insert into Storage_product "
                                     "values(%1,%2,%3)").arg(
-                                    stoID, productID, QString::number(temp)));
+                                stoID, productID, QString::number(temp)));
                 if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
             }
             dec -= remain;

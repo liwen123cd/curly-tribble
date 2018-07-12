@@ -15,7 +15,8 @@ struct Sale_State_Detail;
 struct Product_Detail;
 
 
-namespace Ui {
+namespace Ui
+{
 class Sale_Widget;
 }
 
@@ -26,7 +27,7 @@ class Sale_Widget : public QWidget
 public:
     explicit Sale_Widget(QWidget *parent = 0);
     //订单状态修改函数（管理员用）(接口函数）
-    static bool Sale_State_Change(const QString&,const QString&);
+    static bool Sale_State_Change(const QString&, const QString&);
     //订单状态修改（仓库）
     static bool Sale_State_Out(const QString&);
     ~Sale_Widget();
@@ -82,11 +83,11 @@ private:
     //写到订单状态表
     void Sale_Save_Record();
     //创建订单号(未确定方法)
-    void Sale_New_Order_ID(const QString&,QString&);
+    void Sale_New_Order_ID(const QString&, QString&);
     //从表单读入结构体点击新建，修改按钮后执行
-    bool Sale_Get_Order_Detail(Sale_Order_Detail&,int);
+    bool Sale_Get_Order_Detail(Sale_Order_Detail&, int);
     //从结构体写入表单，dialog发送信号（带数据）后槽函数执行
-    bool Sale_Write_Order_Detail(const Sale_Order_Detail&,int);
+    bool Sale_Write_Order_Detail(const Sale_Order_Detail&, int);
     //根据订单种类显示
     bool Sale_Show_Order(int);
     //显示所有订单

@@ -32,17 +32,16 @@ void Login::on_pushButton_clicked()
     QString login_pwd = ui->lineEdit_2->text();
     QString admin = ui->comboBox->currentText();
     int identify;
-    if(admin == "管理员")
+    if (admin == "管理员")
         identify = 1;
-    else
-    {
+    else {
         identify = 0;
         recordSeller(login_name);
     }
-    if(NULL == login_name)
+    if (NULL == login_name)
         QMessageBox::warning(this, "警告",
                              "用户名为空，请输入用户名！");
-    if(NULL == login_pwd)
+    if (NULL == login_pwd)
         QMessageBox::warning(this, "警告",
                              "密码为空，请输入密码！");
 
@@ -55,33 +54,26 @@ void Login::on_pushButton_clicked()
                     .arg(identify));
     model.select();
 
-    if(model.rowCount() == 1)
-    {
+    if (model.rowCount() == 1) {
         // 表示密码验证正确，登陆成功
         // ...... 显示登录后的状态
         QMessageBox::information(this, "登录", "恭喜您登录成功！");
         //留着跳转到主窗口
 
         Data::is_admin = identify;
-        qDebug()<<Data::is_admin;
+        qDebug() << Data::is_admin;
 //        MainWindow *mainwindow = new MainWindow;
 //        mainwindow->show();
         mainw = new MainWindow(this);
         mainw->show();
         this->hide();
-    }
-    else if(userCheck(login_name, SYS_USER_NUMBER))
-    {
+    } else if (userCheck(login_name, SYS_USER_NUMBER)) {
         QMessageBox::warning(this, "警告",
                              "用户名不存在，请去注册！");
-    }
-    else if(!identityCheck(login_name, identify))
-    {
+    } else if (!identityCheck(login_name, identify)) {
         QMessageBox::warning(this, "警告",
                              "身份错误，请确认身份！");
-    }
-    else if(!pwdCheck(login_name, login_pwd))
-    {
+    } else if (!pwdCheck(login_name, login_pwd)) {
         QMessageBox::warning(this, "警告",
                              "密码错误，请重新输入！");
     }

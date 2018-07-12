@@ -3,6 +3,7 @@
 #include "sys_add_staff.h"
 #include "sys_maintain_staff.h"
 #include "sys_sqlite.h"
+#include "storagemanage.h"
 
 StaffManager::StaffManager(QWidget *parent) :
     QWidget(parent),
@@ -10,27 +11,10 @@ StaffManager::StaffManager(QWidget *parent) :
 {
     ui->setupUi(this);
     addStaff = new Sys_Add_Staff(this);
+    addSeller = new Sys_Add_Seller(this);
     model = new QSqlTableModel(this);
-    model->setTable("Sys_Staff");
-    // 系统管理只能物流公司使用，即管理系统管理员
-    model->select();
-    model->setHeaderData(0, Qt::Horizontal, tr("编号"));
-    model->setHeaderData(1, Qt::Horizontal, tr("姓名"));
-    model->setHeaderData(2, Qt::Horizontal, tr("所在部门"));
-    model->setHeaderData(3, Qt::Horizontal, tr("职位"));
-    model->setHeaderData(4, Qt::Horizontal, tr("状态"));
-    model->setHeaderData(5, Qt::Horizontal, tr("电话"));
-    model->setHeaderData(6, Qt::Horizontal, tr("就职日期"));
-    model->setHeaderData(7, Qt::Horizontal, tr("照片"));
-    model->setHeaderData(8, Qt::Horizontal, tr("备注"));
-    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    ui->tableView->setModel(model);
-    // ui->tableView->horizontalHeader()->setStretchLastSection(true);
-    ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->hideColumn(0);
-    //    ui->tableView->setSelectionBehavior(QAbstractItemView::);
-    //    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
-    //    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    init();
+    init2();
 }
 
 StaffManager::~StaffManager()
@@ -47,7 +31,7 @@ void StaffManager::on_pushButton_clicked()
 
 void StaffManager::on_pushButton_9_clicked()
 {
-    qDebug()<<"选择全部";
+    qDebug() << "选择全部";
     init();
     //    model->select();
 }
@@ -62,20 +46,13 @@ void StaffManager::on_pushButton_9_clicked()
 void StaffManager::on_pushButton_2_clicked()
 {
     int curRow = ui->tableView->currentIndex().row();
-    qDebug()<<curRow;
-    if(-1 == curRow)
-    {
+    qDebug() << curRow;
+    if (-1 == curRow) {
         QMessageBox::warning(this, tr("提示"),
                              "请先选中一行！");
-    }
-    else
-    {
+    } else {
         staff = new Staff;
         QSqlRecord record = model->record(curRow);
-        //        for(int i = 0; i < 9; i++)
-        //        {
-        //            qDebug()<<record.value(i)<<endl;
-        //        }
         staff->id = record.value(0).toString();
         staff->name = record.value(1).toString();
         staff->deperment = record.value(2).toString();
@@ -95,8 +72,7 @@ void StaffManager::on_pushButton_2_clicked()
 
 void StaffManager::on_pushButton_3_clicked()
 {
-    if(NULL == ui->tableView->currentIndex().data(0).toString())
-    {
+    if (NULL == ui->tableView->currentIndex().data(0).toString()) {
         QMessageBox::warning(this, tr("提示"),
                              "请输入需要修改的内容！");
         model->revertAll();
@@ -104,12 +80,9 @@ void StaffManager::on_pushButton_3_clicked()
     // 开始事务操作
     model->database().transaction();
 
-    if(model->submitAll())
-    {
+    if (model->submitAll()) {
         model->database().commit();
-    }
-    else
-    {
+    } else {
         model->database().rollback();
         QMessageBox::warning(this, tr("警告"),
                              tr("数据库错误: %1")
@@ -125,13 +98,10 @@ void StaffManager::on_pushButton_4_clicked()
 void StaffManager::on_pushButton_11_clicked()
 {
     QString inputQuery = ui->lineEdit->text();
-    if(NULL == inputQuery)
-    {
+    if (NULL == inputQuery) {
         QMessageBox::warning(this, tr("提示"),
                              "请输入需要查询的内容！");
-    }
-    else
-    {
+    } else {
         queryStaff(ui->lineEdit->text());
         ui->lineEdit->clear();
     }
@@ -145,42 +115,30 @@ void StaffManager::on_pushButton_11_clicked()
 void StaffManager::queryStaff(QString input)
 {
     QString comboxText = ui->comboBox->currentText();
-    qDebug()<<comboxText;
-    if(STAFF_ID == comboxText)
-    {
-        if(checkExist(input, STAFF_ID_NUMBER))
-        {
+    qDebug() << comboxText;
+    if (STAFF_ID == comboxText) {
+        if (checkExist(input, STAFF_ID_NUMBER)) {
             model->setFilter(QString("Staff_Id = '%1'")
                              .arg(input));
-        }
-        else
-        {
+        } else {
             QMessageBox::warning(this, tr("提示"),
                                  "该职工不存在，请重试！");
         }
     }
-    if(STAFF_NAME == comboxText)
-    {
-        if(checkExist(input, STAFF_NAME_NUMBER))
-        {
+    if (STAFF_NAME == comboxText) {
+        if (checkExist(input, STAFF_NAME_NUMBER)) {
             model->setFilter(QString("Staff_Name = '%1'")
                              .arg(input));
-        }
-        else
-        {
+        } else {
             QMessageBox::warning(this, tr("提示"),
                                  "该职工不存在，请重试！");
         }
     }
-    if(STAFF_DEPENTMENT == comboxText)
-    {
-        if(checkExist(input, STAFF_DEPENTMENT_NUMBER))
-        {
+    if (STAFF_DEPENTMENT == comboxText) {
+        if (checkExist(input, STAFF_DEPENTMENT_NUMBER)) {
             model->setFilter(QString("Staff_Deperment = '%1'")
                              .arg(input));
-        }
-        else
-        {
+        } else {
             QMessageBox::warning(this, tr("提示"),
                                  "该部门无职工，请重试！");
         }
@@ -215,35 +173,148 @@ void StaffManager::on_pushButton_12_clicked()
     int curRow = ui->tableView->currentIndex().row();
 
     QString currentText = model->data(model->index(curRow, 4)).toString();
-    qDebug()<<currentText;
-    if(-1 == curRow)
-    {
+    qDebug() << currentText;
+    if (-1 == curRow) {
         QMessageBox::warning(this, tr("提示"),
                              "请先选中一行！");
-    }
-    else
-    {
-        if("离职" == currentText)
-        {
+    } else {
+        if (STATUS_LEAVE == currentText) {
             model->removeRow(curRow);
             int ok = QMessageBox::warning(this, tr("删除离职职工信息"),
                                           tr("你确定删除当前已离职的职工信息吗？"),
                                           QMessageBox::Yes,
                                           QMessageBox::No);
-            if(ok == QMessageBox::No)
-            {
+            if (ok == QMessageBox::No) {
                 model->revertAll();
-            }
-            else
-            {
+            } else {
                 model->submitAll();
             }
-        }
-        else
-        {
+        } else {
             QMessageBox::warning(this, tr("警告"),
                                  tr("该用户未离职，无法删除！")
                                  );
         }
     }
+}
+
+void StaffManager::on_pushButton_5_clicked()
+{
+    addSeller->show();
+    model2->select();
+}
+
+void StaffManager::on_pushButton_13_clicked()
+{
+    QString inputQuery = ui->lineEdit_2->text();
+    if (NULL == inputQuery) {
+        QMessageBox::warning(this, tr("提示"),
+                             "请输入需要查询的内容！");
+    } else {
+        querySeller(ui->lineEdit_2->text());
+        ui->lineEdit_2->clear();
+    }
+}
+
+void StaffManager::querySeller(QString inputText)
+{
+    QString comboxText = ui->comboBox_2->currentText();
+    if (SELLER_ID == comboxText) {
+        if (checkExist(inputText, SELLER_ID_NUMBER)) {
+            qDebug() << inputText.toInt();
+            model2->setFilter(QString("Seller_Id = '%1'")
+                              .arg(inputText.toInt()));
+        } else {
+            QMessageBox::warning(this, tr("提示"),
+                                 "该卖家不存在，请重试！");
+        }
+    }
+    if (STORAGR_ID == comboxText) {
+        if (checkExist(inputText, STORAGE_ID_NUMBER)) {
+            model2->setFilter(QString("storageID = '%1'")
+                              .arg(inputText.toInt()));
+        } else {
+            QMessageBox::warning(this, tr("提示"),
+                                 "该仓库不存在，请重试！");
+        }
+    }
+}
+
+void StaffManager::on_pushButton_10_clicked()
+{
+    init2();
+    model2->select();
+}
+
+void StaffManager::init2()
+{
+    model2 = new QSqlTableModel(this);
+    model2->setTable("Seller_View");
+    model2->select();
+    model2->setHeaderData(0, Qt::Horizontal, tr("卖家ID"));
+    model2->setHeaderData(1, Qt::Horizontal, tr("姓名"));
+    model2->setHeaderData(2, Qt::Horizontal, tr("电话"));
+    model2->setHeaderData(3, Qt::Horizontal, tr("地址"));
+    model2->setHeaderData(4, Qt::Horizontal, tr("仓库ID"));
+    model2->setHeaderData(5, Qt::Horizontal, tr("仓库名"));
+    model2->setHeaderData(6, Qt::Horizontal, tr("余量"));
+    model2->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ui->tableView_2->setModel(model2);
+    ui->tableView_2->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView_2->hideColumn(4);
+    ui->tableView_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
+void StaffManager::on_pushButton_6_clicked()
+{
+    int curRow = ui->tableView_2->currentIndex().row();
+
+    int currentID = model2->data(model2->index(curRow, 0)).toInt();
+
+    qDebug() << currentID;
+    if (-1 == curRow) {
+        QMessageBox::warning(this, tr("提示"),
+                             "请先选中一行！");
+    } else {
+        model2->removeRow(curRow);
+        int ok = QMessageBox::warning(this, tr("删除卖家信息"),
+                                      tr("你确定删除当前卖家信息吗？"),
+                                      QMessageBox::Yes,
+                                      QMessageBox::No);
+        if (ok == QMessageBox::No) {
+            model2->revertAll();
+        } else {
+            QSqlQuery query;
+            QString deleteSql1 = QString("delete "
+                                         "from Storage_info "
+                                         "where sellerID = :sellerID");
+            query.prepare(deleteSql1);
+            query.bindValue(":sellerID", currentID);
+            if (!query.exec()) {
+                QMessageBox::information(this, "提示",
+                                         query.lastError().text());
+                qDebug() << query.lastError();
+            } else {
+                QMessageBox::information(this, "提示",
+                                         "您已成功从仓库表删除卖家信息！");
+            }
+
+            //  调用 仓库的接口函数 回收卖家所拥有的仓库
+            StorageManage::freeStorage(currentID);
+
+            QString deleteSql2 = QString("delete "
+                                         "from Sys_Seller "
+                                         "where Seller_Id = :Seller_Id");
+            query.prepare(deleteSql2);
+            query.bindValue(":Seller_Id", currentID);
+            if (!query.exec()) {
+                QMessageBox::information(this, "提示",
+                                         query.lastError().text());
+                qDebug() << query.lastError();
+            } else {
+                QMessageBox::information(this, "提示",
+                                         "您已成功删除卖家信息！");
+            }
+        }
+    }
+    model2->select();
 }

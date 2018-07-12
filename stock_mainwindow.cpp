@@ -18,14 +18,14 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui(new Ui::stock_MainWindow)
 {
     ui->setupUi(this);
-    storage_space=StorageManage::restSpace();
-    prev_storage_space=storage_space;
-    stock_mkplan_provider=new QSqlQueryModel(this);
-    stock_mkplan_product=new QSqlQueryModel(this);
-    stock_srplan_basic=new QSqlQueryModel(this);
-    stock_srplan_detail=new QSqlQueryModel(this);
-    stock_provider=new QSqlTableModel(this);
-    stock_provider_product=new QSqlTableModel(this);
+    storage_space = StorageManage::restSpace();
+    prev_storage_space = storage_space;
+    stock_mkplan_provider = new QSqlQueryModel(this);
+    stock_mkplan_product = new QSqlQueryModel(this);
+    stock_srplan_basic = new QSqlQueryModel(this);
+    stock_srplan_detail = new QSqlQueryModel(this);
+    stock_provider = new QSqlTableModel(this);
+    stock_provider_product = new QSqlTableModel(this);
     stock_provider_model_init();
     stock_mkplan_init();
     stock_srplan_init();
@@ -36,12 +36,12 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui->comboBox_2->addItem(tr("新增供货商信息"));
     ui->tableWidget->setColumnCount(2);
     QStringList header;
-    header<<tr("商品名称（输入字符串）")<<tr("商品价格（输入实数）");
+    header << tr("商品名称（输入字符串）") << tr("商品价格（输入实数）");
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget_2->setColumnCount(4);
     ui->tableWidget_2->hideColumn(0);
     header.clear();
-    header<<tr("商品编号")<<tr("商品名称")<<tr("商品进货数量")<<tr("商品总价");
+    header << tr("商品编号") << tr("商品名称") << tr("商品进货数量") << tr("商品总价");
     ui->tableWidget_2->setHorizontalHeaderLabels(header);
     ui->tableWidget->horizontalHeader()->setResizeMode(0, QHeaderView::ResizeToContents);
     ui->tableWidget->horizontalHeader()->setResizeMode(1, QHeaderView::ResizeToContents);
@@ -58,14 +58,14 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui->tableWidget_2->horizontalHeader()->setStretchLastSection(true);
     ui->tableWidget->horizontalHeader()->setStretchLastSection(true);
     set_provider_visible(true);
-    connect(ui->tableView_3,SIGNAL(pressed(QModelIndex)),this,SLOT(stock_tableview_3_clicked(QModelIndex)));
-    connect(ui->tableView_2,SIGNAL(pressed(QModelIndex)),this,SLOT(stock_tableview_2_clicked(QModelIndex)));
-    connect(ui->tableView_5,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(stock_tableview_5_doubleclicked(QModelIndex)));
-    connect(ui->tableWidget_2,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(stock_tablewidget_2_changed(QTableWidgetItem*)));
-    connect(ui->tableWidget_2,SIGNAL(itemPressed(QTableWidgetItem*)),this,SLOT(stock_tablewidget_2_pressed(QTableWidgetItem*)));
-    connect(ui->tableView_6,SIGNAL(pressed(QModelIndex)),this,SLOT(stock_tableview_6_clicked(QModelIndex)));
-    connect(ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(on_tabWidget_currentChanged(int)));
-    connect(ui->tableView,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(stock_tableview_doubleclicked(QModelIndex)));
+    connect(ui->tableView_3, SIGNAL(pressed(QModelIndex)), this, SLOT(stock_tableview_3_clicked(QModelIndex)));
+    connect(ui->tableView_2, SIGNAL(pressed(QModelIndex)), this, SLOT(stock_tableview_2_clicked(QModelIndex)));
+    connect(ui->tableView_5, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(stock_tableview_5_doubleclicked(QModelIndex)));
+    connect(ui->tableWidget_2, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(stock_tablewidget_2_changed(QTableWidgetItem*)));
+    connect(ui->tableWidget_2, SIGNAL(itemPressed(QTableWidgetItem*)), this, SLOT(stock_tablewidget_2_pressed(QTableWidgetItem*)));
+    connect(ui->tableView_6, SIGNAL(pressed(QModelIndex)), this, SLOT(stock_tableview_6_clicked(QModelIndex)));
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_tabWidget_currentChanged(int)));
+    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(stock_tableview_doubleclicked(QModelIndex)));
     ui->lcdNumber->setNumDigits(4);
     ui->lcdNumber->setSegmentStyle(QLCDNumber::Flat);
     ui->lcdNumber_2->setDigitCount(10);
@@ -75,7 +75,7 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui->lcdNumber_3->setSegmentStyle(QLCDNumber::Flat);
     ui->lcdNumber_3->setStyleSheet("border:1px solid black;color: red;background: silver");
     this->setCentralWidget(ui->tabWidget);
- }
+}
 
 stock_MainWindow::~stock_MainWindow()
 {
@@ -87,48 +87,41 @@ void stock_MainWindow::stock_get_ProductDetail(Product_Detail &p, int product_id
     QSqlQuery query;
     int provider_id;
     query.exec(QString("select * from stock_provider_product where id=%1").arg(product_id));
-    qDebug()<<query.lastError();
+    qDebug() << query.lastError();
     query.next();
-    provider_id=query.value(1).toInt();
-    p.Product_Name=query.value(2).toString();
-    p.Product_Price=query.value(3).toFloat();
+    provider_id = query.value(1).toInt();
+    p.Product_Name = query.value(2).toString();
+    p.Product_Price = query.value(3).toFloat();
     query.exec(QString("select * from stock_provider where id=%1").arg(provider_id));
-    qDebug()<<query.lastError();
+    qDebug() << query.lastError();
     query.next();
-    p.Product_Provider=query.value(2).toString();
+    p.Product_Provider = query.value(2).toString();
 }
 
 QStringList stock_MainWindow::stock_change_PlanState(int plan_id, int product_id)
 {
     QSqlQuery query;
     query.exec(QString("select cnt from stock_plan_detail where plan_id=%1 and product_id=%2 and state='进货未完成'").arg(plan_id).arg(product_id));
-    qDebug()<<query.lastError();
-    if(!query.next())
-    {
+    qDebug() << query.lastError();
+    if (!query.next()) {
         return QStringList();
-    }
-    else
-    {
+    } else {
         int seller_id;
-        int cnt=query.value(0).toInt();
+        int cnt = query.value(0).toInt();
         query.exec(QString("select seller_id from stock_plan where id=%1").arg(plan_id));
-        qDebug()<<query.lastError();
-        if(query.next())
-        {
-            seller_id=query.value(0).toInt();
-            int ok=query.exec(QString("update stock_plan_detail set state='进货已完成' where plan_id=%1 and product_id=%2").arg(plan_id).arg(product_id));
-            if(!ok)
-            {
-                qDebug()<<query.lastError();
+        qDebug() << query.lastError();
+        if (query.next()) {
+            seller_id = query.value(0).toInt();
+            int ok = query.exec(QString("update stock_plan_detail set state='进货已完成' where plan_id=%1 and product_id=%2").arg(plan_id).arg(product_id));
+            if (!ok) {
+                qDebug() << query.lastError();
                 return QStringList();
             }
             QStringList ret;
             ret.push_back(QString::number(seller_id));
             ret.push_back(QString::number(cnt));
             return ret;
-        }
-        else
-        {
+        } else {
             return QStringList();
         }
     }

@@ -25,7 +25,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -124,10 +124,28 @@
        <item row="0" column="0">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QComboBox" name="comboBox_2"/>
+          <widget class="QComboBox" name="comboBox_2">
+           <item>
+            <property name="text">
+             <string>卖家ID</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>仓库ID</string>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <widget class="QLineEdit" name="lineEdit_2"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_13">
+           <property name="text">
+            <string>查询</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_10">
@@ -143,28 +161,14 @@
          <item>
           <widget class="QPushButton" name="pushButton_5">
            <property name="text">
-            <string>添加进货商</string>
+            <string>添加卖家</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_6">
            <property name="text">
-            <string>删除进货商</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_7">
-           <property name="text">
-            <string>保存修改</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_8">
-           <property name="text">
-            <string>撤销修改</string>
+            <string>删除卖家</string>
            </property>
           </widget>
          </item>

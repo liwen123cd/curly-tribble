@@ -3,12 +3,15 @@
 
 #include <QWidget>
 #include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
 #include <QSqlRecord>
 #include "globaldata.h"
 #include "sys_add_staff.h"
 #include "sys_maintain_staff.h"
+#include "sys_add_seller.h"
 
-namespace Ui {
+namespace Ui
+{
 class StaffManager;
 }
 
@@ -22,6 +25,8 @@ public:
 
     void queryStaff(QString input);
     void init();
+    void querySeller(QString inputText);
+    void init2();
 private slots:
     void on_pushButton_clicked();
 
@@ -37,11 +42,21 @@ private slots:
 
     void on_pushButton_12_clicked();
 
+    void on_pushButton_5_clicked();
+
+    void on_pushButton_13_clicked();
+
+    void on_pushButton_10_clicked();
+
+    void on_pushButton_6_clicked();
+
 private:
     Ui::StaffManager *ui;
     QSqlTableModel *model;
+    QSqlTableModel *model2;
     Sys_Add_Staff *addStaff;
     Sys_Maintain_Staff *mainTain;
+    Sys_Add_Seller *addSeller;
     Staff *staff;
 };
 
