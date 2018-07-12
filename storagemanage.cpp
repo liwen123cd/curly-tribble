@@ -235,11 +235,15 @@ QStringList StorageManage::getProductList()
 {
     QStringList proList;
     QSqlQuery query(db);
-    query.exec(QString("select p.name "
-                       "from Storage_product sp, Storage_info si, stock_provider_product p "
-                       "where sp.storageID=si.storageID "
-                       "and sp.productID=p.id "
-                       "and si.sellerID=%1").arg(QString::number(User::id)));
+    if (Data::is_admin == 1) {
+        query.exec(QString("select productID "
+                           "from Storage_product"));
+    } else {
+        query.exec(QString("select sp.productID "
+                        "from Storage_product sp, Storage_info si"
+                        "where sp.storageID=si.storageID "
+                        "and si.sellerID=%1").arg(QString::number(User::id)));
+    }
     if (query.lastError().isValid()) qDebug() << query.lastError().text();
     while (query.next()) {
         if (!proList.contains(query.value(0).toString()))
@@ -279,7 +283,7 @@ int StorageManage::getOccu()
 {
     QFile file("tempOccupied.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "tempOccupied文件不存在";
+        // qDebug() << "tempOccupied文件不存在";
         file.close();
         return 0;
     }

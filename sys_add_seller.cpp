@@ -7,6 +7,9 @@ Sys_Add_Seller::Sys_Add_Seller(QWidget *parent) :
     ui(new Ui::Sys_Add_Seller)
 {
     ui->setupUi(this);
+    model = new QSqlQueryModel(this);
+    model->setHeaderData(0, Qt::Horizontal, "仓库名");
+    ui->listView->setModel(model);
 }
 
 Sys_Add_Seller::~Sys_Add_Seller()
@@ -59,7 +62,14 @@ void Sys_Add_Seller::on_pushButton_clicked()
             }
         }
         // 调用仓库的分配函数，为卖家分配仓库
-        StorageManage::allocateStorage(sellerID, add_seller_number);
+        int flag = StorageManage::allocateStorage(sellerID, add_seller_number);
+
+        if (flag == 1) {
+            QMessageBox::information(this, "提示", "仓库不足！");
+        }
+
+        model->setQuery(QString("select storageName from Storage_info "
+                                "where storageID=%1").arg(QString::number(sellerID)));
 
         QMessageBox::information(this, "添加成功",
                                  "您已成功添加新用户！");

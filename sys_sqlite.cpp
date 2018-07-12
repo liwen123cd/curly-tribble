@@ -196,8 +196,8 @@ void createConnectSqlite()
     createTable(mainViewSql, mainView);
     createTable(sellerViewSql, sellerView);
     Sale_Sql(forignSql);
-    QString sql="insert into Storage_info values(1,'test',100,100,1) ";
-    Sale_Sql(sql);
+    //QString sql="insert into Storage_info values(1,'test',100,100,1) ";
+    //Sale_Sql(sql);
     //    db.close();
 }
 
