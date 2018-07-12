@@ -119,7 +119,7 @@ void stock_MainWindow::on_pushButton_10_clicked()
         QMessageBox::warning(this, tr("取消失败"), tr("这个计划有的条目已经进货完成，不能取消！！！"));
         return;
     }
-    QMessageBox box(QMessageBox::Warning, tr("删除当前进货计划！"), tr("你确定删除当前进货计划吗？"));
+    QMessageBox box(QMessageBox::Warning, tr("删除当前进货计划！"), tr("你确定删除当前进货计划吗？"),QMessageBox::NoButton,this);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setButtonText(QMessageBox::Yes, tr("确认"));
     box.setButtonText(QMessageBox::No, tr("取消"));
@@ -152,7 +152,7 @@ void stock_MainWindow::on_pushButton_11_clicked()
         QMessageBox::warning(this, tr("取消失败"), tr("这个条目已经进货完成，无法取消！！！"));
         return;
     }
-    QMessageBox box(QMessageBox::Warning, tr("删除当前进货条目！"), tr("你确定删除当前进货条目吗？"));
+    QMessageBox box(QMessageBox::Warning, tr("删除当前进货条目！"), tr("你确定删除当前进货条目吗？"),QMessageBox::NoButton,this);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setButtonText(QMessageBox::Yes, tr("确认"));
     box.setButtonText(QMessageBox::No, tr("取消"));

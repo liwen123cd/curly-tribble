@@ -218,12 +218,12 @@ void stock_MainWindow::on_pushButton_3_clicked()
         QMessageBox::warning(this, tr("生成订单失败"), tr("您的进货清单为空，不能生成订单！！！"));
         return;
     }
-    QMessageBox box(QMessageBox::Warning, tr("确认生成订单！"), tr("你确认要生成当前的订单吗？"));
-    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    box.setButtonText(QMessageBox::Yes, tr("确认"));
-    box.setButtonText(QMessageBox::No, tr("取消"));
-    int ok = box.exec();
-    if (ok == QMessageBox::Yes)
+      QMessageBox box(QMessageBox::Warning, tr("确认生成订单！"), tr("你确认要生成当前的订单吗？"),QMessageBox::NoButton,this);
+      box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+      box.setButtonText(QMessageBox::Yes, tr("确认"));
+      box.setButtonText(QMessageBox::No, tr("取消"));
+      int ok = box.exec();
+      if (ok == QMessageBox::Yes)
         stock_mkplan_create();
 }
 
