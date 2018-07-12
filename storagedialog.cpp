@@ -14,8 +14,9 @@
 #include "myitemdelegate.h"
 #include "storagemanage.h"
 #include "stock_mainwindow.h"
+#include "globaldata.h"
 
-int is_admin = 1;
+//int is_admin = 1;
 
 StorageDialog::StorageDialog(QWidget *parent) :
     QDialog(parent),
@@ -64,10 +65,11 @@ StorageDialog::StorageDialog(QWidget *parent) :
             this, SLOT(getInsert(QString, QString, QString)));
 
     // 判断是否为管理员
-    if (0 == is_admin) {
+    if (0 == Data::is_admin) {
         ui->pushBtn_query->setEnabled(false);
         ui->pushBtn_query_all->setEnabled(false);
         ui->tabWidget->setTabEnabled(1, false);
+        ui->tabWidget->setTabEnabled(2, false);
     }
 }
 

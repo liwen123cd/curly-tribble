@@ -66,7 +66,7 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     connect(ui->tableView_6, SIGNAL(pressed(QModelIndex)), this, SLOT(stock_tableview_6_clicked(QModelIndex)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_tabWidget_currentChanged(int)));
     connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(stock_tableview_doubleclicked(QModelIndex)));
-    ui->lcdNumber->setNumDigits(4);
+    ui->lcdNumber->setDigitCount(4);
     ui->lcdNumber->setSegmentStyle(QLCDNumber::Flat);
     ui->lcdNumber_2->setDigitCount(10);
     ui->lcdNumber_2->setSegmentStyle(QLCDNumber::Flat);
