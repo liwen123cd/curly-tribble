@@ -13,7 +13,7 @@ public:
     MySqlQueryModel();
     ~MySqlQueryModel();
     Qt::ItemFlags flags(const QModelIndex &index) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role);  
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
     QStringList getStorageNames() const;
 
 private:

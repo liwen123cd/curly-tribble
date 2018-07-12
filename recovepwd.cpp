@@ -22,14 +22,11 @@ RecovePwd::~RecovePwd()
 void RecovePwd::on_pushButton_clicked()
 {
     QString email = ui->lineEdit->text();
-    if(email.length() == 0)
-    {
+    if (email.length() == 0) {
         QMessageBox::information(this, "提示", "未填写邮箱！");
-    }
-    else
-    {
+    } else {
         QMessageBox::information(this, "提示", "发送成功！"
-                                             "请按提示步骤找回密码！");
+                                 "请按提示步骤找回密码！");
     }
 }
 
@@ -46,16 +43,14 @@ void RecovePwd::onEmailChoosed(const QString& email)
 
 void RecovePwd::onTextChanged(const QString& str)
 {
-    if (str.contains("@"))   // 如果已经输入了@符号，我们就停止补全了。因为到了这一步，我们再补全意义也不大了。
-    {
+    if (str.contains("@")) { // 如果已经输入了@符号，我们就停止补全了。因为到了这一步，我们再补全意义也不大了。
         return;
     }
     QStringList strlist;
     strlist << "@163.com" << "@qq.com" << "@gmail.com" << "@hotmail.com" << "@126.com";
 
     m_model->removeRows(0, m_model->rowCount());   // 先清楚已经存在的数据，不然的话每次文本变更都会插入数据，最后出现重复数据
-    for (int i = 0; i < strlist.size(); ++i)
-    {
+    for (int i = 0; i < strlist.size(); ++i) {
         m_model->insertRow(0);
         m_model->setData(m_model->index(0, 0), str + strlist.at(i));
     }

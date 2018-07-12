@@ -13,7 +13,8 @@
 #include "sys_add_user.h"
 
 class QSqlTableModel;
-namespace Ui {
+namespace Ui
+{
 class UserManager;
 }
 

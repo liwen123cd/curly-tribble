@@ -10,7 +10,8 @@ class QueryDialog;
 class InsertDialog;
 class QSqlRelationalTableModel;
 
-namespace Ui {
+namespace Ui
+{
 class StorageDialog;
 }
 

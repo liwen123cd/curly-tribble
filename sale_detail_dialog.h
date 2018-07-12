@@ -6,7 +6,8 @@
 class QSqlTableModel;
 struct Sale_Order_Detail;
 
-namespace Ui {
+namespace Ui
+{
 class Sale_Detail_Dialog;
 }
 

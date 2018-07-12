@@ -15,9 +15,13 @@
 #define STAFF_ID_NUMBER 1
 #define STAFF_DEPENTMENT_NUMBER 2
 #define STAFF_NAME_NUMBER 3
+#define SELLER_ID_NUMBER 4
+#define STORAGE_ID_NUMBER 5
 #define STAFF_ID "员工ID"
 #define STAFF_DEPENTMENT "部门"
 #define STAFF_NAME "姓名"
+#define SELLER_ID "卖家ID"
+#define STORAGR_ID "仓库ID"
 
 void createConnectSqlite();
 bool isTableExist(QString tableName);
@@ -29,6 +33,7 @@ void recordSeller(QString input);
 void sqlOperator(QString sql);
 bool checkExist(QString input, int number);
 int Sale_Sql(const QString &sql);
+bool sellerViewNull();
 
 
 #endif // SYS_SQLITE_H

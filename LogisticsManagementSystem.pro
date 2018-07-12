@@ -50,7 +50,9 @@ SOURCES += \
     mysqlquerymodel.cpp \
     insertdialog.cpp \
     storagemanage.cpp \
-    myitemdelegate.cpp
+    myitemdelegate.cpp \
+    sys_add_seller.cpp \
+    sys_maintain_seller.cpp
 
 HEADERS += \
     register.h \
@@ -74,7 +76,9 @@ HEADERS += \
     mysqlquerymodel.h \
     insertdialog.h \
     storagemanage.h \
-    myitemdelegate.h
+    myitemdelegate.h \
+    sys_add_seller.h \
+    sys_maintain_seller.h
 
 FORMS += \
         login.ui \
@@ -93,7 +97,9 @@ FORMS += \
     stock_mainwindow.ui \
     storagedialog.ui \
     querydialog.ui \
-    insertdialog.ui
+    insertdialog.ui \
+    sys_add_seller.ui \
+    sys_maintain_seller.ui
 
 RESOURCES += \
     staff_img.qrc \

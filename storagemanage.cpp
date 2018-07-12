@@ -88,14 +88,14 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
             modify.exec(QString("update Storage_product "
                                 "set amount=%1 "
                                 "where storageID=%2 and productID=%3").arg(
-                                QString::number(curAmount - dec), stoID, proID));
+                            QString::number(curAmount - dec), stoID, proID));
             if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
         }
         // 修改仓库剩余空间值
         modify.exec(QString("update Storage_info "
                             "set remain=remain+%1 "
                             "where storageID=%2").arg(
-                            QString::number(min(curAmount, dec)), stoID));
+                        QString::number(min(curAmount, dec)), stoID));
         if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
         dec -= curAmount;
     }
@@ -105,10 +105,10 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
     QDateTime curTime = QDateTime::currentDateTime();
     query.exec(QString("insert into Storage_order_record "
                        "values('%1',%2,'%3',%4)").arg(
-                       orderID,
-                       QString::number(productID),
-                       curTime.toString(),
-                       QString::number(num)));
+                   orderID,
+                   QString::number(productID),
+                   curTime.toString(),
+                   QString::number(num)));
     if (query.lastError().isValid()) qDebug() << query.lastError().text();
     return 0;
 }
@@ -139,12 +139,12 @@ int StorageManage::allocateStorage(int sellerID, int storageNum)
     QSqlQuery modify(db);
     query.exec(QString("select storageID from Storage_info "
                        "where sellerID=-1"));
-    while(i > 0 && query.next()) {
+    while (i > 0 && query.next()) {
         QString stoID = query.value(0).toString();
         modify.exec(QString("update Storage_info "
                             "set sellerID=%1 "
                             "where storageID=%2").arg(
-                            QString::number(sellerID), stoID));
+                        QString::number(sellerID), stoID));
         if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
         --i;
     }
@@ -160,7 +160,7 @@ int StorageManage::freeStorage(int sellerID)
     // 检查所给卖家ID是否存在
     query.exec(QString("select * from Storage_info "
                        "where sellerID=%1").arg(
-                       QString::number(sellerID)));
+                   QString::number(sellerID)));
     if (!query.next()) {
         qDebug() << "卖家ID不存在";
         return 1;
@@ -181,7 +181,7 @@ int StorageManage::freeStorage(int sellerID)
     query.exec(QString("update Storage_info "
                        "set sellerID=-1 "
                        "where sellerID=%1").arg(
-                       QString::number(sellerID)));
+                   QString::number(sellerID)));
     if (query.lastError().isValid()) qDebug() << query.lastError().text();
     qDebug() << "回收完成" << endl;
     return 0;
@@ -196,13 +196,13 @@ int StorageManage::getRecordNum(QDateTime startTime, QDateTime endTime, int prod
         // 查询所有商品数量
         query.exec(QString("select sum(amount) from Storage_order_record "
                            "where orderDate between '%1' and '%2'").arg(
-                           startTime.toString(), endTime.toString()));
+                       startTime.toString(), endTime.toString()));
     } else {
         // 查询指定商品数量
         query.exec(QString("select sum(amount) from Storage_order_record "
                            "where productID=%1 "
                            "and orderDate between '%2' and '%3'").arg(
-                           QString::number(productID), startTime.toString(), endTime.toString()));
+                       QString::number(productID), startTime.toString(), endTime.toString()));
     }
     if (!query.next()) {
         qDebug() << "查询出错";
@@ -250,7 +250,7 @@ int StorageManage::getAmount(int productID)
                        "where sp.storageID=si.storageID "
                        "and si.sellerID=%1 "
                        "and sp.productID=%2").arg(
-                       QString::number(userID), QString::number(productID)));
+                   QString::number(userID), QString::number(productID)));
     if (query.next()) {
         amount = query.value(0).toInt();
     }

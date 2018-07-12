@@ -7,13 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    if(0 == Data::is_admin)
-    {
+    if (0 == Data::is_admin) {
         ui->pushButton->setVisible(false);
         ui->pushButton_3->setVisible(false);
     }
-    qDebug()<<User::name;
-    sf=new StaffManager(this);
+    qDebug() << User::name;
+    sf = new StaffManager(this);
     sf->setWindowFlags(Qt::Window);
     sf->setWindowModality(Qt::NonModal);
     um = new UserManager(this);
@@ -23,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     sw->setWindowFlags(Qt::Window);
     sw->setWindowModality(Qt::NonModal);
     sd = new StorageDialog(this);
-    sm=new stock_MainWindow(this);
+    sm = new stock_MainWindow(this);
 }
 
 MainWindow::~MainWindow()

@@ -10,6 +10,11 @@
     <height>799</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei UI</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -18,7 +23,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -198,7 +203,20 @@
         <item row="0" column="0">
          <widget class="QComboBox" name="comboBox_2"/>
         </item>
-        <item row="1" column="0">
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>994</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0" colspan="2">
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <widget class="QWidget" name="widget" native="true">

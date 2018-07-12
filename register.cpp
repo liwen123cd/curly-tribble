@@ -29,41 +29,38 @@ void Register::closeEvent(QCloseEvent *event)
 
 void Register::on_pushButton_clicked()
 {
-    if(textCheck())
-    {
+    if (textCheck()) {
         QString reg_name = ui->lineEdit->text();
         QString reg_pwd = ui->lineEdit_2->text();
         QString reg_emial = ui->lineEdit_4->text();
         QString reg_phone = ui->lineEdit_5->text();
         QString reg_addr = ui->lineEdit_6->text();
         int admin;
-        if(ui->comboBox->currentText() == "管理员")
+        if (ui->comboBox->currentText() == "管理员")
             admin = 1;
         else
             admin = 0;
 
-        if(userCheck(reg_name, SYS_USER_NUMBER))
-        {
+        if (userCheck(reg_name, SYS_USER_NUMBER)) {
 
             QString add_sql = QString("insert into Sys_User(User_Name, "
                                       "User_Pwd, User_Email, User_Is_Admin)");
             add_sql += QString(" VALUES('%1','%2','%3','%4')")
-                    .arg(reg_name)
-                    .arg(reg_pwd)
-                    .arg(reg_emial)
-                    .arg(admin);
+                       .arg(reg_name)
+                       .arg(reg_pwd)
+                       .arg(reg_emial)
+                       .arg(admin);
 
             QSqlQuery query;
             query.exec(add_sql);
 
-            if(admin == 0)
-            {
+            if (admin == 0) {
                 QString add_seller_sql = QString("insert into Sys_Seller( "
                                                  "Seller_Name, Seller_Phone, Seller_Addr) ");
                 add_seller_sql += QString("VALUES('%1', '%2', '%3')")
-                        .arg(reg_name)
-                        .arg(reg_phone)
-                        .arg(reg_addr);
+                                  .arg(reg_name)
+                                  .arg(reg_phone)
+                                  .arg(reg_addr);
                 QSqlQuery query2;
                 query2.exec(add_seller_sql);
             }
@@ -71,9 +68,7 @@ void Register::on_pushButton_clicked()
             QMessageBox::information(this, "注册成功",
                                      "您已成功注册新用户，请返回去登陆！");
             this->close();
-        }
-        else
-        {
+        } else {
             QMessageBox::warning(this, "注册失败",
                                  "该用户已经存在，请更换用户名重试！");
         }
@@ -98,41 +93,37 @@ void Register::on_pushButton_2_clicked()
  * */
 bool Register::textCheck()
 {
-    if(NULL == ui->lineEdit->text())
+    if (NULL == ui->lineEdit->text())
         QMessageBox::warning(this, "警告",
                              "用户名为空，请输入用户名！");
-    if(NULL == ui->lineEdit_2->text())
+    if (NULL == ui->lineEdit_2->text())
         QMessageBox::warning(this, "警告",
                              "密码为空，请输入密码！");
-    if(NULL == ui->lineEdit_4->text())
+    if (NULL == ui->lineEdit_4->text())
         QMessageBox::warning(this, "警告",
                              "邮箱为空，请输入邮箱地址！");
-    if(ui->lineEdit_2->text() != ui->lineEdit_3->text())
-    {
+    if (ui->lineEdit_2->text() != ui->lineEdit_3->text()) {
         ui->lineEdit_3->clear();
         QMessageBox::warning(this, "警告",
                              "两次密码输入不一致，请重新输入！");
     }
-    if(ui->lineEdit->text() != NULL
-            && ui->lineEdit_2->text() != NULL
-            && ui->lineEdit_3->text() != NULL
-            && ui->lineEdit_4->text() != NULL
-            && ui->lineEdit_2->text() == ui->lineEdit_3->text())
+    if (ui->lineEdit->text() != NULL
+        && ui->lineEdit_2->text() != NULL
+        && ui->lineEdit_3->text() != NULL
+        && ui->lineEdit_4->text() != NULL
+        && ui->lineEdit_2->text() == ui->lineEdit_3->text())
         return true;
     return false;
 }
 
 void Register::on_comboBox_currentIndexChanged(int index)
 {
-    if(index == 0)
-    {
+    if (index == 0) {
         ui->label_6->setVisible(false);
         ui->lineEdit_5->setVisible(false);
         ui->label_7->setVisible(false);
         ui->lineEdit_6->setVisible(false);
-    }
-    else if(index == 1)
-    {
+    } else if (index == 1) {
         ui->label_6->setVisible(true);
         ui->lineEdit_5->setVisible(true);
         ui->label_7->setVisible(true);

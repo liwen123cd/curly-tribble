@@ -5,28 +5,29 @@
 
 class QString;
 
-namespace Ui {
+namespace Ui
+{
 class QueryDialog;
 }
 
 class QueryDialog : public QDialog
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit QueryDialog(QWidget *parent = 0);
-    ~QueryDialog();
+	explicit QueryDialog(QWidget *parent = 0);
+	~QueryDialog();
 
 private slots:
-    void on_buttonBox_accepted();
+	void on_buttonBox_accepted();
 
-    void on_buttonBox_rejected();
+	void on_buttonBox_rejected();
 
 signals:
-    void sendMsg(QString option, QString content);
+	void sendMsg(QString option, QString content);
 
 private:
-    Ui::QueryDialog *ui;
+	Ui::QueryDialog *ui;
 };
 
 #endif // QUERYDIALOG_H

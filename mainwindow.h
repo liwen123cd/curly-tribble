@@ -8,7 +8,8 @@
 #include "sale_widget.h"
 #include "stock_mainwindow.h"
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 

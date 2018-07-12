@@ -28,7 +28,8 @@
 #include <QSqlError>
 #include <QErrorMessage>
 
-namespace Ui {
+namespace Ui
+{
 class Sys_Maintain_Staff;
 }
 
