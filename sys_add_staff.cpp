@@ -8,13 +8,13 @@ Sys_Add_Staff::Sys_Add_Staff(QWidget *parent) :
 {
     ui->setupUi(this);
     number = 0;
-    staff_filename = "D://Documents/QtProject/curly-tribble/img/na.jpg";
+    staff_filename = "img/na.jpg";
 //    qDebug()<<QDir::currentPath();
 //    qDebug()<<QCoreApplication::applicationDirPath();
 //    QFile(directoryOf("data").absoluteFilePath(number.txt));
-    QFile file("D://Documents/QtProject/curly-tribble/number.txt");
+    QFile file("number.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "打开文件失败." << endl;
+        qDebug() << "读入文件number.txt失败." << endl;
         return ;
     }
     while (!file.atEnd()) {
@@ -64,9 +64,9 @@ void Sys_Add_Staff::on_pushButton_2_clicked()
     qDebug() << staff_id;
     number++;
     // 将number 值写入文件
-    QFile file("D://Documents/QtProject/curly-tribble/number.txt");
+    QFile file("number.txt");
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "文件打开失败！" << endl;
+        qDebug() << "写入文件number.txt失败！" << endl;
         return ;
     }
     QTextStream out(&file);
