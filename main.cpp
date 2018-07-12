@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QTextCodec>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -17,10 +18,15 @@ int main(int argc, char *argv[])
 
 	createConnectSqlite();
     QSqlQuery q;
-    q.exec("insert into Sys_Seller values(1,'张','176','东')");
+    q.exec("delete from Storage_info");
+    q.exec("delete from Storage_product");
+
     q.exec("insert into Sys_Seller values(0,'李','176','东')");
-    q.exec("insert into Storage_info values(1,'1号',100,100,1)");
-    q.exec("insert into Storage_info values(2,'2号',100,100,0)");
+    q.exec("insert into Sys_Seller values(-1,'','','')");
+    q.exec("select * from Storage_info");
+
+    q.exec("insert into Storage_info values(1,'1号',100,100,0)");
+    q.exec("insert into Storage_info values(2,'2号',100,100,-1)");
 
 
 	Login login;

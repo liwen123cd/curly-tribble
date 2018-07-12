@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class Sys_Add_Seller;
@@ -27,6 +28,7 @@ private slots:
 
 private:
     Ui::Sys_Add_Seller *ui;
+    QSqlQueryModel *model;
 };
 
 #endif // SYS_ADD_SELLER_H
