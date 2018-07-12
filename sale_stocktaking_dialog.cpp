@@ -1,6 +1,8 @@
 #include "sale_stocktaking_dialog.h"
 #include "ui_sale_stocktaking_dialog.h"
 #include "storagemanage.h"
+#include "stock_mainwindow.h"
+#include "globaldata.h"
 #include "sys_sqlite.h"
 #include <QSqlRecord>
 
@@ -19,10 +21,14 @@ Sale_Stocktaking_Dialog::Sale_Stocktaking_Dialog(QWidget *parent) :
 
     //商品编号初始化
     QStringList Sale_Item_ID_Lists;
-    Sale_Item_ID_Lists << QString("全部商品");
+    Product_Detail detail;
     Sale_Item_ID_Lists << StorageManage::getProductList();
     ui->Sale_item_id_combobox->clear();
-    ui->Sale_item_id_combobox->addItems(Sale_Item_ID_Lists);
+    ui->Sale_item_id_combobox->addItem(QString("全部商品"));
+    foreach (QString item_id, Sale_Item_ID_Lists) {
+        stock_MainWindow::stock_get_ProductDetail(detail,item_id.toInt());
+        ui->Sale_item_id_combobox->addItem(detail.Product_Name);
+    }
     ui->Sale_item_id_combobox->setCurrentIndex(0);
 
     //根据时间，商品编号对账
@@ -69,6 +75,13 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     sql << "' and Sale_State.Sale_Date <= '";
     sql << ui->Sale_dateEdit_end->dateTime().toString("yyyy-MM-dd hh:mm:ss");
     sql << "'";
+
+    if (!Data::is_admin) {
+        //非管理员
+        sql << QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
+                   User::id);
+
+    }
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
                 ui->Sale_item_id_combobox->currentText());
@@ -91,6 +104,12 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     sql << "' and Sale_State.Sale_Date <= '";
     sql << ui->Sale_dateEdit_end->dateTime().toString("yyyy-MM-dd hh:mm:ss");
     sql << "'";
+    if (!Data::is_admin) {
+        //非管理员
+        sql << QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
+                   User::id);
+
+    }
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
                 ui->Sale_item_id_combobox->itemText(
@@ -113,6 +132,12 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     sql << "' and Sale_State.Sale_Date <= '";
     sql << ui->Sale_dateEdit_end->dateTime().toString("yyyy-MM-dd hh:mm:ss");
     sql << "'";
+    if (!Data::is_admin) {
+        //非管理员
+        sql << QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
+                   User::id);
+
+    }
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
                 ui->Sale_item_id_combobox->itemText(
