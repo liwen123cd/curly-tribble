@@ -24,7 +24,10 @@ public:
                             QDateTime endTime,
                             int productID = -1);
 
-    static int tempOccupied;    // 已下进货订单但尚未到达仓库的货品所占空间
+    //static int tempOccupied;    // 已下进货订单但尚未到达仓库的货品所占空间
+
+    static void changeOccu(int num);
+    static int getOccu();
 
 private:
     static QSqlDatabase db;

@@ -6,10 +6,13 @@
 #include <QSqlError>
 #include <QDateTime>
 #include <QStringList>
+#include <QFile>
+#include <QTextStream>
+#include "globaldata.h"
 
-static int userID = 1;    // 全局用户ID
+//static int userID = 1;    // 全局用户ID
 QSqlDatabase StorageManage::db = QSqlDatabase::database();
-int StorageManage::tempOccupied = 0;
+//int StorageManage::tempOccupied = 0;
 
 StorageManage::StorageManage()
 {
@@ -27,11 +30,11 @@ int StorageManage::restSpace()
     int rest = 0;
     QSqlQuery query(db);
     query.exec(QString("select sum(remain) from Storage_info "
-                       "where sellerID=%1").arg(QString::number(userID)));
+                       "where sellerID=%1").arg(QString::number(User::id)));
     if (query.next()) {
         rest = query.value(0).toInt();
     }
-    rest -= tempOccupied;
+    rest -= StorageManage::getOccu();
     qDebug() << "卖家剩余空间" << rest << endl;
     return rest;
 }
@@ -53,7 +56,7 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
     query.exec(QString("select sum(sp.amount) from Storage_product sp, Storage_info si "
                        "where sp.storageID=si.storageID "
                        "and si.sellerID=%1 "
-                       "and sp.productID=%2").arg(QString::number(userID), QString::number(productID)));
+                       "and sp.productID=%2").arg(QString::number(User::id), QString::number(productID)));
     if (query.next()) {
         restPro = query.value(0).toInt();
         if (restPro < num) {
@@ -68,7 +71,7 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
     query.exec(QString("select sp.storageID, sp.productID from Storage_product sp, Storage_info si "
                        "where sp.storageID=si.storageID "
                        "and si.sellerID=%1 "
-                       "and sp.productID=%2").arg(QString::number(userID), QString::number(productID)));
+                       "and sp.productID=%2").arg(QString::number(User::id), QString::number(productID)));
     // 对于每一条记录
     while (dec > 0 && query.next()) {
         QString stoID = query.value(0).toString();
@@ -217,8 +220,13 @@ int StorageManage::getRecordNum(QDateTime startTime, QDateTime endTime, int prod
 int StorageManage::changeRemainSpace(int num)
 {
     qDebug() << "修改仓库剩余空间";
-    tempOccupied += num;
-    qDebug() << "tempOccupied: " << tempOccupied;
+    //tempOccupied += num;
+    //qDebug() << "tempOccupied: " << tempOccupied;
+
+    int occu = StorageManage::getOccu();
+    occu += num;
+    StorageManage::changeOccu(occu);
+
     return 0;
 }
 
@@ -231,7 +239,7 @@ QStringList StorageManage::getProductList()
                        "from Storage_product sp, Storage_info si, stock_provider_product p "
                        "where sp.storageID=si.storageID "
                        "and sp.productID=p.id "
-                       "and si.sellerID=%1").arg(QString::number(userID)));
+                       "and si.sellerID=%1").arg(QString::number(User::id)));
     if (query.lastError().isValid()) qDebug() << query.lastError().text();
     while (query.next()) {
         if (!proList.contains(query.value(0).toString()))
@@ -250,7 +258,7 @@ int StorageManage::getAmount(int productID)
                        "where sp.storageID=si.storageID "
                        "and si.sellerID=%1 "
                        "and sp.productID=%2").arg(
-                   QString::number(userID), QString::number(productID)));
+                   QString::number(User::id), QString::number(productID)));
     if (query.next()) {
         amount = query.value(0).toInt();
     }
@@ -264,4 +272,32 @@ int StorageManage::min(int a, int b)
     } else {
         return b;
     }
+}
+
+// 获取tempOccupied
+int StorageManage::getOccu()
+{
+    QFile file("tempOccupied.txt");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "tempOccupied文件不存在";
+        file.close();
+        return 0;
+    }
+    QTextStream in(&file);
+    int occu = in.readLine().toInt();
+    file.close();
+    return occu;
+}
+
+// 修改tempOccupied
+void StorageManage::changeOccu(int num)
+{
+    QFile file("tempOccupied.txt");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "tempOccupied文件打开失败";
+        return;
+    }
+    QTextStream out(&file);
+    out << QString::number(num);
+    file.close();
 }

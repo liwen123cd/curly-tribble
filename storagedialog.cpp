@@ -267,20 +267,24 @@ void StorageDialog::on_pushBtn_confirm_clicked()
         ui->label_prompt_2->setText("提示：出库成功!");
     } else {
         // 入库操作
-        if (StorageManage::tempOccupied <= 0) {
+        if (StorageManage::getOccu() <= 0) {
             ui->label_prompt_2->setText("提示：无未完成进货订单!");
             return;
         }
         QString orderID = ui->lineEdit_record->text();
         QString productID = ui->lineEdit_product->text();
 
-        // 调用接口获取订单内商品所属卖家和数量
+        // 调用接口修改订单状态并获取订单内商品所属卖家和数量
         QStringList list = stock_MainWindow::stock_change_PlanState(
                                orderID.toInt(), productID.toInt());
+        if (list.empty()) {
+            qDebug() << "stock_change_PlanState返回的list为空";
+            ui->label_prompt_2->setText("提示：输入数据有误！");
+            return;
+        }
         QString sellerID = list.at(0);
         int amount = list.at(1).toInt();
 
-        // 此处调用接口changeInOrderState(orderID, productID);
         QSqlQuery query(db);
         QSqlQuery modify(db);
         int dec = amount;
@@ -335,8 +339,9 @@ void StorageDialog::on_pushBtn_confirm_clicked()
             dec -= remain;
         }
         // 修改临时占据空间变量
-        StorageManage::tempOccupied -= amount;
-        qDebug() << "tempOccupied:" << StorageManage::tempOccupied;
+        //StorageManage::tempOccupied -= amount;
+        StorageManage::changeOccu(StorageManage::getOccu() - amount);
+        qDebug() << "tempOccupied:" << StorageManage::getOccu();
         ui->label_prompt_2->setText("提示：出库成功!");
     }
 }
