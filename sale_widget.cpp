@@ -26,21 +26,7 @@ Sale_Widget::Sale_Widget(QWidget *parent) :
     ui(new Ui::Sale_Widget)
 {
     ui->setupUi(this);
-    //初始化
-    //隐藏管理员用
-    ui->Sale_pushButton_recive->hide();
-    ui->Sale_lineEdit_seller_id->hide();
-    ui->label_6->hide();
-    //显示管理员用
-    if (Data::is_admin) {
-        ui->Sale_pushButton_new->setEnabled(false);
-        ui->Sale_pushButton_change->setEnabled(false);
-        ui->Sale_pushButton_delete->setEnabled(false);
-        ui->Sale_pushButton_cancel->setEnabled(false);
-        ui->Sale_pushButton_recive->show();
-        ui->Sale_lineEdit_seller_id->show();
-        ui->label_6->show();
-    }
+
     Sale_New_Table();
     ui->tableView->setModel(Sale_Table_Model);
     //子窗口订单详细信息
@@ -232,6 +218,16 @@ void Sale_Widget::on_Sale_pushButton_cancel_clicked()
         Sale_State_Order(record.value(0).toString(), QString("取消订单"));
     }
 }
+
+
+//销售记录盘点
+void Sale_Widget::on_Sale_pushButton_count_clicked()
+{
+    Sale_Stocktaking_Dialog * dialog = new Sale_Stocktaking_Dialog(this);
+    dialog->show();
+}
+
+
 //查询订单
 void Sale_Widget::on_Sale_pushButton_select_order_clicked()
 {
@@ -454,6 +450,24 @@ bool Sale_Widget::Sale_Show_All_Order()
     return true;
 }
 
+bool Sale_Widget::Sale_Reset_Table()
+{
+    //清空已存在信息
+    //清空输入框
+    ui->Sale_lineEdit_buyer_tel->clear();
+    ui->Sale_lineEdit_item_id->clear();
+    ui->Sale_lineEdit_order_id->clear();
+    ui->Sale_lineEdit_seller_id->clear();
+    //重置时间
+    ui->Sale_dateEdit_start->setDateTime(ui->Sale_dateEdit_start->minimumDateTime());
+    ui->Sale_dateEdit_end->setDateTime(ui->Sale_dateEdit_end->maximumDateTime());
+    //重置下拉菜单索引
+    ui->Sale_conbobox_order->setCurrentIndex(3);
+    //重置销量统计
+    on_Sale_pushButton_select_number_clicked();
+
+}
+
 
 //保存
 void Sale_Widget::on_Sale_pushButton_save_clicked()
@@ -533,17 +547,29 @@ void Sale_Widget::on_Sale_puushButton_revoke_clicked()
 {
     //撤销所有修改
     Sale_State.clear();
-    Sale_New_Table();
+    Sale_Reset_Table();
     ui->tableView->setModel(Sale_Table_Model);
 
 }
-//初始化
+//样式初始化
 void Sale_Widget::Sale_New_Table()
 {
-    //清空已存在信息
-    ui->Sale_lineEdit_buyer_tel->clear();
-    ui->Sale_lineEdit_item_id->clear();
-    ui->Sale_lineEdit_order_id->clear();
+    //初始化
+
+    //显示管理员用
+    if (Data::is_admin) {
+        ui->Sale_pushButton_new->setEnabled(false);
+        ui->Sale_pushButton_change->setEnabled(false);
+        ui->Sale_pushButton_delete->setEnabled(false);
+        ui->Sale_pushButton_cancel->setEnabled(false);
+    }
+    //隐藏非管理员
+    if(!Data::is_admin){
+        ui->Sale_pushButton_recive->hide();
+        ui->Sale_lineEdit_seller_id->hide();
+        ui->label_6->hide();
+    }
+
     //时间初始化
     ui->Sale_dateEdit_start->setDateTimeRange(ui->Sale_dateEdit_start->dateTime(),
             QDateTime::currentDateTime());
@@ -561,6 +587,7 @@ void Sale_Widget::Sale_New_Table()
     }
     Sale_Table_Model->setSort(0, Qt::DescendingOrder);
     Sale_Table_Model->select();
+
     //qDebug()<<Sale_Table_Model->lastError();
     //tablemodel样式设置
     Sale_Table_Model->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -574,11 +601,15 @@ void Sale_Widget::Sale_New_Table()
     Sale_Table_Model->setHeaderData(7, Qt::Horizontal, tr("商品售价"));
     Sale_Table_Model->setHeaderData(8, Qt::Horizontal, tr("订单状态"));
 
-    on_Sale_pushButton_select_number_clicked();
+
+    //tableview样式设置
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     ui->tableView_2->horizontalHeader()->setStretchLastSection(true);
     ui->tableView_2->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
+    on_Sale_pushButton_select_number_clicked();
+
 
 }
 //槽函数，双击事件
@@ -604,12 +635,6 @@ void Sale_Widget::on_tableView_doubleClicked(const QModelIndex &index)
 
 }
 
-//销售记录盘点
-void Sale_Widget::on_Sale_pushButton_count_clicked()
-{
-    Sale_Stocktaking_Dialog * dialog = new Sale_Stocktaking_Dialog(this);
-    dialog->show();
-}
 //管理员测试用，签收
 void Sale_Widget::on_Sale_pushButton_recive_clicked()
 {
