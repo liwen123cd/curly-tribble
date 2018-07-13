@@ -42,8 +42,8 @@ int StorageManage::restSpace()
 // 销售、出库
 int StorageManage::sellOut(QString orderID, int productID, int num)
 {
-    int restPro;
     QSqlQuery query(db);
+
 
     // 检查商品ID是否存在
     query.exec(QString("select * from Storage_product where productID=%1").arg(productID));
@@ -58,61 +58,26 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
                        "and si.sellerID=%1 "
                        "and sp.productID=%2").arg(QString::number(User::id), QString::number(productID)));
     if (query.next()) {
-        restPro = query.value(0).toInt();
+        int restPro = query.value(0).toInt();
+        int waitPro = 0;
+        query.exec(QString("select sum(amount) from Storage_wait_product "
+                           "where sellerID=%1 and productID=%2").arg(
+                       QString::number(User::id), QString::number(productID)));
+        if (query.next()) {
+            waitPro = query.value(0).toInt();
+        }
+        restPro -= waitPro;
         if (restPro < num) {
             qDebug() << "余量不足";
             return 2;
         }
     }
 
-    // 修改数据库
-    // dec用于保存每个仓库出库后的剩余所需值
-    int dec = num;
-    query.exec(QString("select sp.storageID, sp.productID from Storage_product sp, Storage_info si "
-                       "where sp.storageID=si.storageID "
-                       "and si.sellerID=%1 "
-                       "and sp.productID=%2").arg(QString::number(User::id), QString::number(productID)));
-    // 对于每一条记录
-    while (dec > 0 && query.next()) {
-        QString stoID = query.value(0).toString();
-        QString proID = query.value(1).toString();
-        int curAmount = 0;
-        QSqlQuery modify(db);
-        modify.exec(QString("select amount from Storage_product "
-                            "where storageID=%1 and productID=%2").arg(stoID, proID));
-        if (modify.next()) curAmount = modify.value(0).toInt();
-        // 若该记录中商品数量不大于dec，则删除该条记录
-        if (curAmount <= dec) {
-            modify.exec(QString("delete from Storage_product "
-                                "where storageID=%1 and productID=%2").arg(stoID, proID));
-            if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
-        } else {
-            // 否则修改该条记录的剩余数量
-            modify.exec(QString("update Storage_product "
-                                "set amount=%1 "
-                                "where storageID=%2 and productID=%3").arg(
-                            QString::number(curAmount - dec), stoID, proID));
-            if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
-        }
-        // 修改仓库剩余空间值
-        modify.exec(QString("update Storage_info "
-                            "set remain=remain+%1 "
-                            "where storageID=%2").arg(
-                        QString::number(min(curAmount, dec)), stoID));
-        if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
-        dec -= curAmount;
-    }
-    //qDebug() << dec;
-
-    // 向出库记录表中增添一条记录
-    QDateTime curTime = QDateTime::currentDateTime();
-    query.exec(QString("insert into Storage_order_record "
-                       "values('%1',%2,'%3',%4)").arg(
-                   orderID,
-                   QString::number(productID),
-                   curTime.toString(),
-                   QString::number(num)));
+    // 向待出库数据库表中插入一条记录
+    query.exec(QString("insert into Storage_wait_product values('%1',%2,%3,%4)").arg(
+                   orderID, QString::number(User::id), QString::number(productID), QString::number(num)));
     if (query.lastError().isValid()) qDebug() << query.lastError().text();
+
     return 0;
 }
 

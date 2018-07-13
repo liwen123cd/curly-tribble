@@ -29,6 +29,7 @@ void createConnectSqlite()
     QString saleStateTable = "Sale_State";
     QString storageInfoTable = "Storage_info";
     QString storageProductTable = "Storage_product";
+    QString storageWaitProduct = "Storage_wait_product";
     QString storageOrderRecordTable = "Storage_order_record";
     QString mainView = "Main_view";
     QString sellerView = "Seller_View";
@@ -111,6 +112,14 @@ void createConnectSqlite()
                                              "foreign key(productID) references stock_provider_product(id)"
                                              ")";
 
+    // 待出库记录表
+    static QString createWaitProduct = "create table Storage_wait_product("
+                                       "orderID varchar(30),"
+                                       "sellerID integer,"
+                                       "productID integer,"
+                                       "amount integer"
+                                       ")";
+
     // 出库记录表
     static QString createOrderRecordSql = "create table Storage_order_record("
                                           "orderID varchar(30),"
@@ -187,6 +196,7 @@ void createConnectSqlite()
     createTable(createStorageInfoSql, storageInfoTable);
     createTable(createStorageProductSql, storageProductTable);
     createTable(createOrderRecordSql, storageOrderRecordTable);
+    createTable(createWaitProduct, storageWaitProduct);
     createTable(stockPlanSql, stockPlanTable);
     createTable(stockProviderProductSql, stockProviderProductTable);
     createTable(stockPlanDetailSql, stockPlanDetailTable);

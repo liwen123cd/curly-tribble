@@ -28,12 +28,11 @@ public:
 
     static void changeOccu(int num);
     static int getOccu();
+    static int min(int a, int b);
 
 private:
     static QSqlDatabase db;
 
-
-    static int min(int a, int b);
 };
 
 #endif // STORAGEMANAGE_H
