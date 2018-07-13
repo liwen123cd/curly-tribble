@@ -29,12 +29,6 @@ StorageDialog::StorageDialog(QWidget *parent) :
     db = QSqlDatabase::database();
     QSqlQuery query(db);
 
-    // 设置仓库combox数值
-    query.exec("select storageName from Storage_info");
-    while (query.next()) {
-        ui->comboBox_sto->addItem(query.value(0).toString());
-    }
-
     // 处理model
     model = new MySqlQueryModel;
     model->setQuery("select * from Main_view", db);
@@ -65,13 +59,23 @@ StorageDialog::StorageDialog(QWidget *parent) :
     connect(insertDialog, SIGNAL(sendMsg(QString, QString, QString)),
             this, SLOT(getInsert(QString, QString, QString)));
 
-    // 判断是否为管理员
+    // 是否为管理员
     if (0 == Data::is_admin) {
-        ui->pushBtn_query->setEnabled(false);
-        ui->pushBtn_query_all->setEnabled(false);
+        ui->pushBtn_query->hide();
+        ui->pushBtn_query_all->hide();
         ui->tabWidget->setTabEnabled(1, false);
         ui->tabWidget->setTabEnabled(2, false);
+        query.exec(QString("select storageName from Storage_info "
+                           "where sellerID=%1").arg(QString::number(User::id)));
+    } else {
+        query.exec("select storageName from Storage_info");
     }
+
+    // 设置仓库combox数值
+    while (query.next()) {
+        ui->comboBox_sto->addItem(query.value(0).toString());
+    }
+
 }
 
 StorageDialog::~StorageDialog()
@@ -224,19 +228,31 @@ void StorageDialog::on_pushBtn_del_clicked()
     QModelIndex curIndex = ui->tableView->currentIndex();
     QString stoName = model->data(model->index(curIndex.row(), 0)).toString();
     QString proName = model->data(model->index(curIndex.row(), 2)).toString();
+    QString amount = model->data(model->index(curIndex.row(), 3)).toString();
+    qDebug() << stoName << proName;
     QSqlQuery query(db);
+
+    // 获取仓库ID
     query.exec(QString("select storageID from Storage_info "
                        "where storageName='%1'").arg(stoName));
     query.next();
     stoID = query.value(0).toString();
 
-    query.exec(QString("select productID from Product "
-                       "where productName='%1'").arg(proName));
+    // 获取商品ID
+    query.exec(QString("select id from stock_provider_product "
+                       "where name='%1'").arg(proName));
     query.next();
     proID = query.value(0).toString();
 
+    // 修改仓库库存
+    query.exec(QString("update Storage_info "
+                       "set remain=remain+%1 "
+                       "where storageID=%2").arg(amount, stoID));
+
+    // 删除库存记录
     query.exec(QString("delete from Storage_product "
                        "where storageID=%1 and productID=%2").arg(stoID, proID));
+
     if (query.lastError().isValid()) {
         qDebug() << query.lastError().text();
         ui->label_prompt_1->setText("提示：删除失败！");
