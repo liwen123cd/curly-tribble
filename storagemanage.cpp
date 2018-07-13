@@ -232,7 +232,9 @@ QStringList StorageManage::getProductList()
 int StorageManage::getAmount(int productID)
 {
     int amount = 0;
+    int waitPro = 0;
     QSqlQuery query(db);
+    // 查询仓库中实际库存
     query.exec(QString("select sum(amount) "
                        "from Storage_product sp, Storage_info si "
                        "where sp.storageID=si.storageID "
@@ -242,6 +244,15 @@ int StorageManage::getAmount(int productID)
     if (query.next()) {
         amount = query.value(0).toInt();
     }
+    // 查询待出库商品数量
+    query.exec(QString("select sum(amount) "
+                       "from Storage_wait_product "
+                       "where sellerID=%1 and productID=%2").arg(
+                   QString::number(User::id), QString::number(productID)));
+    if (query.next()) {
+        waitPro = query.value(0).toInt();
+    }
+    amount -= waitPro;
     return amount;
 }
 

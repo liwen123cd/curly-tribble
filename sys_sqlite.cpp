@@ -119,7 +119,8 @@ void createConnectSqlite()
                                        "orderID varchar(30),"
                                        "sellerID integer,"
                                        "productID integer,"
-                                       "amount integer"
+                                       "amount integer,"
+                                       "primary key(orderID)"
                                        ")";
 
     // 出库记录表

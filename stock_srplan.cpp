@@ -8,9 +8,46 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QSqlError>
+void stock_MainWindow::stock_srplan_query(int index)
+{
+    switch (index) {
+    case 0:
+        if(is_admin)
+        {
+           stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成')"));
+        }
+        else
+        {
+           stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成') and p.seller_id=%1").arg(user_id));
+        }
+        break;
+    case 1:
+        if(is_admin)
+        {
+           stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成')"));
+        }
+        else
+        {
+           stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成') and p.seller_id=%1").arg(user_id));
+        }
+        break;
+    case 2:
+        if(is_admin)
+        {
+           stock_srplan_basic->setQuery("select * from stock_canceledplan");
+        }
+        else
+        {
+           stock_srplan_basic->setQuery(QString("select * from stock_canceledplan where seller_id=%1").arg(user_id));
+        }
+        break;
+    default:
+        break;
+    }
+}
 void stock_MainWindow::stock_srplan_init()
 {
-    stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and (d.state='进货未完成'or d.state='未完成'))"));
+    stock_srplan_query(0);
     ui->pushButton_10->setVisible(false);
     ui->pushButton_11->setVisible(false);
     stock_srplan_init_aux(0);
@@ -32,17 +69,19 @@ void stock_MainWindow::stock_srplan_init_aux(int row)
 }
 void stock_MainWindow::stock_srplan_noncompleted(int row)
 {
-    stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and (d.state='进货未完成'or d.state='未完成'))"));
-    ui->pushButton_10->setVisible(true);
-    ui->pushButton_11->setVisible(true);
+    stock_srplan_query(1);
+    if(!is_admin)
+    {
+        ui->pushButton_10->setVisible(true);
+        ui->pushButton_11->setVisible(true);
+    }
     stock_srplan_init_aux(row);
 }
 void stock_MainWindow::stock_srplan_canceled()
 {
-    //ui->tableView_6->setModel(stock_srplan_basic);
     ui->pushButton_10->setVisible(false);
     ui->pushButton_11->setVisible(false);
-    stock_srplan_basic->setQuery("select * from stock_canceledplan");
+    stock_srplan_query(2);
     stock_srplan_canceled_aux();
 }
 void stock_MainWindow::stock_srplan_canceled_aux()
@@ -232,15 +271,15 @@ void stock_MainWindow::on_pushButton_clicked()
     }
     switch (cur_id) {
     case 0:
-        stock_srplan_basic->setQuery(tr("select * from stock_plan p where p.id=%1 and not exists(select * from stock_plan_detail d where d.plan_id=p.id and (d.state='进货未完成'or d.state='未完成'))").arg(plan_id));
+        stock_srplan_basic->setQuery(tr("select * from stock_plan p where p.id=%1 and p.seller_id=%2 and not exists(select * from stock_plan_detail d where d.plan_id=p.id and (d.state='进货未完成'or d.state='未完成'))").arg(plan_id).arg(user_id));
         stock_srplan_init_aux(0);
         break;
     case 1:
-        stock_srplan_basic->setQuery(tr("select * from stock_plan p where p.id=%1 and exists(select * from stock_plan_detail d where d.plan_id=p.id and (d.state='进货未完成'or d.state='未完成'))").arg(plan_id));
+        stock_srplan_basic->setQuery(tr("select * from stock_plan p where p.id=%1 and p.seller_id=%2 exists(select * from stock_plan_detail d where d.plan_id=p.id and (d.state='进货未完成'or d.state='未完成'))").arg(plan_id).arg(user_id));
         stock_srplan_init_aux(0);
         break;
     case 2:
-        stock_srplan_basic->setQuery(tr("select * from stock_canceledplan where id=%1").arg(plan_id));
+        stock_srplan_basic->setQuery(tr("select * from stock_canceledplan where id=%1 and seller_id=%2").arg(plan_id).arg(user_id));
         stock_srplan_canceled_aux();
         break;
     default:

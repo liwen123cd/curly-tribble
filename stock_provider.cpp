@@ -10,10 +10,11 @@
 #include <QSqlError>
 void stock_MainWindow::stock_provider_model_init()
 {
+
     stock_provider->setTable("stock_provider");
     stock_provider->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    stock_provider->select();
     ui->tableView_3->setModel(stock_provider);
+    stock_provider_select();
     ui->tableView_3->hideColumn(0);
     ui->tableView_3->hideColumn(1);
     ui->tableView_3->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -28,6 +29,15 @@ void stock_MainWindow::stock_provider_model_init()
     stock_set_headname();
 
 }
+void stock_MainWindow::stock_provider_select()
+{
+    if(!is_admin)
+    {
+        stock_provider->setFilter(tr("owner_id=%1 or owner_id=%2").arg(user_id).arg(GLOBAL_USER));
+    }
+    stock_provider->select();
+}
+
 void stock_MainWindow::stock_set_headname()
 {
     stock_provider->setHeaderData(2, Qt::Horizontal, tr("供货商名称"));
@@ -48,7 +58,15 @@ void stock_MainWindow::set_provider_visible(bool b)
     ui->label_8->setVisible(b);
     ui->tableView_3->setVisible(b);
     ui->tableView_4->setVisible(b);
-    ui->pushButton_7->setVisible(b);
+    if(!is_admin)//不是管理员则可见
+    {
+        ui->pushButton_7->setVisible(b);
+    }
+    else//是管理员则把其设置为行选择
+    {
+        ui->tableView_3->setSelectionBehavior(QTableView::SelectRows);
+        ui->tableView_4->setSelectionBehavior(QTableView::SelectRows);
+    }
     set_provider_modify(!b);
     ui->widget->setVisible(b);
     ui->widget_2->setVisible(!b);
@@ -80,6 +98,8 @@ void stock_MainWindow::on_pushButton_4_clicked()
         if (stock_provider_product->submitAll()) {
             stock_provider_product->database().commit();
         } else {
+            qDebug()<<stock_provider_product->database().lastError();
+            QMessageBox::warning(this, tr("错误"), tr("由于未知的原因（很可能是id重复），添加商品信息失败！"));
             stock_provider_product->database().rollback();
             qDebug() << "save fail";
         }
@@ -102,6 +122,7 @@ void stock_MainWindow::on_pushButton_4_clicked()
             return;
         }
         provider_id = stock_make_id(3);
+        stock_provider_product->database().transaction();
         ok = QMessageBox::warning(this, tr("提醒"), tr("你想把这个供货商信息共享给其他卖家吗？"), QMessageBox::Yes, QMessageBox::No);
         query.prepare("insert into stock_provider(id,owner_id,name,address) values(?,?,?,?)");
         query.addBindValue(provider_id);
@@ -112,7 +133,13 @@ void stock_MainWindow::on_pushButton_4_clicked()
         }
         query.addBindValue(name);
         query.addBindValue(address);
-        query.exec();
+        if(!query.exec())
+        {
+            QMessageBox::warning(this, tr("错误"), tr("由于未知的原因（很可能是id重复），添加供货商失败！"));
+            stock_provider_product->database().rollback();
+            qDebug() << query.lastError();
+            return;
+        }
         qDebug() << query.lastError();
         for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
             int id = stock_make_id(5 + i);
@@ -122,12 +149,14 @@ void stock_MainWindow::on_pushButton_4_clicked()
                 name = ui->tableWidget->item(i, 0)->text();
             } else {
                 QMessageBox::warning(this, tr("错误"), tr("商品名称不能为空"));
+                stock_provider_product->database().rollback();
                 return;
             }
             if (ui->tableWidget->item(i, 1) != NULL) {
                 price = ui->tableWidget->item(i, 1)->text().toFloat();
             } else {
                 QMessageBox::warning(this, tr("错误"), tr("商品价格不能为空"));
+                stock_provider_product->database().rollback();
                 return;
             }
             query.prepare("insert into stock_provider_product(id,provider_id,name,price) values(?,?,?,?)");
@@ -135,9 +164,19 @@ void stock_MainWindow::on_pushButton_4_clicked()
             query.addBindValue(provider_id);
             query.addBindValue(name);
             query.addBindValue(price);
-            query.exec();
-            qDebug() << query.lastError();
+            if(!query.exec())
+            {
+                QMessageBox::warning(this, tr("错误"), tr("由于未知的原因（很可能是id重复），添加供货商失败！"));
+                stock_provider_product->database().rollback();
+                qDebug() << query.lastError();
+                return;
+            }
         }
+        stock_provider_product->database().commit();
+        ui->lineEdit_2->setText("");
+        ui->lineEdit_3->setText("");
+        ui->tableWidget->clearContents();
+        ui->tableWidget->setRowCount(0);
         break;
     default:
         break;
@@ -236,7 +275,7 @@ void stock_MainWindow::on_comboBox_2_currentIndexChanged(int index)
 }
 void stock_MainWindow::stock_refresh_provider()
 {
-    stock_provider->select();
+    stock_provider_select();
     ui->tableView_4->setEditTriggers(QAbstractItemView::NoEditTriggers);
     stock_tableview_3_clicked(stock_provider->index(0, 0));
     stock_set_headname();
