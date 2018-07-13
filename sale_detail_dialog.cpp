@@ -81,6 +81,11 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
         if (item_id.toInt() == detail.Sale_Item_ID)break;
         ++num;
     }
+    //如果库存中没有同类商品。添加
+    if(num==items.count()){
+        ui->Sale_item_id_combobox->addItem(QString::number(
+                                               detail.Sale_Item_ID));
+    }
     //设置销售数量范围
     ui->Sale_item_num_lineedit->setValidator(
         new QIntValidator(0, count, this));
@@ -137,6 +142,7 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
     Product_Detail detail;
     stock_MainWindow::stock_get_ProductDetail(detail, Item_ID);
     ui->Sale_item_name_lineEdit->setText(detail.Product_Name);
+    qDebug()<<StorageManage::getAmount(Item_ID);
     ui->Sale_item_count_lineEdit->setText(QString::number(StorageManage::getAmount(Item_ID)));
     ui->Sale_item_purchase_price_lineEdit->setText(QString::number(detail.Product_Price));
     ui->Sale_item_provider_lineEdit->setText(detail.Product_Provider);
