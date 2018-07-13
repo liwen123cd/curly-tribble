@@ -81,6 +81,9 @@ private:
     void stock_srplan_canceled();
     void stock_real_cancel(int rowNum);
     void stock_srplan_canceled_aux();
+    void stock_provider_select();
+    void stock_mkplan_query();
+    void stock_srplan_query(int index);
 };
 
 #endif // stock_MainWindow_H

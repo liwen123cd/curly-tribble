@@ -19,6 +19,7 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     user_id=User::id;
+    is_admin=Data::is_admin;
     storage_space = StorageManage::restSpace();
     prev_storage_space = storage_space;
     stock_mkplan_provider = new QSqlQueryModel(this);
@@ -27,6 +28,12 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     stock_srplan_detail = new QSqlQueryModel(this);
     stock_provider = new QSqlTableModel(this);
     stock_provider_product = new QSqlTableModel(this);
+    if(is_admin)
+    {
+        ui->tabWidget->removeTab(1);
+        ui->comboBox_2->setVisible(false);
+        ui->pushButton_7->setVisible(false);
+    }
     stock_provider_model_init();
     stock_mkplan_init();
     stock_srplan_init();

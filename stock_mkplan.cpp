@@ -15,7 +15,6 @@ static float total_price = 0;
 static float fee = 0;
 void stock_MainWindow::set_restSpace()
 {
-
     ui->lcdNumber->display(storage_space);
 }
 void stock_MainWindow::set_price_fee()
@@ -23,9 +22,21 @@ void stock_MainWindow::set_price_fee()
     ui->lcdNumber_2->display(total_price);
     ui->lcdNumber_3->display(fee);
 }
+void stock_MainWindow::stock_mkplan_query()
+{
+    if(is_admin)
+    {
+       stock_mkplan_provider->setQuery("select * from stock_provider");
+    }
+    else
+    {
+        stock_mkplan_provider->setQuery(QString("select * from stock_provider where owner_id=%1 or owner_id=%2").arg(user_id).arg(GLOBAL_USER));
+    }
+}
+
 void stock_MainWindow::stock_mkplan_init()
 {
-    stock_mkplan_provider->setQuery("select * from stock_provider");
+    stock_mkplan_query();
     stock_mkplan_provider->setHeaderData(2, Qt::Horizontal, tr("供货商名称"));
     stock_mkplan_provider->setHeaderData(3, Qt::Horizontal, tr("供货商地址"));
     ui->tableView_2->setModel(stock_mkplan_provider);
@@ -36,7 +47,6 @@ void stock_MainWindow::stock_mkplan_init()
     ui->tableView_5->setSelectionBehavior(QTableView::SelectRows);
     stock_tableview_2_clicked(stock_mkplan_provider->index(0, 0));
     set_restSpace();
-
 
 }
 int stock_MainWindow::stock_make_id(int type)
@@ -196,7 +206,7 @@ void stock_MainWindow::stock_mkplan_create()
         query.addBindValue(state);
         if (!query.exec()) {
             qDebug() << tr("创建订单详细失败");
-            QMessageBox::warning(this, tr("生成订单失败"), tr("由于未知的原因，进货订单生成失败!"));
+            QMessageBox::warning(this, tr("生成订单失败"), tr("由于未知的原因(很可能是id重复)，进货订单生成失败!"));
             qDebug() << query.lastError();
             QSqlDatabase::database().rollback();
             return;
