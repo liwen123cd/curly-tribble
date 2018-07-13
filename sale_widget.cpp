@@ -522,13 +522,14 @@ void Sale_Widget::Sale_Save_Record()
     for (std::vector<Sale_State_Detail>::iterator i = Sale_State.begin();
          i < Sale_State.end(); ++i) {
         sql << "insert into Sale_State(Sale_Order_ID,Sale_Order_State,Sale_Date) values('";
-        sql << i->Sale_Order_ID;
+        sql << i->Sale_Order_ID;        
         sql << "','";
         sql << i->Sale_Order_State;
+        //qDebug()<<i->Sale_Order_State;
         sql << "','";
         sql << i->Sale_Date.toString("yyyy-MM-dd hh:mm:ss");
         sql << "')";
-        if (i->Sale_Order_State=="新建订单") {
+        if (i->Sale_Order_State=="创建订单") {
             int row = 0;
             while (1) {
                 if (Sale_Table_Model->record(row).value(0).toString() ==
@@ -538,13 +539,15 @@ void Sale_Widget::Sale_Save_Record()
             QSqlRecord record = Sale_Table_Model->record(row);
             //调用出库函数
             StorageManage::sellOut(record.value(0).toString(), record.value(5).toInt(), record.value(6).toInt());
+
+            if (-1 != Sale_Sql(sql.join(""))) {
+                QMessageBox::warning(this, tr("警告"), sql.join(""), QMessageBox::Ok);
+            }
         }else{
             //改函数
-            StorageManage::sellOut(i->Sale_Order_ID,0,0);
+            StorageManage::cancelSellOut(i->Sale_Order_ID);
         }
-        if (-1 != Sale_Sql(sql.join(""))) {
-            QMessageBox::warning(this, tr("警告"), sql.join(""), QMessageBox::Ok);
-        }
+
         sql.clear();
     }
     Sale_State.clear();
@@ -578,7 +581,7 @@ void Sale_Widget::Sale_New_Table()
         ui->Sale_lineEdit_seller_id->hide();
         ui->label_6->hide();
     }
-
+    ui->Sale_pushButton_change->hide();
     //时间初始化
     ui->Sale_dateEdit_start->setDateTimeRange(ui->Sale_dateEdit_start->dateTime(),
             QDateTime::currentDateTime());
