@@ -15,6 +15,7 @@
 #include "storagemanage.h"
 #include "stock_mainwindow.h"
 #include "globaldata.h"
+#include "sale_widget.h"
 
 //int is_admin = 1;
 
@@ -263,7 +264,77 @@ void StorageDialog::on_pushBtn_confirm_clicked()
     // 出库操作
     if (ui->comboBox_op->currentText() == "出库") {
         QString orderID = ui->lineEdit_record->text();
-        // Sale_Widget::Sale_State_out(orderID);
+        QString sellerID;
+        QString productID;
+        int amount;
+
+        QSqlQuery query(db);
+        query.exec(QString("select sellerID,productID,amount from Storage_wait_product "
+                           "where orderID=%1").arg(orderID));
+        if (!query.next()) {
+            ui->label_prompt_2->setText("提示：订单号不存在！");
+            return;
+        }
+        sellerID = query.value(1).toString();
+        productID = query.value(2).toString();
+        amount = query.value(3).toInt();
+
+        // 修改数据库
+        // dec用于保存每个仓库出库后的剩余所需值
+        int dec = amount;
+        query.exec(QString("select sp.storageID from Storage_product sp, Storage_info si "
+                           "where sp.storageID=si.storageID "
+                           "and si.sellerID=%1 "
+                           "and sp.productID=%2").arg(sellerID, productID));
+        // 对于每一条记录
+        while (dec > 0 && query.next()) {
+            QString stoID = query.value(0).toString();
+            int curAmount = 0;
+            QSqlQuery modify(db);
+            modify.exec(QString("select amount from Storage_product "
+                                "where storageID=%1 and productID=%2").arg(stoID, productID));
+            if (modify.next()) curAmount = modify.value(0).toInt();
+            // 若该记录中商品数量不大于dec，则删除该条记录
+            if (curAmount <= dec) {
+                modify.exec(QString("delete from Storage_product "
+                                    "where storageID=%1 and productID=%2").arg(stoID, productID));
+                if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
+            } else {
+                // 否则修改该条记录的剩余数量
+                modify.exec(QString("update Storage_product "
+                                    "set amount=%1 "
+                                    "where storageID=%2 and productID=%3").arg(
+                                QString::number(curAmount - dec), stoID, productID));
+                if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
+            }
+            // 修改仓库剩余空间值
+            modify.exec(QString("update Storage_info "
+                                "set remain=remain+%1 "
+                                "where storageID=%2").arg(
+                            QString::number(StorageManage::min(curAmount, dec)), stoID));
+            if (modify.lastError().isValid()) qDebug() << modify.lastError().text();
+            dec -= curAmount;
+        }
+        //qDebug() << dec;
+
+        // 向出库记录表中增添一条记录
+        QDateTime curTime = QDateTime::currentDateTime();
+        query.exec(QString("insert into Storage_order_record "
+                           "values('%1',%2,'%3',%4)").arg(
+                       orderID,
+                       productID,
+                       curTime.toString(),
+                       QString::number(amount)));
+        if (query.lastError().isValid()) qDebug() << query.lastError().text();
+
+        // 删除待出库表中的记录
+        query.exec(QString("delete from Storage_wait_product "
+                           "where orderID=%1").arg(orderID));
+        if (query.lastError().isValid()) qDebug() << query.lastError().text();
+
+        // 调用接口修改订单状态
+        Sale_Widget::Sale_State_Out(orderID);
+
         ui->label_prompt_2->setText("提示：出库成功!");
     } else {
         // 入库操作

@@ -18,6 +18,7 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui(new Ui::stock_MainWindow)
 {
     ui->setupUi(this);
+    user_id=User::id;
     storage_space = StorageManage::restSpace();
     prev_storage_space = storage_space;
     stock_mkplan_provider = new QSqlQueryModel(this);

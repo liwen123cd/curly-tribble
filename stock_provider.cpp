@@ -194,7 +194,7 @@ void stock_MainWindow::on_pushButton_8_clicked()
 {
     int row = ui->tableView_3->currentIndex().row();
     int provider_id = stock_provider->data(stock_provider->index(row, 0)).toInt();
-    QMessageBox box(QMessageBox::Warning, tr("删除当前供货商！"), tr("你确定删除当前供货商吗？"));
+    QMessageBox box(QMessageBox::Warning, tr("删除当前供货商！"), tr("你确定删除当前供货商吗？"),QMessageBox::NoButton,this);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setButtonText(QMessageBox::Yes, tr("确认"));
     box.setButtonText(QMessageBox::No, tr("取消"));
