@@ -240,7 +240,7 @@ QStringList StorageManage::getProductList()
                            "from Storage_product"));
     } else {
         query.exec(QString("select sp.productID "
-                        "from Storage_product sp, Storage_info si"
+                        "from Storage_product sp, Storage_info si "
                         "where sp.storageID=si.storageID "
                         "and si.sellerID=%1").arg(QString::number(User::id)));
     }
