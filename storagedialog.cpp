@@ -275,9 +275,9 @@ void StorageDialog::on_pushBtn_confirm_clicked()
             ui->label_prompt_2->setText("提示：订单号不存在或已完成出库！");
             return;
         }
-        sellerID = query.value(1).toString();
-        productID = query.value(2).toString();
-        amount = query.value(3).toInt();
+        sellerID = query.value(0).toString();
+        productID = query.value(1).toString();
+        amount = query.value(2).toInt();
 
         // 修改数据库
         // dec用于保存每个仓库出库后的剩余所需值
