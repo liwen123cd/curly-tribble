@@ -37,6 +37,7 @@ private:
     QString Order_ID;
     int Row;
     QString Order_State;
+    bool Is_Dirty;
     QSqlTableModel *Sale_Table_Model;
     //根据订单号读订单状态表
     bool Sale_Show_State(const QString&);

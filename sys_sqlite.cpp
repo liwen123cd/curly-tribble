@@ -76,19 +76,21 @@ void createConnectSqlite()
                                  "Sale_Buyer_Name varchar(20),"
                                  "Sale_Buyer_Tel varchar(20),"
                                  "Sale_Buyer_Address varchar(40),"
-                                 "Sale_Seller_ID int," //外键
-            "Sale_Item_ID int,"//外键
-            "Sale_Item_Num int,"
-            "Sale_Item_Price float,"
-            "Sale_Order_Finished int)";
+                                 "Sale_Seller_ID integer "
+                                 "REFERENCES Sys_Seller (Seller_Id)," //外键
+                                 "Sale_Item_ID int "
+                                 "REFERENCES stock_provider_product (id),"//外键
+                                 "Sale_Item_Num int,"
+                                 "Sale_Item_Price float,"
+                                 "Sale_Order_Finished int)";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"
                                  "Sale_Order_ID varchar(30),"//外键
-            "Sale_Order_State varchar(20),"
-            "Sale_Date datetime,"
-            "foreign key (Sale_Order_ID) "
-            "references Sale_Order(Sale_Order_ID) on delete cascade)";
+                                 "Sale_Order_State varchar(20),"
+                                 "Sale_Date datetime,"
+                                 "foreign key (Sale_Order_ID) "
+                                 "references Sale_Order(Sale_Order_ID) on delete cascade)";
     QString forignSql = "PRAGMA foreign_keys = ON";
 
     // 仓库信息表
