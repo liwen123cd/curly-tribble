@@ -43,6 +43,7 @@ struct Sale_Order_Detail {
 	int Sale_Item_Num;
 	float Sale_Item_Price;//单价
 	QString Sale_State;
+    bool Sale_IS_Dirty;//是否可改
 
 };
 
