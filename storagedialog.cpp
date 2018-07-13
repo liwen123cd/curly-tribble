@@ -270,9 +270,9 @@ void StorageDialog::on_pushBtn_confirm_clicked()
 
         QSqlQuery query(db);
         query.exec(QString("select sellerID,productID,amount from Storage_wait_product "
-                           "where orderID=%1").arg(orderID));
+                           "where orderID='%1'").arg(orderID));
         if (!query.next()) {
-            ui->label_prompt_2->setText("提示：订单号不存在！");
+            ui->label_prompt_2->setText("提示：订单号不存在或已完成出库！");
             return;
         }
         sellerID = query.value(1).toString();
@@ -329,7 +329,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
 
         // 删除待出库表中的记录
         query.exec(QString("delete from Storage_wait_product "
-                           "where orderID=%1").arg(orderID));
+                           "where orderID='%1'").arg(orderID));
         if (query.lastError().isValid()) qDebug() << query.lastError().text();
 
         // 调用接口修改订单状态

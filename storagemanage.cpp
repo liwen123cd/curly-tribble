@@ -81,6 +81,17 @@ int StorageManage::sellOut(QString orderID, int productID, int num)
     return 0;
 }
 
+// 取消出库
+int StorageManage::cancelSellOut(QString orderID)
+{
+    QSqlQuery query;
+    query.exec(QString("delete from Storage_wait_product "
+                       "where orderID='%1'").arg(orderID));
+    if (query.lastError().isValid()) qDebug() << query.lastError().text();
+
+    return 0;
+}
+
 // 为新添卖家分配仓库
 int StorageManage::allocateStorage(int sellerID, int storageNum)
 {
