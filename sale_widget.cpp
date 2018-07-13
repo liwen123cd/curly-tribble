@@ -142,6 +142,8 @@ void Sale_Widget::on_Sale_pushButton_new_clicked()
     //dialog读入空记录内容，暂定用结构体保存数据，用信号发数据
     Sale_Get_Order_Detail(detail, RowNum);
     detail.Sale_State = QString("创建订单");
+    detail.Sale_IS_Dirty = true;
+    detail.Sale_Item_ID=-1;
     emit Sale_Send_Detail(detail);
     //显示订单详细页面
     Sale_Dialog->show();
@@ -172,6 +174,7 @@ void Sale_Widget::on_Sale_pushButton_change_clicked()
         //dialog读入选中记录内容，暂定用结构体保存数据，用信号发数据
         Sale_Get_Order_Detail(detail, RowNum);
         detail.Sale_State = QString("修改订单");
+        detail.Sale_IS_Dirty = true;
         emit Sale_Send_Detail(detail);
         //显示订单详细页面
         Sale_Dialog->show();
@@ -187,11 +190,18 @@ void Sale_Widget::on_Sale_pushButton_delete_clicked()
     int Row = ui->tableView->currentIndex().row();
     if (Row == -1) {
         QMessageBox::warning(this, tr("警告"), tr("请选中一行"), QMessageBox::Ok);
-    } else if (Sale_Table_Model->isDirty(ui->tableView->currentIndex())) {
-        QMessageBox::warning(this, tr("警告"), tr("请先保存修改项"), QMessageBox::Ok);
-    } else {
+    }else {
         QSqlRecord record = Sale_Table_Model->record(Row);
-        Sale_State_Order(record.value(0).toString(),QString("删除订单"));
+        if(Sale_Table_Model->isDirty(ui->tableView->currentIndex())){
+            for (std::vector<Sale_State_Detail>::iterator i = Sale_State.begin();
+                 i < Sale_State.end(); ++i){
+                if(i->Sale_Order_ID==record.value(0).toString()){
+                    Sale_State.erase(i);
+                }
+            }
+        }else{
+            Sale_State_Order(record.value(0).toString(),QString("删除订单"));
+        }
         Sale_Table_Model->removeRow(Row);
     }
 }
@@ -361,8 +371,6 @@ void Sale_Widget::Sale_Recive_Detail(const Sale_Order_Detail &detail)
         Sale_Table_Model->setRecord(detail.Sale_Row, record);
         //添加修改记录
         Sale_State_Order(Order_ID, detail.Sale_State);
-    } else {
-        //Sale_State_Order(detail.Sale_Order_ID, detail.Sale_State);
     }
 
 }
@@ -630,6 +638,7 @@ void Sale_Widget::on_tableView_doubleClicked(const QModelIndex &index)
     Sale_Get_Order_Detail(detail, Row);
     //订单只能查看
     detail.Sale_State = QString("查看订单");
+    detail.Sale_IS_Dirty = Sale_Table_Model->isDirty(index);
     emit Sale_Send_Detail(detail);
     //显示订单详细页面
     Sale_Dialog->show();

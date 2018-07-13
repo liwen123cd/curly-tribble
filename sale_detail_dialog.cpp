@@ -26,7 +26,7 @@ void Sale_Detail_Dialog::on_Sale_enter_pushbutton_clicked()
     //判断非空
     if (Sale_Check_Detail()) {
         //给widget发数据
-        if (Order_State != QString("查看订单")) {
+        if (Is_Dirty) {
             Sale_Order_Detail detail;
             detail.Sale_Order_ID = Order_ID;
             detail.Sale_Row = Row;
@@ -37,7 +37,7 @@ void Sale_Detail_Dialog::on_Sale_enter_pushbutton_clicked()
             detail.Sale_Item_ID = ui->Sale_item_id_combobox->currentText().toInt();
             detail.Sale_Item_Num = ui->Sale_item_num_lineedit->text().toInt();
             detail.Sale_Item_Price = ui->Sale_item_price_lineedit->text().toFloat();
-
+            detail.Sale_IS_Dirty=Is_Dirty;
             emit Sale_Send_Detail(detail);
         }
         Sale_Is_Check(true);
@@ -105,7 +105,8 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
     Order_ID = detail.Sale_Order_ID;
     Row = detail.Sale_Row;
     Order_State = detail.Sale_State;
-    if (Order_State == QString("查看订单")) {
+    Is_Dirty=detail.Sale_IS_Dirty;
+    if (!Is_Dirty) {
         Sale_Is_Check(false);
     }
     //输入商品ID
@@ -139,10 +140,17 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
     //显示商品详细信息
     //测试
     //系统显示商品详细信息（以后目标）调用接口读入
+    if(Item_ID==-1){
+        ui->Sale_item_name_lineEdit->setText(tr("商品名"));
+        ui->Sale_item_count_lineEdit->setText(tr("库存"));
+        ui->Sale_item_purchase_price_lineEdit->setText(tr("进价"));
+        ui->Sale_item_provider_lineEdit->setText(tr("供货商"));
+        return true;
+    }
     Product_Detail detail;
     stock_MainWindow::stock_get_ProductDetail(detail, Item_ID);
     ui->Sale_item_name_lineEdit->setText(detail.Product_Name);
-    qDebug()<<StorageManage::getAmount(Item_ID);
+    //qDebug()<<StorageManage::getAmount(Item_ID);
     ui->Sale_item_count_lineEdit->setText(QString::number(StorageManage::getAmount(Item_ID)));
     ui->Sale_item_purchase_price_lineEdit->setText(QString::number(detail.Product_Price));
     ui->Sale_item_provider_lineEdit->setText(detail.Product_Provider);
@@ -161,6 +169,10 @@ bool Sale_Detail_Dialog::Sale_Check_Detail()
     }
     if (ui->Sale_buyer_address_lineedit->text() == "") {
         QMessageBox::warning(this, tr("警告"), tr("买家地址不能为空"), QMessageBox::Ok);
+        return false;
+    }
+    if(ui->Sale_item_id_combobox->currentText()=="-1"){
+        QMessageBox::warning(this, tr("警告"), tr("请选择有效的商品"), QMessageBox::Ok);
         return false;
     }
     if (ui->Sale_item_num_lineedit->text().toInt() < 1) {
@@ -188,8 +200,12 @@ void Sale_Detail_Dialog::Sale_Is_Check(bool check)
 //槽函数，读取当前选中商品信息
 void Sale_Detail_Dialog::on_Sale_item_id_combobox_currentIndexChanged(const QString &Item_ID)
 {
+    int count = StorageManage::getAmount(Item_ID.toInt());
     //根据商品编号查商品信息(商品名，库存，供货商，进价）
     Sale_Show_Item(Item_ID.toInt());
+    //重设销售数量范围
+    ui->Sale_item_num_lineedit->setValidator(
+        new QIntValidator(0, count, this));
 }
 
 
