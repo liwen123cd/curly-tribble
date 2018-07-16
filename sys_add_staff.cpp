@@ -7,23 +7,7 @@ Sys_Add_Staff::Sys_Add_Staff(QWidget *parent) :
     ui(new Ui::Sys_Add_Staff)
 {
     ui->setupUi(this);
-    number = 0;
     staff_filename = "img/na.jpg";
-//    qDebug()<<QDir::currentPath();
-//    qDebug()<<QCoreApplication::applicationDirPath();
-//    QFile(directoryOf("data").absoluteFilePath(number.txt));
-    QFile file("number.txt");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "读入文件number.txt失败." << endl;
-        return ;
-    }
-    while (!file.atEnd()) {
-        QString line = file.readLine();
-        qDebug() << line;
-        number = line.toInt();
-    }
-    qDebug() << number;
-    file.close();
     ui->radioButton->setChecked(true);
 }
 
@@ -40,6 +24,7 @@ Sys_Add_Staff::~Sys_Add_Staff()
  * */
 void Sys_Add_Staff::on_pushButton_2_clicked()
 {
+    int number;
     QString staff_name = ui->lineEdit->text();
     QString staff_deperment;
     if (ui->radioButton->isChecked()) {
@@ -57,21 +42,19 @@ void Sys_Add_Staff::on_pushButton_2_clicked()
     QString staff_date2 = QString(QDateTime::currentDateTime().toString("yyyyMMdd"));
     qDebug() << staff_date2;
     QString staff_id = NULL;
+
+    // 从数据库中读取职工的数量
+    QSqlQuery query;
+    query.exec("select count(*) from Sys_Staff");
+    while(query.next())
+    {
+        number = query.value(0).toInt();
+    }
     if (STOCK_DEPENTMENT == staff_deperment)
         staff_id = "SD" + staff_date2 + QString("%1").arg(number, 5, 10, QLatin1Char('0'));
     else if (FREIGHT_DEPENTMENT == staff_deperment)
         staff_id = "FD" + staff_date2 + QString("%1").arg(number, 5, 10, QLatin1Char('0'));
     qDebug() << staff_id;
-    number++;
-    // 将number 值写入文件
-    QFile file("number.txt");
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "写入文件number.txt失败！" << endl;
-        return ;
-    }
-    QTextStream out(&file);
-    out << number;
-    file.close();
 
     if (NULL == staff_name)
         QMessageBox::warning(this, tr("提示"),
@@ -135,8 +118,6 @@ void Sys_Add_Staff::on_pushButton_3_clicked()
 
 void Sys_Add_Staff::init()
 {
-    ui->lineEdit->clear();
-    ui->lineEdit_2->clear();
     ui->radioButton->setChecked(true);
     ui->comboBox->setCurrentIndex(0);
     ui->textEdit->clear();
