@@ -14,6 +14,9 @@ Sale_Detail_Dialog::Sale_Detail_Dialog(QWidget *parent) :
     ui(new Ui::Sale_Detail_Dialog)
 {
     ui->setupUi(this);
+    if(!Sale_New_Table()){
+        qDebug()<<tr("初始化失败");
+    }
 }
 //析构函数
 Sale_Detail_Dialog::~Sale_Detail_Dialog()
@@ -118,20 +121,10 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
 bool Sale_Detail_Dialog::Sale_Show_State(const QString &Order_ID)
 {
     //sql语句，根据订单号查订单记录
-    Sale_Table_Model = new QSqlTableModel(this);
-    Sale_Table_Model->setTable("Sale_State");
+
+
     Sale_Table_Model->setFilter(QString("Sale_Order_Id='%1'").arg(Order_ID));
     Sale_Table_Model->select();
-    Sale_Table_Model->setHeaderData(0, Qt::Horizontal, tr("订单状态ID"));
-    Sale_Table_Model->setHeaderData(1, Qt::Horizontal, tr("订单号"));
-    Sale_Table_Model->setHeaderData(2, Qt::Horizontal, tr("物流记录"));
-    Sale_Table_Model->setHeaderData(3, Qt::Horizontal, tr("日期"));
-
-    Sale_Table_Model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-    ui->tableView->horizontalHeader()->setStretchLastSection(true);
-    ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->setModel(Sale_Table_Model);
     return true;
 }
 //显示商品详细信息
@@ -205,7 +198,28 @@ void Sale_Detail_Dialog::on_Sale_item_id_combobox_currentIndexChanged(const QStr
     Sale_Show_Item(Item_ID.toInt());
     //重设销售数量范围
     ui->Sale_item_num_lineedit->setValidator(
-        new QIntValidator(0, count, this));
+                new QIntValidator(0, count, this));
+}
+//初始化sql模型
+bool Sale_Detail_Dialog::Sale_New_Table()
+{
+    Sale_Table_Model = new QSqlTableModel(this);
+    Sale_Table_Model->setTable("Sale_State");
+    Sale_Table_Model->select();
+    if(Sale_Table_Model->lastError().number() != -1){
+        return false;
+    }
+    Sale_Table_Model->setHeaderData(0, Qt::Horizontal, tr("订单状态ID"));
+    Sale_Table_Model->setHeaderData(1, Qt::Horizontal, tr("订单号"));
+    Sale_Table_Model->setHeaderData(2, Qt::Horizontal, tr("物流记录"));
+    Sale_Table_Model->setHeaderData(3, Qt::Horizontal, tr("日期"));
+
+    Sale_Table_Model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
+    ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView->setModel(Sale_Table_Model);
+    return true;
 }
 
 
