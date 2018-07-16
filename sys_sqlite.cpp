@@ -167,7 +167,8 @@ void createConnectSqlite()
                                       "id int primary key, "
                                       "provider_id int, "
                                       "name varchar, "
-                                      "price float)";
+                                      "price float,"
+                                      "path varchar(50))";
 
     QString stockPlanDetailSql = "create table stock_plan_detail("
                                  "id int primary key, "

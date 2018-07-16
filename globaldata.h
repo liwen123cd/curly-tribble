@@ -58,6 +58,7 @@ struct Product_Detail {
 	QString Product_Name;
 	float Product_Price;
 	QString Product_Provider;
+    QString Path;
 
 };
 

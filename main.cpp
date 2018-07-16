@@ -9,14 +9,13 @@
 #include <QApplication>
 #include <QTextCodec>
 #include <QDebug>
-
+#include <QDir>
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));//正确显示中文
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));//正确显示中文
-
-	createConnectSqlite();
+    createConnectSqlite();
     QSqlQuery q;
     q.exec("delete from Storage_info");
     q.exec("delete from Storage_product");
@@ -27,6 +26,9 @@ int main(int argc, char *argv[])
 
     q.exec("insert into Storage_info values(1,'1号',100,100,0)");
     q.exec("insert into Storage_info values(2,'2号',100,100,-1)");
+   // qDebug()<<QDir::currentPath();
+   // qDebug()<<QDir::setCurrent(QString("../curly-tribble/img"));
+   // qDebug()<<QDir::currentPath();
 
 
 	Login login;
