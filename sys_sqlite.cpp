@@ -78,11 +78,11 @@ void createConnectSqlite()
                                  "Sale_Buyer_Address varchar(40),"
                                  "Sale_Seller_ID integer "
                                  "REFERENCES Sys_Seller (Seller_Id)," //外键
-                                 "Sale_Item_ID int "
+                                 "Sale_Item_ID integer "
                                  "REFERENCES stock_provider_product (id),"//外键
-                                 "Sale_Item_Num int,"
+                                 "Sale_Item_Num integer,"
                                  "Sale_Item_Price float,"
-                                 "Sale_Order_Finished int)";
+                                 "Sale_Order_Finished integer)";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"

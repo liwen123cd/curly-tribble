@@ -77,11 +77,12 @@ private:
     Sale_Detail_Dialog *Sale_Dialog;
     std::vector<Sale_State_Detail> Sale_State;
     //tableview初始化
-    void Sale_New_Table();
+    bool Sale_New_Table();
+
     //临时保存订单状态修改（销售系统自用）
-    void Sale_State_Order(const QString&,const QString&);
+    bool Sale_State_Order(const QString&,const QString&);
     //写到订单状态表
-    void Sale_Save_Record();
+    bool Sale_Save_Record();
     //创建订单号(未确定方法)
     void Sale_New_Order_ID(const QString&, QString&);
     //从表单读入结构体点击新建，修改按钮后执行

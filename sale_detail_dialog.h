@@ -39,10 +39,10 @@ private:
     QString Order_State;
     bool Is_Dirty;
     QSqlTableModel *Sale_Table_Model;
+    //初始化
+    bool Sale_New_Table();
     //根据订单号读订单状态表
     bool Sale_Show_State(const QString&);
-    //更改界面显示模式（可读，可写）
-    bool Sale_Model_Change(const QString&);
     //显示商品详细信息
     bool Sale_Show_Item(int);
     //监测订单信息是否正确
