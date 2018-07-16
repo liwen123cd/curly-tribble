@@ -24,6 +24,20 @@ StorageManage::~StorageManage()
 
 }
 
+// 获取剩余空闲仓库的数量
+int StorageManage::restStorage()
+{
+    int rest = 0;
+    QSqlQuery query(db);
+    query.exec(QString("select count(*) from Storage_info "
+                       "where sellerID=-1"));
+    if (query.next()) {
+        rest = query.value(0).toInt();
+    }
+    qDebug() << "剩余仓库数量：" << rest;
+    return rest;
+}
+
 // 获取卖家仓库剩余空间
 int StorageManage::restSpace()
 {
@@ -96,22 +110,7 @@ int StorageManage::cancelSellOut(QString orderID)
 int StorageManage::allocateStorage(int sellerID, int storageNum)
 {
     qDebug() << "分配仓库";
-    int restStoNum = 0;
     QSqlQuery query(db);
-
-    // 查看剩余空闲仓库数量
-    query.exec(QString("select count(*) from Storage_info "
-                       "where sellerID=-1"));
-    if (query.next()) {
-        restStoNum = query.value(0).toInt();
-        qDebug() << "空闲仓库数量：" << restStoNum;
-    }
-
-    // 不足则返回1
-    if (restStoNum < storageNum) {
-        qDebug() << "仓库不足";
-        return 1;
-    }
 
     // 进行分配
     int i = storageNum;

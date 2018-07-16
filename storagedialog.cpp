@@ -110,7 +110,7 @@ void StorageDialog::on_comboBox_sto_activated(const QString &stoName)
     if (query.next()) {
         QString remain, record;
         remain += query.value(0).toString() + "/" + query.value(1).toString();
-        record += "共" + query.value(0).toString() + "条记录";
+        record += "共" + QString::number(model->rowCount()) + "条记录";
         ui->label_remain_num->setText(remain);
         ui->label_record_num->setText(record);
     }

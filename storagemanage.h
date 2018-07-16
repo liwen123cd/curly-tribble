@@ -11,6 +11,7 @@ public:
     StorageManage();
     ~StorageManage();
 
+    static int restStorage();                                     // 剩余空闲仓库数量
     static int allocateStorage(int sellerID, int storageNum);     // 为新增卖家分配仓库
     static int freeStorage(int sellerID);                         // 回收已删除的卖家的仓库
 
