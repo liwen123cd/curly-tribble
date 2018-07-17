@@ -10,13 +10,18 @@
 #include <QTextCodec>
 #include <QDebug>
 #include <QDir>
+#include <QIcon>
+
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));// 正确显示中文
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));// 正确显示中文
 
-	createConnectSqlite();
+//    QIcon icon;
+//    icon.addFile("/new/img/img/login/user.png");
+////    icon.addPixmap();
+//    QMessageBox::setIcon(icon);
 
 	Login login;
 	login.show();

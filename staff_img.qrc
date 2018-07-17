@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/new/img">
         <file>img/na.jpg</file>
+        <file>img/login/user.png</file>
+        <file>img/room.png</file>
     </qresource>
 </RCC>

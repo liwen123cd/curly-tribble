@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QFileDialog>
 #include <QSqlError>
+static float prev_price=0.0;
 void stock_MainWindow::stock_provider_model_init()
 {
 
@@ -373,6 +374,11 @@ void stock_MainWindow::on_tableWidget_cellClicked(int row, int column)
 void stock_MainWindow::on_tableView_4_pressed(const QModelIndex &index)
 {
     if(!ui->pushButton_4->isVisible()) return;
+    if(index.column()==3)
+    {
+        prev_price=stock_provider_product->data(index).toFloat();//点击时，则记录以前的价格，以便以后恢复
+        return;
+    }
     if(index.column()!=4) return;
     QString filename=QFileDialog::getOpenFileName(this,tr("请选择图片文件"),"F:",tr("图片文件(*png *jpg)"));
     qDebug()<<filename;
@@ -389,3 +395,49 @@ void stock_MainWindow::on_tableView_4_pressed(const QModelIndex &index)
     }
     stock_save_ProductPicture(filename,stock_provider_product->data(index).toString());
 }
+//这个函数在添加供货商界面检测商品价格是否修改为负数
+void stock_MainWindow::on_tableWidget_itemChanged(QTableWidgetItem *item)
+{
+    if(item->column()!=1) return;
+    float price=item->text().toFloat();
+    if(price<0)
+    {
+        QMessageBox::warning(this, tr("错误"), tr("商品价格不能为负数！！！"));
+        disconnect(ui->tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_tableWidget_itemChanged(QTableWidgetItem*)));
+        item->setText(QString::number(prev_price));
+        connect(ui->tableWidget,SIGNAL(itemChanged(QTableWidgetItem*)),this,SLOT(on_tableWidget_itemChanged(QTableWidgetItem*)));
+        return;
+    }
+}
+void stock_MainWindow::stock_productPrice_changed(const QModelIndex &left,const QModelIndex &right)
+{
+    int left_index=left.column();
+    int right_index=right.column();
+    if(left_index!=3||right_index!=3) return;
+    float price=stock_provider_product->data(left).toFloat();
+    if(price<0)
+    {
+        QMessageBox::warning(this, tr("错误"), tr("商品价格不能为负数！！！"));
+        disconnect(stock_provider_product,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(stock_productPrice_changed(QModelIndex,QModelIndex)));
+        stock_provider_product->setData(left,prev_price);
+        connect(stock_provider_product,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(stock_productPrice_changed(QModelIndex,QModelIndex)));
+        return;
+    }
+}
+//点击时，则记录以前的价格，以便以后恢复
+void stock_MainWindow::on_tableWidget_pressed(const QModelIndex &index)
+{
+    if(index.column()==1)
+    {
+        if(ui->tableWidget->item(index.row(),index.column())!=NULL)//不为空则记录以前的值
+        {
+            prev_price=ui->tableWidget->item(index.row(),index.column())->text().toFloat();
+        }
+        else//为空就表明是新创建的，以前的值就设置为0
+        {
+            prev_price=0;
+        }
+    }
+    return;
+}
+

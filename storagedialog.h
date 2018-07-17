@@ -8,6 +8,7 @@
 class QSqlQueryModel;
 class QueryDialog;
 class InsertDialog;
+class AddStoDialog;
 class QSqlRelationalTableModel;
 
 namespace Ui
@@ -44,6 +45,10 @@ private slots:
 
     void on_pushBtn_refresh_clicked();
 
+    void on_pushBtn_add_sto_clicked();
+
+    void on_pushBtn_del_sto_clicked();
+
 private:
     Ui::StorageDialog *ui;
     MySqlQueryModel *model;
@@ -51,6 +56,7 @@ private:
     QSqlDatabase db;
     QueryDialog *queryDialog;
     InsertDialog *insertDialog;
+    AddStoDialog *addStoDialog;
 };
 
 #endif // STORAGEDIALOG_H

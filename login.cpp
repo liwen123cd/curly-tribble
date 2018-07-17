@@ -10,10 +10,17 @@ Login::Login(QWidget *parent) :
     ui->setupUi(this);
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
 //    mainw = new MainWindow(this);
-    reg = new Register(this);
-    reg->setWindowFlags(Qt::Window);
-    rp = new RecovePwd(this);
-    rp->setWindowFlags(Qt::Window);
+//    QIcon *icon = new QIcon("/new/img/img/login/user.png");
+//    QMessageBox mess;
+//    mess.setWindowIcon(*icon);
+
+//    QFile file(":/css/style/default.css");
+//    file.open(QFile::ReadOnly);
+//    QString styleSheet = tr(file.readAll());
+//    this->setStyleSheet(styleSheet);
+//    file.close();
+    createConnectSqlite();
+
 }
 
 Login::~Login()
@@ -86,6 +93,8 @@ void Login::on_pushButton_2_clicked()
 void Login::on_pushButton_3_clicked()
 {
 //    Register *r = new Register;
+    reg = new Register(this);
+    reg->setWindowFlags(Qt::Window);
     this->hide();
     reg->show();
 }
@@ -93,5 +102,7 @@ void Login::on_pushButton_3_clicked()
 void Login::on_pushButton_4_clicked()
 {
 //    RecovePwd *rp = new RecovePwd;
+    rp = new RecovePwd(this);
+    rp->setWindowFlags(Qt::Window);
     rp->show();
 }
