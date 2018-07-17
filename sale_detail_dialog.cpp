@@ -8,12 +8,16 @@
 #include <QMessageBox>
 #include <QSqlTableModel>
 #include <QString>
+#include <QPixmap>
+#include <QPicture>
+#include <QLabel>
 //构造函数
 Sale_Detail_Dialog::Sale_Detail_Dialog(QWidget *parent) :
     QDialog(parent, Qt::WindowTitleHint | Qt::CustomizeWindowHint),
     ui(new Ui::Sale_Detail_Dialog)
 {
     ui->setupUi(this);
+
     if(!Sale_New_Table()){
         qDebug()<<tr("初始化失败");
     }
@@ -63,9 +67,14 @@ void Sale_Detail_Dialog::on_Sale_cancel_pushbutton_clicked()
 void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
 {
     //系统读入卖家信息（不可更改）
-    ui->Sale_seller_name_lineedit->setText(User::name);
-    ui->Sale_seller_tel_lineedit->setText(User::phone);
-    ui->Sale_seller_address_lineedit->setText(User::addr);
+    if(!Data::is_admin){
+        ui->Sale_seller_name_lineedit->setText(User::name);
+        ui->Sale_seller_tel_lineedit->setText(User::phone);
+        ui->Sale_seller_address_lineedit->setText(User::addr);
+    }else {
+        //根据卖家id查卖家信息
+    }
+
 
     //卖家输入买家信息，商品编号（判断是否有库存）（下拉框，可选），数量（大小范围限定0~库存数量），售价（暂定由卖家输入）
     //测试用
@@ -147,6 +156,11 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
     ui->Sale_item_count_lineEdit->setText(QString::number(StorageManage::getAmount(Item_ID)));
     ui->Sale_item_purchase_price_lineEdit->setText(QString::number(detail.Product_Price));
     ui->Sale_item_provider_lineEdit->setText(detail.Product_Provider);
+    QPixmap pix;
+    if(!pix.load("img/na.jpg")){
+        qDebug()<<"打开文件失败";
+    }
+    ui->Sale_item_pic->setPixmap(pix);
     return true;
 }
 //监测函数，判断输入内容是否合法
@@ -219,6 +233,8 @@ bool Sale_Detail_Dialog::Sale_New_Table()
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     ui->tableView->setModel(Sale_Table_Model);
+    ui->Sale_item_pic->setScaledContents(true);
+    ui->Sale_item_pic->resize(ui->widget->size());
     return true;
 }
 
