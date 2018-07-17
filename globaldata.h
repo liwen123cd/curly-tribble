@@ -54,6 +54,7 @@ struct Sale_Order_Detail {
     QString Sale_Buyer_Name;
     QString Sale_Buyer_Tel;
     QString Sale_Buyer_Address;
+    int Sale_Seller_ID;
     int Sale_Item_ID;
     int Sale_Item_Num;
     float Sale_Item_Price;//单价
@@ -71,9 +72,11 @@ struct Sale_State_Detail {
 
 // 商品信息
 struct Product_Detail {
-    QString Product_Name;
-    float Product_Price;
-    QString Product_Provider;
+	//商品信息
+	QString Product_Name;
+	float Product_Price;
+	QString Product_Provider;
+    QString Path;
 
 };
 

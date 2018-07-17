@@ -167,7 +167,8 @@ void createConnectSqlite()
                                       "id int primary key, "
                                       "provider_id int, "
                                       "name varchar, "
-                                      "price float)";
+                                      "price float,"
+                                      "path varchar(50))";
 
     QString stockPlanDetailSql = "create table stock_plan_detail("
                                  "id int primary key, "
@@ -501,6 +502,23 @@ bool sellerViewNull()
         else
             flag = false;
     }
-
     return flag;
+}
+
+Seller infoSeller(int id)
+{
+    Seller seller;
+    QSqlQuery query;
+    QString sql = QString("select SellerName, SellerPhone, "
+                          "select SellerAddr "
+                          "from Sys_Seller "
+                          "where Seller_Id = '%1'")
+            .arg(id);
+    query.exec(sql);
+    while(query.next()) {
+        seller.name = query.value(1).toString();
+        seller.phone = query.value(2).toString();
+        seller.addr = query.value(3).toString();
+    }
+    return seller;
 }

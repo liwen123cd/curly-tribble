@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>273</height>
    </rect>
   </property>
   <property name="font">
@@ -23,6 +23,9 @@
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
@@ -65,7 +68,7 @@
     <rect>
      <x>280</x>
      <y>80</y>
-     <width>77</width>
+     <width>82</width>
      <height>54</height>
     </rect>
    </property>

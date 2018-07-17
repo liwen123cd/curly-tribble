@@ -10,8 +10,10 @@
 #include <QSqlError>
 /*与库存容量方面的交互必须想清楚，不要有疏漏。主要就是添加进货时减库存，取消进货时加库存。
  * 每次进入进货计划制定界面就要读取一次库存容量，不过如果这个界面还有上次没制定完的计划就另当别论。
- * 感觉如果没有制定完计划，就必须要记住当前计划所使用的库存容量，因为仓库那边传回来的剩余容量会变。s
+ * 感觉如果没有制定完计划，就必须要记住当前计划所使用的库存容量，因为仓库那边传回来的剩余容量会变。
  *
+ */
+/*这个函数是stock_MainWindow的构造函数，主要工作就是进行各种初始化
  */
 stock_MainWindow::stock_MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,9 +44,9 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     ui->comboBox->addItem(tr("已取消订单"));
     ui->comboBox_2->addItem(tr("供货商信息查询"));
     ui->comboBox_2->addItem(tr("新增供货商信息"));
-    ui->tableWidget->setColumnCount(2);
+    ui->tableWidget->setColumnCount(3);
     QStringList header;
-    header << tr("商品名称（输入字符串）") << tr("商品价格（输入实数）");
+    header << tr("商品名称（输入字符串）") << tr("商品价格（输入实数）")<<tr("商品图片(点击添加)");
     ui->tableWidget->setHorizontalHeaderLabels(header);
     ui->tableWidget_2->setColumnCount(4);
     ui->tableWidget_2->hideColumn(0);
@@ -89,7 +91,8 @@ stock_MainWindow::~stock_MainWindow()
 {
     delete ui;
 }
-
+/*这个函数是给销售模块的接口函数，根据商品编号来返回商品的详细信息
+ */
 void stock_MainWindow::stock_get_ProductDetail(Product_Detail &p, int product_id)
 {
     QSqlQuery query;
@@ -100,6 +103,7 @@ void stock_MainWindow::stock_get_ProductDetail(Product_Detail &p, int product_id
     provider_id = query.value(1).toInt();
     p.Product_Name = query.value(2).toString();
     p.Product_Price = query.value(3).toFloat();
+    p.Path=query.value(4).toString();
     query.exec(QString("select * from stock_provider where id=%1").arg(provider_id));
     qDebug() << query.lastError();
     query.next();

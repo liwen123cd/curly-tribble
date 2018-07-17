@@ -20,12 +20,20 @@
 #include <QModelIndex>
 #include <QPoint>
 
+
 //构造函数
 Sale_Widget::Sale_Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Sale_Widget)
 {
     ui->setupUi(this);
+
+    QPixmap _image;
+    _image.load("img/background");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
 
     if(!Sale_New_Table()){
         qDebug()<<tr("模型初始化失败");
@@ -413,6 +421,8 @@ bool Sale_Widget::Sale_Get_Order_Detail(Sale_Order_Detail &Sale_Detail, int Row)
         Sale_Table_Model->record(Row).value(2).toString();
     Sale_Detail.Sale_Buyer_Address =
         Sale_Table_Model->record(Row).value(3).toString();
+    Sale_Detail.Sale_Seller_ID =
+        Sale_Table_Model->record(Row).value(4).toInt();
     Sale_Detail.Sale_Item_ID =
         Sale_Table_Model->record(Row).value(5).toInt();
     Sale_Detail.Sale_Item_Num =

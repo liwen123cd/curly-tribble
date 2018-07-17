@@ -63,6 +63,7 @@ void stock_MainWindow::stock_tableview_2_clicked(const QModelIndex&index)
     stock_mkplan_product->setQuery(tr("select * from stock_provider_product where provider_id = %1").arg(provider_id));
     ui->tableView_5->hideColumn(0);
     ui->tableView_5->hideColumn(1);
+    ui->tableView_5->hideColumn(4);
     stock_mkplan_product->setHeaderData(2, Qt::Horizontal, tr("商品名称"));
     stock_mkplan_product->setHeaderData(3, Qt::Horizontal, tr("商品价格"));
 }
