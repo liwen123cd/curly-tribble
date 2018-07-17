@@ -1,1 +1,9 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/css">
+        <file>style/default.css</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>images/default.jpg</file>
+        <file>img/bg2.png</file>
+    </qresource>
+</RCC>

@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlQuery>
+#include <QIcon>
 #include "register.h"
 #include "globaldata.h"
 #include "mainwindow.h"

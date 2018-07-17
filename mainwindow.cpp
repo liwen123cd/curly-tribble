@@ -77,4 +77,5 @@ void MainWindow::closeEvent(QCloseEvent *event)
     event->accept();
     this->close();
     this->parentWidget()->show();
+    delete this;
 }

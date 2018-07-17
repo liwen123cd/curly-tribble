@@ -30,6 +30,7 @@ void RecovePwd::on_pushButton_clicked()
         QMessageBox::information(this, "提示", "发送成功！"
                                  "请按提示步骤找回密码！");
     }
+    this->close();
 }
 
 void RecovePwd::on_pushButton_2_clicked()

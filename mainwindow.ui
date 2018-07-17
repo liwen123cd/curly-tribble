@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>系统主窗口</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="staff_img.qrc">
+    <normaloff>:/new/img/img/room.png</normaloff>:/new/img/img/room.png</iconset>
+  </property>
   <property name="statusTip">
    <string>欢迎使用我们制作的智能物流管理系统，希望你拥有快乐的一天！</string>
   </property>
@@ -90,6 +94,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="staff_img.qrc"/>
+ </resources>
  <connections/>
 </ui>

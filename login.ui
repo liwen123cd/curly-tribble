@@ -21,8 +21,15 @@
   <property name="windowTitle">
    <string>登录窗口</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="staff_img.qrc">
+    <normaloff>:/new/img/img/login/user.png</normaloff>:/new/img/img/login/user.png</iconset>
+  </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
@@ -144,6 +151,9 @@ QPushButton:pressed
    <layout class="QFormLayout" name="formLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="label_3">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="text">
        <string>身份：</string>
       </property>
@@ -229,6 +239,8 @@ QPushButton:pressed
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="staff_img.qrc"/>
+ </resources>
  <connections/>
 </ui>

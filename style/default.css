@@ -1,0 +1,46 @@
+QWidget {
+background-image: url("/img/bg2.png");
+}
+
+
+QLineEdit {
+        text-align: center;
+        background-color: transparent;
+        border: 2px solid lightslategrey;
+        selection-color: red;
+        selection-background-color: gray;
+}
+
+QPushButton{
+    color: white;
+    border-radius: 3px;
+}
+
+/**********表格**********/
+QTableView {
+        border: 1px solid gray;
+        background: white;
+        gridline-color: gray;
+}
+
+QTableView::item {
+        padding-left: 5px;
+        padding-right: 5px;
+        border: none;
+        background: gray;
+        border-right: 1px solid rgb(45, 45, 45);
+        border-bottom: 1px solid rgb(45, 45, 45);
+}
+
+QTableView:: item: selected {
+        background: darkblue;
+}
+
+QTableView:: item: selected: !active {
+        color: white;
+}
+
+QTableView:: indicator {
+        width: 20px;
+        height: 20px;
+}
