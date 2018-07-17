@@ -157,7 +157,7 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
     ui->Sale_item_purchase_price_lineEdit->setText(QString::number(detail.Product_Price));
     ui->Sale_item_provider_lineEdit->setText(detail.Product_Provider);
     QPixmap pix;
-    if(!pix.load("img/na.jpg")){
+    if(!pix.load(detail.Path)){
         qDebug()<<"打开文件失败";
     }
     ui->Sale_item_pic->setPixmap(pix);
