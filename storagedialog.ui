@@ -273,7 +273,7 @@
       <rect>
        <x>20</x>
        <y>50</y>
-       <width>411</width>
+       <width>311</width>
        <height>221</height>
       </rect>
      </property>
@@ -284,10 +284,10 @@
       <bool>false</bool>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>70</number>
+      <number>60</number>
      </attribute>
      <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>70</number>
+      <number>60</number>
      </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
@@ -322,6 +322,32 @@
      </property>
      <property name="text">
       <string>刷新</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushBtn_add_sto">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>60</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>添加仓库</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushBtn_del_sto">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>100</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>删除仓库</string>
      </property>
     </widget>
    </widget>
