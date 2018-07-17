@@ -378,7 +378,7 @@ void stock_MainWindow::on_tableView_4_pressed(const QModelIndex &index)
     qDebug()<<filename;
     if(filename=="") return;
     QString dest_path=stock_provider_product->data(index).toString();
-    if(dest_path=="../curly-tribble/img/product/na.jpg")
+    if(dest_path=="../curly-tribble/img/product/na.jpg"||dest_path=="")
     {
         int id=stock_provider_product->data(stock_provider_product->index(index.row(),0)).toInt();
         QString file_type;//图片文件的类型
