@@ -54,6 +54,7 @@ struct Sale_Order_Detail {
     QString Sale_Buyer_Name;
     QString Sale_Buyer_Tel;
     QString Sale_Buyer_Address;
+    int Sale_Seller_ID;
     int Sale_Item_ID;
     int Sale_Item_Num;
     float Sale_Item_Price;//单价

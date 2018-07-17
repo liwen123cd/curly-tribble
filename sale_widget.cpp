@@ -421,6 +421,8 @@ bool Sale_Widget::Sale_Get_Order_Detail(Sale_Order_Detail &Sale_Detail, int Row)
         Sale_Table_Model->record(Row).value(2).toString();
     Sale_Detail.Sale_Buyer_Address =
         Sale_Table_Model->record(Row).value(3).toString();
+    Sale_Detail.Sale_Seller_ID =
+        Sale_Table_Model->record(Row).value(4).toInt();
     Sale_Detail.Sale_Item_ID =
         Sale_Table_Model->record(Row).value(5).toInt();
     Sale_Detail.Sale_Item_Num =

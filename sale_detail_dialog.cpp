@@ -73,6 +73,13 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
         ui->Sale_seller_address_lineedit->setText(User::addr);
     }else {
         //根据卖家id查卖家信息
+        infoSeller(detail.Sale_Seller_ID);
+        ui->Sale_seller_name_lineedit->setText(
+                    infoSeller(detail.Sale_Seller_ID).name);
+        ui->Sale_seller_tel_lineedit->setText(
+                    infoSeller(detail.Sale_Seller_ID).phone);
+        ui->Sale_seller_address_lineedit->setText(
+                    infoSeller(detail.Sale_Seller_ID).addr);
     }
 
 
@@ -80,23 +87,28 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
     //测试用
     QStringList items = StorageManage::getProductList();
     ui->Sale_item_id_combobox->clear();
-    if (items.empty()) {
+    /*if (items.empty()) {
         ui->Sale_item_id_combobox->addItem(QString::number(detail.Sale_Item_ID));
-    } else {
+    } else {*/
+    if(!items.empty()){
         ui->Sale_item_id_combobox->addItems(items);
     }
+
+    //}
 
     //初始化,遍历一次库存列表，判断所选商品索引,库存,读入结构体中数据
     int count = StorageManage::getAmount(detail.Sale_Item_ID); //库存
     int num = 0; //索引，默认0
-    foreach (QString item_id, items) {
-        if (item_id.toInt() == detail.Sale_Item_ID)break;
-        ++num;
-    }
-    //如果库存中没有同类商品。添加
-    if(num==items.count()){
-        ui->Sale_item_id_combobox->addItem(QString::number(
-                                               detail.Sale_Item_ID));
+    if(detail.Sale_Item_ID != -1){
+        foreach (QString item_id, items) {
+            if (item_id.toInt() == detail.Sale_Item_ID)break;
+            ++num;
+        }
+        //如果库存中没有同类商品。添加
+        if(num==items.count()){
+            ui->Sale_item_id_combobox->addItem(QString::number(
+                                                   detail.Sale_Item_ID));
+        }
     }
     //设置销售数量范围
     ui->Sale_item_num_lineedit->setValidator(
@@ -122,7 +134,8 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
         Sale_Is_Check(false);
     }
     //输入商品ID
-    Sale_Show_Item(detail.Sale_Item_ID);
+
+    Sale_Show_Item(ui->Sale_item_id_combobox->currentText().toInt());
     //显示订单记录
     Sale_Show_State(detail.Sale_Order_ID);
 }
@@ -147,6 +160,7 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
         ui->Sale_item_count_lineEdit->setText(tr("库存"));
         ui->Sale_item_purchase_price_lineEdit->setText(tr("进价"));
         ui->Sale_item_provider_lineEdit->setText(tr("供货商"));
+        ui->Sale_item_pic->clear();
         return true;
     }
     Product_Detail detail;
@@ -160,6 +174,7 @@ bool Sale_Detail_Dialog::Sale_Show_Item(int Item_ID)
     if(!pix.load(detail.Path)){
         qDebug()<<"打开文件失败";
     }
+    ui->Sale_item_pic->clear();
     ui->Sale_item_pic->setPixmap(pix);
     return true;
 }
@@ -209,6 +224,7 @@ void Sale_Detail_Dialog::on_Sale_item_id_combobox_currentIndexChanged(const QStr
 {
     int count = StorageManage::getAmount(Item_ID.toInt());
     //根据商品编号查商品信息(商品名，库存，供货商，进价）
+
     Sale_Show_Item(Item_ID.toInt());
     //重设销售数量范围
     ui->Sale_item_num_lineedit->setValidator(
