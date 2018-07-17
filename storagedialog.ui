@@ -21,6 +21,9 @@
   <property name="windowTitle">
    <string>库存管理</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
@@ -47,7 +50,7 @@
       <rect>
        <x>350</x>
        <y>40</y>
-       <width>77</width>
+       <width>82</width>
        <height>91</height>
       </rect>
      </property>
@@ -126,7 +129,7 @@
       <rect>
        <x>350</x>
        <y>150</y>
-       <width>77</width>
+       <width>82</width>
        <height>81</height>
       </rect>
      </property>

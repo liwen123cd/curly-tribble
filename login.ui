@@ -24,6 +24,9 @@
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
@@ -65,7 +68,7 @@
     <rect>
      <x>280</x>
      <y>80</y>
-     <width>77</width>
+     <width>82</width>
      <height>54</height>
     </rect>
    </property>

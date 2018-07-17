@@ -18,6 +18,9 @@
   <property name="windowTitle">
    <string>商品信息窗口</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
