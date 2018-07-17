@@ -26,10 +26,6 @@ int main(int argc, char *argv[])
 
     q.exec("insert into Storage_info values(1,'1号',100,100,0)");
     q.exec("insert into Storage_info values(2,'2号',100,100,-1)");
-   // qDebug()<<QDir::currentPath();
-   // qDebug()<<QDir::setCurrent(QString("../curly-tribble/img"));
-   // qDebug()<<QDir::currentPath();
-
 
 	Login login;
 	login.show();
