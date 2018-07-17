@@ -20,12 +20,20 @@
 #include <QModelIndex>
 #include <QPoint>
 
+
 //构造函数
 Sale_Widget::Sale_Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Sale_Widget)
 {
     ui->setupUi(this);
+
+    QPixmap _image;
+    _image.load("img/background");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
 
     if(!Sale_New_Table()){
         qDebug()<<tr("模型初始化失败");
