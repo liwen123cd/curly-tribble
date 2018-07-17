@@ -8,6 +8,7 @@
 #include <QtSql/QSqlDriver>
 #include <QSqlQuery>
 #include <QSqlError>
+#include "globaldata.h"
 
 #define SYS_USER_NUMBER 1
 #define SYS_STAFF_NUMBER 2
@@ -34,6 +35,6 @@ void sqlOperator(QString sql);
 bool checkExist(QString input, int number);
 int Sale_Sql(const QString &sql);
 bool sellerViewNull();
-
+Seller infoSeller(int id);
 
 #endif // SYS_SQLITE_H

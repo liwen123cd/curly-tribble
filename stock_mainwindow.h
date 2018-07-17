@@ -50,6 +50,11 @@ public slots:
     void on_pushButton_15_clicked();
     void on_pushButton_16_clicked();
     void on_pushButton_17_clicked();
+private slots:
+
+    void on_tableWidget_cellClicked(int row, int column);
+    void on_tableView_4_pressed(const QModelIndex &index);
+
 private:
     Ui::stock_MainWindow *ui;
     QSqlTableModel*stock_provider;
@@ -84,6 +89,7 @@ private:
     void stock_provider_select();
     void stock_mkplan_query();
     void stock_srplan_query(int index);
+    bool stock_save_ProductPicture(QString src_path, QString dest_path);
 };
 
 #endif // stock_MainWindow_H
