@@ -71,3 +71,10 @@ void MainWindow::on_pushButton_6_clicked()
     this->close();
     this->parentWidget()->show();
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    event->accept();
+    this->close();
+    this->parentWidget()->show();
+}

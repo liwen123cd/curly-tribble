@@ -13,8 +13,8 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));//正确显示中文
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));//正确显示中文
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));// 正确显示中文
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));// 正确显示中文
 
 	createConnectSqlite();
 

@@ -39,7 +39,6 @@ private slots:
 private:
 	Ui::Sys_Add_Staff *ui;
 	QString staff_filename;
-	int number;
 };
 
 #endif // SYS_ADD_STAFF_H

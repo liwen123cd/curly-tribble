@@ -10,8 +10,6 @@ StaffManager::StaffManager(QWidget *parent) :
     ui(new Ui::StaffManager)
 {
     ui->setupUi(this);
-    addStaff = new Sys_Add_Staff(this);
-    addSeller = new Sys_Add_Seller(this);
     model = new QSqlTableModel(this);
     init();
     init2();
@@ -24,7 +22,7 @@ StaffManager::~StaffManager()
 
 void StaffManager::on_pushButton_clicked()
 {
-    //    Sys_Add_Staff *add_staff = new Sys_Add_Staff;
+    addStaff = new Sys_Add_Staff(this);
     addStaff->exec();
     model->select();
 }
@@ -199,7 +197,8 @@ void StaffManager::on_pushButton_12_clicked()
 
 void StaffManager::on_pushButton_5_clicked()
 {
-    addSeller->show();
+    addSeller = new Sys_Add_Seller(this);
+    addSeller->exec();
     model2->select();
 }
 
@@ -249,6 +248,7 @@ void StaffManager::init2()
 {
     model2 = new QSqlTableModel(this);
     model2->setTable("Seller_View");
+    model2->setFilter("Seller_Id != -1");
     model2->select();
     model2->setHeaderData(0, Qt::Horizontal, tr("卖家ID"));
     model2->setHeaderData(1, Qt::Horizontal, tr("姓名"));
@@ -283,28 +283,15 @@ void StaffManager::on_pushButton_6_clicked()
         if (ok == QMessageBox::No) {
             model2->revertAll();
         } else {
-            QSqlQuery query;
-            QString deleteSql1 = QString("delete "
-                                         "from Storage_info "
-                                         "where sellerID = :sellerID");
-            query.prepare(deleteSql1);
-            query.bindValue(":sellerID", currentID);
-            if (!query.exec()) {
-                QMessageBox::information(this, "提示",
-                                         query.lastError().text());
-                qDebug() << query.lastError();
-            } else {
-                QMessageBox::information(this, "提示",
-                                         "您已成功从仓库表删除卖家信息！");
-            }
-
             //  调用 仓库的接口函数 回收卖家所拥有的仓库
             StorageManage::freeStorage(currentID);
 
-            QString deleteSql2 = QString("delete "
+            // 从数据库中删除卖家的信息
+            QSqlQuery query;
+            QString deleteSql1 = QString("delete "
                                          "from Sys_Seller "
                                          "where Seller_Id = :Seller_Id");
-            query.prepare(deleteSql2);
+            query.prepare(deleteSql1);
             query.bindValue(":Seller_Id", currentID);
             if (!query.exec()) {
                 QMessageBox::information(this, "提示",
@@ -315,6 +302,28 @@ void StaffManager::on_pushButton_6_clicked()
                                          "您已成功删除卖家信息！");
             }
         }
+    }
+    model2->select();
+}
+
+void StaffManager::on_pushButton_7_clicked()
+{
+    int curRow = ui->tableView_2->currentIndex().row();
+    qDebug() << curRow;
+    if (-1 == curRow) {
+        QMessageBox::warning(this, tr("提示"),
+                             "请先选中一行！");
+    } else {
+        seller = new Seller;
+        QSqlRecord record = model2->record(curRow);
+        seller->id = record.value(0).toInt();
+        seller->name = record.value(1).toString();
+        seller->phone = record.value(2).toString();
+        seller->addr = record.value(3).toString();
+        seller->number = record.value(4).toInt();
+
+        mainTainSeller = new Sys_Maintain_Seller(this);
+        mainTainSeller->exec();
     }
     model2->select();
 }

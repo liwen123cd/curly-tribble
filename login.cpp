@@ -56,14 +56,12 @@ void Login::on_pushButton_clicked()
 
     if (model.rowCount() == 1) {
         // 表示密码验证正确，登陆成功
-        // ...... 显示登录后的状态
         QMessageBox::information(this, "登录", "恭喜您登录成功！");
-        //留着跳转到主窗口
 
+        //留着跳转到主窗口
         Data::is_admin = identify;
+//        User::name = login_name;
         qDebug() << Data::is_admin;
-//        MainWindow *mainwindow = new MainWindow;
-//        mainwindow->show();
         mainw = new MainWindow(this);
         mainw->show();
         this->hide();
