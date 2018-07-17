@@ -16,8 +16,8 @@
 #include "stock_mainwindow.h"
 #include "globaldata.h"
 #include "sale_widget.h"
+#include "addstodialog.h"
 
-//int is_admin = 1;
 
 StorageDialog::StorageDialog(QWidget *parent) :
     QDialog(parent),
@@ -26,6 +26,7 @@ StorageDialog::StorageDialog(QWidget *parent) :
     ui->setupUi(this);
     queryDialog = new QueryDialog(this);
     insertDialog = new InsertDialog(this);
+    addStoDialog = new AddStoDialog(this);
     db = QSqlDatabase::database();
     QSqlQuery query(db);
 
@@ -51,6 +52,7 @@ StorageDialog::StorageDialog(QWidget *parent) :
     modelSto->setHeaderData(3, Qt::Horizontal, "剩余空间");
     modelSto->setHeaderData(4, Qt::Horizontal, "拥有者");
     modelSto->select();
+    //modelSto->setEditStrategy(QSqlRelationalTableModel::OnManualSubmit);
     ui->tableView_sto->setModel(modelSto);
 
     // 信号与槽的连接
@@ -437,4 +439,25 @@ void StorageDialog::on_pushBtn_confirm_clicked()
 void StorageDialog::on_pushBtn_refresh_clicked()
 {
     modelSto->select();
+}
+
+// 添加仓库
+void StorageDialog::on_pushBtn_add_sto_clicked()
+{
+    addStoDialog->show();
+}
+
+// 删除仓库
+void StorageDialog::on_pushBtn_del_sto_clicked()
+{
+    int row = ui->tableView_sto->currentIndex().row();
+    int ok = QMessageBox::warning(this, "删除仓库", "是否删除？",
+                                  QMessageBox::Yes, QMessageBox::No);
+    if (QMessageBox::No == ok) {
+        return;
+    }
+    if (!modelSto->removeRow(row)) {
+        QMessageBox::warning(this, "错误", "删除失败，请查看该仓库是否处于空闲状态。");
+    }
+    modelSto->submit();
 }

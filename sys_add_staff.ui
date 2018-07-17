@@ -21,6 +21,9 @@
   <property name="windowTitle">
    <string>添加职工窗口</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -38,8 +41,8 @@
      <rect>
       <x>260</x>
       <y>30</y>
-      <width>141</width>
-      <height>191</height>
+      <width>383</width>
+      <height>405</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">

@@ -52,7 +52,8 @@ SOURCES += \
     storagemanage.cpp \
     myitemdelegate.cpp \
     sys_add_seller.cpp \
-    sys_maintain_seller.cpp
+    sys_maintain_seller.cpp \
+    addstodialog.cpp
 
 HEADERS += \
     register.h \
@@ -78,7 +79,8 @@ HEADERS += \
     storagemanage.h \
     myitemdelegate.h \
     sys_add_seller.h \
-    sys_maintain_seller.h
+    sys_maintain_seller.h \
+    addstodialog.h
 
 FORMS += \
         login.ui \
@@ -99,7 +101,8 @@ FORMS += \
     querydialog.ui \
     insertdialog.ui \
     sys_add_seller.ui \
-    sys_maintain_seller.ui
+    sys_maintain_seller.ui \
+    addstodialog.ui
 
 RESOURCES += \
     staff_img.qrc \

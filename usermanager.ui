@@ -21,6 +21,9 @@
   <property name="windowTitle">
    <string>系统管理窗口</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">

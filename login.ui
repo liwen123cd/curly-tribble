@@ -30,6 +30,9 @@
   </property>
   <property name="autoFillBackground">
    <bool>false</bool>
+=======
+   <bool>true</bool>
+>>>>>>> e1ed8846bf6c8f42f6ff56b209d6182aac7777d8
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
@@ -72,7 +75,7 @@
     <rect>
      <x>280</x>
      <y>80</y>
-     <width>77</width>
+     <width>82</width>
      <height>54</height>
     </rect>
    </property>

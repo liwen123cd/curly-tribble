@@ -21,7 +21,10 @@
   <property name="windowTitle">
    <string>注册窗口</string>
   </property>
-  <widget class="QWidget" name="">
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>90</x>

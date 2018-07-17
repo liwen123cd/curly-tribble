@@ -76,6 +76,7 @@ stock_MainWindow::stock_MainWindow(QWidget *parent) :
     connect(ui->tableView_6, SIGNAL(pressed(QModelIndex)), this, SLOT(stock_tableview_6_clicked(QModelIndex)));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(on_tabWidget_currentChanged(int)));
     connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(stock_tableview_doubleclicked(QModelIndex)));
+    connect(stock_provider_product,SIGNAL(dataChanged(QModelIndex,QModelIndex)),this,SLOT(stock_productPrice_changed(QModelIndex,QModelIndex)));
     ui->lcdNumber->setDigitCount(4);
     ui->lcdNumber->setSegmentStyle(QLCDNumber::Flat);
     ui->lcdNumber_2->setDigitCount(10);
@@ -154,4 +155,5 @@ void stock_MainWindow::on_tabWidget_currentChanged(int index)
         break;
     }
 }
+
 

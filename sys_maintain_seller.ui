@@ -18,6 +18,9 @@
   <property name="windowTitle">
    <string>维护卖家信息窗口</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
@@ -111,7 +114,7 @@
    <property name="title">
     <string>请在此输入您修改的信息：</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
