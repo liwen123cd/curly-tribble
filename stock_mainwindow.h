@@ -55,6 +55,11 @@ private slots:
     void on_tableWidget_cellClicked(int row, int column);
     void on_tableView_4_pressed(const QModelIndex &index);
 
+    void on_tableWidget_itemChanged(QTableWidgetItem *item);
+
+    void on_tableWidget_pressed(const QModelIndex &index);
+
+    void stock_productPrice_changed(const QModelIndex &left, const QModelIndex &right);
 private:
     Ui::stock_MainWindow *ui;
     QSqlTableModel*stock_provider;
