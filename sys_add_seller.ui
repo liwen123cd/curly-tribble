@@ -21,6 +21,9 @@
   <property name="windowTitle">
    <string>添加卖家窗口</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>

@@ -16,6 +16,9 @@
   <property name="statusTip">
    <string>欢迎使用我们制作的智能物流管理系统，希望你拥有快乐的一天！</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <property name="styleSheet">
    <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
   </property>
@@ -84,7 +87,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

@@ -21,6 +21,9 @@
   <property name="windowTitle">
    <string>库存管理</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
@@ -47,7 +50,7 @@
       <rect>
        <x>350</x>
        <y>40</y>
-       <width>77</width>
+       <width>82</width>
        <height>91</height>
       </rect>
      </property>
@@ -126,7 +129,7 @@
       <rect>
        <x>350</x>
        <y>150</y>
-       <width>77</width>
+       <width>82</width>
        <height>81</height>
       </rect>
      </property>
@@ -273,7 +276,7 @@
       <rect>
        <x>20</x>
        <y>50</y>
-       <width>411</width>
+       <width>311</width>
        <height>221</height>
       </rect>
      </property>
@@ -284,10 +287,10 @@
       <bool>false</bool>
      </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>70</number>
+      <number>60</number>
      </attribute>
      <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>70</number>
+      <number>60</number>
      </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
@@ -322,6 +325,32 @@
      </property>
      <property name="text">
       <string>刷新</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushBtn_add_sto">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>60</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>添加仓库</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushBtn_del_sto">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>100</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>删除仓库</string>
      </property>
     </widget>
    </widget>
