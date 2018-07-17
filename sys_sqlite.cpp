@@ -501,6 +501,23 @@ bool sellerViewNull()
         else
             flag = false;
     }
-
     return flag;
+}
+
+Seller infoSeller(int id)
+{
+    Seller * seller = new Seller;
+    QSqlQuery query;
+    QString sql = QString("select SellerName, SellerPhone, "
+                          "select SellerAddr "
+                          "from Sys_Seller "
+                          "where Seller_Id = '%1'")
+            .arg(id);
+    query.exec(sql);
+    while(query.next()) {
+        seller->name = query.value(1).toString();
+        seller->phone = query.value(2).toString();
+        seller->addr = query.value(3).toString();
+    }
+    return seller;
 }
