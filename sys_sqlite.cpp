@@ -78,11 +78,11 @@ void createConnectSqlite()
                                  "Sale_Buyer_Address varchar(40),"
                                  "Sale_Seller_ID integer "
                                  "REFERENCES Sys_Seller (Seller_Id)," //外键
-                                 "Sale_Item_ID int "
+                                 "Sale_Item_ID integer "
                                  "REFERENCES stock_provider_product (id),"//外键
-                                 "Sale_Item_Num int,"
+                                 "Sale_Item_Num integer,"
                                  "Sale_Item_Price float,"
-                                 "Sale_Order_Finished int)";
+                                 "Sale_Order_Finished integer)";
 
     QString createSaleStateSql = "create table Sale_State("
                                  "Sale_State_ID integer primary key autoincrement,"
@@ -224,9 +224,7 @@ void createConnectSqlite()
 void createTable(QString createSql, QString tableName)
 {
     QSqlQuery query;
-    qDebug() << createSql;
     query.exec(createSql);
-    //qDebug()<<query.lastError();
     if (isTableExist(tableName)) {
         qDebug() << tableName + "表已经存在，无须重新创建！";
     } else {
@@ -253,7 +251,6 @@ bool isTableExist(QString tableName)
                 QString(
                     "select count(*) from sqlite_master "
                     "where type='table' and name='%1'").arg(tableName));
-    //    qDebug()<<isTableExist;
     return isTableExist;
 }
 
@@ -478,6 +475,7 @@ int Sale_Sql(const QString &sql)
 {
     QSqlQuery query;
     query.exec(sql);
+    // 这个地方初始化会 -1
     qDebug()<<query.lastError();
     return query.lastError().number();
 }
@@ -499,7 +497,6 @@ bool sellerViewNull()
     query.exec(checkSql);
     while(query.next())
     {
-//        qDebug()<<query.value(0).toString();
         if(0 == query.value(0).toInt())
             flag = true;
         else

@@ -27,7 +27,9 @@ Sale_Widget::Sale_Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    Sale_New_Table();
+    if(!Sale_New_Table()){
+        qDebug()<<tr("模型初始化失败");
+    }
     ui->tableView->setModel(Sale_Table_Model);
     //子窗口订单详细信息
     Sale_Dialog = new Sale_Detail_Dialog(this);
@@ -390,7 +392,7 @@ void Sale_Widget::Sale_Set_Min_End_Date(const QDate &dt)
 void Sale_Widget::Sale_New_Order_ID(const QString &Buyer_Tel, QString &Order_ID)
 {
 
-    //根据卖家id，买家手机号，日期生成订单号
+    //根据买家手机号，日期生成订单号
     //时间
     QDateTime current_time = QDateTime::currentDateTime();
     Order_ID += current_time.toString("yyMMddhhmmss");
@@ -503,17 +505,21 @@ void Sale_Widget::on_Sale_pushButton_save_clicked()
 }
 
 //暂存一条修改记录
-void Sale_Widget::Sale_State_Order(const QString &Order_ID, const QString &Order_State)
+bool Sale_Widget::Sale_State_Order(const QString &Order_ID, const QString &Order_State)
 {
+    if(Order_ID==""||Order_State==""){
+        return false;
+    }
     Sale_State_Detail detail;
     detail.Sale_Date = QDateTime::currentDateTime();
     detail.Sale_Order_ID = Order_ID;
     detail.Sale_Order_State = Order_State;
     Sale_State.push_back(detail);
+    return true;
 }
 
 //保存修改记录
-void Sale_Widget::Sale_Save_Record()
+bool Sale_Widget::Sale_Save_Record()
 {
     //将Sale_State里的信息存入Sale_State表
 
@@ -522,13 +528,14 @@ void Sale_Widget::Sale_Save_Record()
     for (std::vector<Sale_State_Detail>::iterator i = Sale_State.begin();
          i < Sale_State.end(); ++i) {
         sql << "insert into Sale_State(Sale_Order_ID,Sale_Order_State,Sale_Date) values('";
-        sql << i->Sale_Order_ID;
+        sql << i->Sale_Order_ID;        
         sql << "','";
         sql << i->Sale_Order_State;
+        //qDebug()<<i->Sale_Order_State;
         sql << "','";
         sql << i->Sale_Date.toString("yyyy-MM-dd hh:mm:ss");
         sql << "')";
-        if (i->Sale_Order_State=="新建订单") {
+        if (i->Sale_Order_State != "") {
             int row = 0;
             while (1) {
                 if (Sale_Table_Model->record(row).value(0).toString() ==
@@ -538,16 +545,21 @@ void Sale_Widget::Sale_Save_Record()
             QSqlRecord record = Sale_Table_Model->record(row);
             //调用出库函数
             StorageManage::sellOut(record.value(0).toString(), record.value(5).toInt(), record.value(6).toInt());
-        }else{
+
+            if (-1 != Sale_Sql(sql.join(""))) {
+                QMessageBox::warning(this, tr("警告"), sql.join(""), QMessageBox::Ok);
+            }
+        }else if(i->Sale_Order_State== "删除订单"){
             //改函数
-            StorageManage::sellOut(i->Sale_Order_ID,0,0);
+            StorageManage::cancelSellOut(i->Sale_Order_ID);
+        }else{
+            return false;
         }
-        if (-1 != Sale_Sql(sql.join(""))) {
-            QMessageBox::warning(this, tr("警告"), sql.join(""), QMessageBox::Ok);
-        }
+
         sql.clear();
     }
     Sale_State.clear();
+    return true;
     //记录重新排序(暂时不做)
 }
 
@@ -561,24 +573,23 @@ void Sale_Widget::on_Sale_puushButton_revoke_clicked()
 
 }
 //样式初始化
-void Sale_Widget::Sale_New_Table()
+bool Sale_Widget::Sale_New_Table()
 {
     //初始化
 
-    //显示管理员用
+    //显示管理员用,隐藏非管理员用
     if (Data::is_admin) {
         ui->Sale_pushButton_new->setEnabled(false);
         ui->Sale_pushButton_change->setEnabled(false);
         ui->Sale_pushButton_delete->setEnabled(false);
         ui->Sale_pushButton_cancel->setEnabled(false);
-    }
-    //隐藏非管理员
-    if(!Data::is_admin){
+    }else {
         ui->Sale_pushButton_recive->hide();
         ui->Sale_lineEdit_seller_id->hide();
         ui->label_6->hide();
     }
 
+    ui->Sale_pushButton_change->hide();
     //时间初始化
     ui->Sale_dateEdit_start->setDateTimeRange(ui->Sale_dateEdit_start->dateTime(),
             QDateTime::currentDateTime());
@@ -596,7 +607,9 @@ void Sale_Widget::Sale_New_Table()
     }
     Sale_Table_Model->setSort(0, Qt::DescendingOrder);
     Sale_Table_Model->select();
-
+    if(Sale_Table_Model->lastError().number()!=-1){
+        return false;
+    }
     //qDebug()<<Sale_Table_Model->lastError();
     //tablemodel样式设置
     Sale_Table_Model->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -610,7 +623,6 @@ void Sale_Widget::Sale_New_Table()
     Sale_Table_Model->setHeaderData(7, Qt::Horizontal, tr("商品售价"));
     Sale_Table_Model->setHeaderData(8, Qt::Horizontal, tr("订单状态"));
 
-
     //tableview样式设置
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -619,6 +631,7 @@ void Sale_Widget::Sale_New_Table()
 
     on_Sale_pushButton_select_number_clicked();
 
+    return true;
 
 }
 //槽函数，双击事件

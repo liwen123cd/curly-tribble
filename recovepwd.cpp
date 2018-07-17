@@ -10,8 +10,10 @@ RecovePwd::RecovePwd(QWidget *parent) :
     QCompleter *m_completer = new QCompleter(m_model, this);
     ui->lineEdit->setCompleter(m_completer);
 
-    connect(m_completer, SIGNAL(activated(const QString&)), this, SLOT(onEmailChoosed(const QString&)));
-    connect(ui->lineEdit, SIGNAL(textChanged(const QString&)), this, SLOT(onTextChanged(const QString&)));
+    connect(m_completer, SIGNAL(activated(const QString&)),
+            this, SLOT(onEmailChoosed(const QString&)));
+    connect(ui->lineEdit, SIGNAL(textChanged(const QString&)),
+            this, SLOT(onTextChanged(const QString&)));
 }
 
 RecovePwd::~RecovePwd()
@@ -37,19 +39,23 @@ void RecovePwd::on_pushButton_2_clicked()
 
 void RecovePwd::onEmailChoosed(const QString& email)
 {
-    ui->lineEdit->clear();    // 清除已存在的文本更新内容
+    // 清除已存在的文本更新内容
+    ui->lineEdit->clear();
     ui->lineEdit->setText(email);
 }
 
 void RecovePwd::onTextChanged(const QString& str)
 {
-    if (str.contains("@")) { // 如果已经输入了@符号，我们就停止补全了。因为到了这一步，我们再补全意义也不大了。
+    // 如果已经输入了@符号，我们就停止补全了。
+    // 因为到了这一步，我们再补全意义也不大了。
+    if (str.contains("@")) {
         return;
     }
     QStringList strlist;
     strlist << "@163.com" << "@qq.com" << "@gmail.com" << "@hotmail.com" << "@126.com";
-
-    m_model->removeRows(0, m_model->rowCount());   // 先清楚已经存在的数据，不然的话每次文本变更都会插入数据，最后出现重复数据
+    // 先清楚已经存在的数据，不然的话每次文本
+    // 变更都会插入数据，最后出现重复数据
+    m_model->removeRows(0, m_model->rowCount());
     for (int i = 0; i < strlist.size(); ++i) {
         m_model->insertRow(0);
         m_model->setData(m_model->index(0, 0), str + strlist.at(i));

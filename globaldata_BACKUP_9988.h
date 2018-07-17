@@ -71,11 +71,17 @@ struct Sale_State_Detail {
 
 // 商品信息
 struct Product_Detail {
+<<<<<<< HEAD
 	//商品信息
 	QString Product_Name;
 	float Product_Price;
 	QString Product_Provider;
     QString Path;
+=======
+    QString Product_Name;
+    float Product_Price;
+    QString Product_Provider;
+>>>>>>> 1fc06df99f1868a8946743a7b494dc20baa5bf0b
 
 };
 

@@ -9,6 +9,7 @@
 #include "sys_add_staff.h"
 #include "sys_maintain_staff.h"
 #include "sys_add_seller.h"
+#include "sys_maintain_seller.h"
 
 namespace Ui
 {
@@ -50,6 +51,8 @@ private slots:
 
     void on_pushButton_6_clicked();
 
+    void on_pushButton_7_clicked();
+
 private:
     Ui::StaffManager *ui;
     QSqlTableModel *model;
@@ -57,7 +60,9 @@ private:
     Sys_Add_Staff *addStaff;
     Sys_Maintain_Staff *mainTain;
     Sys_Add_Seller *addSeller;
+    Sys_Maintain_Seller *mainTainSeller;
     Staff *staff;
+    Seller *seller;
 };
 
 #endif // STAFFMANAGER_H
