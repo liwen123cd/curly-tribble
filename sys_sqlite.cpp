@@ -507,7 +507,7 @@ bool sellerViewNull()
 
 Seller infoSeller(int id)
 {
-    Seller * seller = new Seller;
+    Seller seller;
     QSqlQuery query;
     QString sql = QString("select SellerName, SellerPhone, "
                           "select SellerAddr "
@@ -516,9 +516,9 @@ Seller infoSeller(int id)
             .arg(id);
     query.exec(sql);
     while(query.next()) {
-        seller->name = query.value(1).toString();
-        seller->phone = query.value(2).toString();
-        seller->addr = query.value(3).toString();
+        seller.name = query.value(1).toString();
+        seller.phone = query.value(2).toString();
+        seller.addr = query.value(3).toString();
     }
     return seller;
 }
