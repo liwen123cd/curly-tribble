@@ -297,12 +297,13 @@ void stock_MainWindow::stock_tableview_doubleclicked(const QModelIndex &index)
     int provider_id = query.value(1).toInt();
     QString product_name = query.value(2).toString();
     float price = query.value(3).toFloat();
+    QString path=query.value(4).toString();
     query.exec(tr("select * from stock_provider where id=%1").arg(provider_id));
     query.next();
     QString provider_name = query.value(2).toString();
     QString address = query.value(3).toString();
     stock_Dialog *dialog = new stock_Dialog(this);
-    dialog->set_content(product_name, price, provider_name, address);
+    dialog->set_content(product_name, price, provider_name, address,path);
     dialog->setModal(false);
     dialog->show();
 

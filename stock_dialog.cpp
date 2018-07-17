@@ -14,10 +14,13 @@ stock_Dialog::~stock_Dialog()
 	delete ui;
 }
 
-void stock_Dialog::set_content(QString product_name, float price, QString provider_name, QString address)
+void stock_Dialog::set_content(QString product_name, float price, QString provider_name, QString address,QString path)
 {
 	ui->lineEdit->setText(product_name);
 	ui->lineEdit_2->setText(tr("%1").arg(price));
 	ui->lineEdit_3->setText(provider_name);
 	ui->lineEdit_4->setText(address);
+    ui->label_5->setPixmap(QPixmap(path));
+    //ui->label_5->setScaledContents(true);
+    ui->label_5->show();
 }

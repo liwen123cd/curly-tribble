@@ -7,6 +7,7 @@
 #include <QStringList>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QFileDialog>
 #include <QSqlError>
 void stock_MainWindow::stock_provider_model_init()
 {
@@ -44,6 +45,7 @@ void stock_MainWindow::stock_set_headname()
     stock_provider->setHeaderData(3, Qt::Horizontal, tr("供货商地址"));
     stock_provider_product->setHeaderData(2, Qt::Horizontal, tr("商品名称"));
     stock_provider_product->setHeaderData(3, Qt::Horizontal, tr("商品价格"));
+    stock_provider_product->setHeaderData(4,Qt::Horizontal,tr("商品图片"));
 }
 void stock_MainWindow::set_provider_visible(bool b)
 {
@@ -159,16 +161,33 @@ void stock_MainWindow::on_pushButton_4_clicked()
                 stock_provider_product->database().rollback();
                 return;
             }
-            query.prepare("insert into stock_provider_product(id,provider_id,name,price) values(?,?,?,?)");
+            QString src_path=ui->tableWidget->item(i,2)->text();//图片源路径
+            QString dest_path;//图片目的路径
+             QString file_type;//图片文件的类型
+            if(src_path=="") dest_path="../curly-tribble/img/product/na.jpg";
+            else
+            {
+                if(src_path.endsWith(".png"))  file_type=".png";//因为我只允许添加这两种类型的文件，所以一个判断即可
+                else  file_type=".jpg";
+                dest_path=QString("../curly-tribble/img/product/product_")+QString::number(id)+file_type;
+            }
+            query.prepare("insert into stock_provider_product(id,provider_id,name,price,path) values(?,?,?,?,?)");
             query.addBindValue(id);
             query.addBindValue(provider_id);
             query.addBindValue(name);
             query.addBindValue(price);
-            if(!query.exec())
+            query.addBindValue(dest_path);
+            while(!query.exec())
             {
-                QMessageBox::warning(this, tr("错误"), tr("由于未知的原因（很可能是id重复），添加供货商失败！"));
-                stock_provider_product->database().rollback();
+                id=stock_make_id(5+i);
+                query.bindValue(0,id);
+                if(src_path!="") dest_path=QString("../curly-tribble/img/product/product_")+QString::number(id)+file_type;
+                query.bindValue(4,dest_path);
                 qDebug() << query.lastError();
+            }
+            if(!stock_save_ProductPicture(src_path,dest_path))
+            {
+                stock_provider_product->database().rollback();
                 return;
             }
         }
@@ -182,6 +201,36 @@ void stock_MainWindow::on_pushButton_4_clicked()
         break;
     }
 }
+/*这个函数负责把用户提供的图片文件存放在项目的img文件夹下
+ *
+ */
+bool stock_MainWindow::stock_save_ProductPicture(QString src_path,QString dest_path)
+{
+    if(src_path=="") return true;
+    QFile src_file(src_path);
+    QFile dest_file(dest_path);
+    char buffer[4096];
+    if(!src_file.open(QIODevice::ReadOnly))
+    {
+        QMessageBox::warning(this, tr("错误"), tr("打开源图片文件出错！！！"));
+        qDebug()<<src_path;
+        return false;
+    }
+    if(!dest_file.open(QIODevice::WriteOnly))
+    {
+        QMessageBox::warning(this, tr("错误"), tr("创建目的图片文件出错！！！"));
+        qDebug()<<dest_path;
+        return false;
+    }
+    while(!src_file.atEnd())
+    {
+        int ret=src_file.read(buffer,4096);
+        dest_file.write(buffer,ret);
+    }
+    return true;
+
+}
+
 void stock_MainWindow::on_pushButton_5_clicked()
 {
 
@@ -200,7 +249,11 @@ void stock_MainWindow::on_pushButton_5_clicked()
         stock_provider_product->setData(stock_provider_product->index(rowNum, 1), provider_id);
         break;
     case 1:
-        ui->tableWidget->setRowCount(ui->tableWidget->rowCount() + 1); break;
+        rowNum=ui->tableWidget->rowCount();
+        ui->tableWidget->setRowCount(rowNum+ 1);
+        ui->tableWidget->setItem(rowNum,2,new QTableWidgetItem());
+        ui->tableWidget->item(rowNum,2)->setFlags(Qt::NoItemFlags);
+        break;
     default:
         break;
     }
@@ -303,4 +356,36 @@ void stock_MainWindow::on_pushButton_16_clicked()
 void stock_MainWindow::on_pushButton_17_clicked()
 {
     on_pushButton_5_clicked();
+}
+
+void stock_MainWindow::on_tableWidget_cellClicked(int row, int column)
+{
+    if(column!=2) return;
+    else
+    {
+        QString filename=QFileDialog::getOpenFileName(this,tr("请选择图片文件"),"F:",tr("图片文件(*png *jpg)"));
+        qDebug()<<filename;
+        ui->tableWidget->item(row,column)->setText(filename);
+    }
+}
+
+
+void stock_MainWindow::on_tableView_4_pressed(const QModelIndex &index)
+{
+    if(!ui->pushButton_4->isVisible()) return;
+    if(index.column()!=4) return;
+    QString filename=QFileDialog::getOpenFileName(this,tr("请选择图片文件"),"F:",tr("图片文件(*png *jpg)"));
+    qDebug()<<filename;
+    if(filename=="") return;
+    QString dest_path=stock_provider_product->data(index).toString();
+    if(dest_path=="../curly-tribble/img/product/na.jpg")
+    {
+        int id=stock_provider_product->data(stock_provider_product->index(index.row(),0)).toInt();
+        QString file_type;//图片文件的类型
+        if(filename.endsWith(".png"))  file_type=".png";//因为我只允许添加这两种类型的文件，所以一个判断即可
+        else  file_type=".jpg";
+        dest_path=QString("../curly-tribble/img/product/product_")+QString::number(id)+file_type;
+        stock_provider_product->setData(index,dest_path);
+    }
+    stock_save_ProductPicture(filename,stock_provider_product->data(index).toString());
 }
