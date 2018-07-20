@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>490</width>
-    <height>365</height>
+    <width>500</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="font">
@@ -24,9 +24,9 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>20</x>
      <y>30</y>
-     <width>151</width>
+     <width>191</width>
      <height>151</height>
     </rect>
    </property>
@@ -38,7 +38,7 @@
      <rect>
       <x>10</x>
       <y>40</y>
-      <width>123</width>
+      <width>171</width>
       <height>88</height>
      </rect>
     </property>
@@ -183,97 +183,81 @@
     <string>重置</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_13">
+  <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>200</y>
-     <width>61</width>
-     <height>20</height>
+     <x>20</x>
+     <y>190</y>
+     <width>180</width>
+     <height>150</height>
     </rect>
    </property>
-   <property name="text">
-    <string>拥有仓库：</string>
+   <property name="maximumSize">
+    <size>
+     <width>180</width>
+     <height>150</height>
+    </size>
    </property>
+   <property name="title">
+    <string>拥有仓库</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" colspan="2">
+     <widget class="QTextBrowser" name="textBrowser_pro"/>
+    </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLineEdit" name="lineEdit_pro"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_del">
+        <property name="text">
+         <string>删除</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
-  <widget class="QLabel" name="label_14">
+  <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>200</y>
-     <width>61</width>
-     <height>20</height>
+     <x>210</x>
+     <y>190</y>
+     <width>180</width>
+     <height>150</height>
     </rect>
    </property>
-   <property name="text">
-    <string>空闲仓库：</string>
+   <property name="maximumSize">
+    <size>
+     <width>180</width>
+     <height>150</height>
+    </size>
    </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_del">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>310</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
+   <property name="title">
+    <string>空闲仓库</string>
    </property>
-   <property name="text">
-    <string>删除</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_add">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>310</y>
-     <width>51</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>添加</string>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="textBrowser_pro">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>230</y>
-     <width>151</width>
-     <height>71</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="textBrowser_free">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>230</y>
-     <width>151</width>
-     <height>71</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_pro">
-   <property name="geometry">
-    <rect>
-     <x>32</x>
-     <y>310</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_free">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>310</y>
-     <width>81</width>
-     <height>20</height>
-    </rect>
-   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0" colspan="2">
+     <widget class="QTextBrowser" name="textBrowser_free"/>
+    </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLineEdit" name="lineEdit_free"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_add">
+        <property name="text">
+         <string>添加</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

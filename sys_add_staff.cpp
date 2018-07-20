@@ -7,8 +7,9 @@ Sys_Add_Staff::Sys_Add_Staff(QWidget *parent) :
     ui(new Ui::Sys_Add_Staff)
 {
     ui->setupUi(this);
-    staff_filename = "img/na.jpg";
+    staff_filename = ":/img/img/na.jpg";
     ui->radioButton->setChecked(true);
+//    init();
 }
 
 Sys_Add_Staff::~Sys_Add_Staff()
@@ -121,6 +122,6 @@ void Sys_Add_Staff::init()
     ui->radioButton->setChecked(true);
     ui->comboBox->setCurrentIndex(0);
     ui->textEdit->clear();
-    staff_filename = ":/new/img/img/na.jpg";
+    staff_filename = ":/img/img/na.jpg";
     ui->label_7->setPixmap(QPixmap(staff_filename));
 }

@@ -24,6 +24,12 @@ StorageDialog::StorageDialog(QWidget *parent) :
     ui(new Ui::StorageDialog)
 {
     ui->setupUi(this);
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
     queryDialog = new QueryDialog(this);
     insertDialog = new InsertDialog(this);
     addStoDialog = new AddStoDialog(this);

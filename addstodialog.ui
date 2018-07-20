@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>添加仓库窗口</string>
   </property>
   <widget class="QLineEdit" name="lineEdit_stoname">
    <property name="geometry">

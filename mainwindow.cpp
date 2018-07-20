@@ -7,10 +7,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setAutoFillBackground(true);
+    QPixmap _image;
+    _image.load(":/img/login/logo3.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
+    QFile file(":/css/style/default.css");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = tr(file.readAll());
+    this->setStyleSheet(styleSheet);
+    file.close();
     if (0 == Data::is_admin) {
         ui->pushButton->setVisible(false);
         ui->pushButton_3->setVisible(false);
     }
+
+
     qDebug() << User::name;
     sf = new StaffManager(this);
     sf->setWindowFlags(Qt::Window);
@@ -68,8 +82,9 @@ void MainWindow::on_pushButton_4_clicked()
 
 void MainWindow::on_pushButton_6_clicked()
 {
-    this->close();
+//    this->close();
     this->parentWidget()->show();
+    delete this;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

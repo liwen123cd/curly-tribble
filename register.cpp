@@ -7,12 +7,23 @@ Register::Register(QWidget *parent) :
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+
+    this->setAutoFillBackground(true);
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window,
+                 QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
+
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
     ui->lineEdit_3->setEchoMode(QLineEdit::Password);
     ui->label_6->setVisible(false);
     ui->lineEdit_5->setVisible(false);
     ui->label_7->setVisible(false);
     ui->lineEdit_6->setVisible(false);
+
 }
 
 Register::~Register()

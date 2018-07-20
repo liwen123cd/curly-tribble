@@ -1,46 +1,64 @@
-QWidget {
-background-image: url("/img/bg2.png");
+QWidget, QMainWindow, QLabel, QDialog, QTableView {
+    font: 9pt "Microsoft YaHei UI";
 }
 
-
-QLineEdit {
-        text-align: center;
-        background-color: transparent;
-        border: 2px solid lightslategrey;
-        selection-color: red;
-        selection-background-color: gray;
+/* === QPushButton === */
+QLineEdit, QPushButton {
+    border: 1px solid #333333;
+    padding: 3px;
+    min-width: 65px;
+    min-height: 12px;
 }
 
-QPushButton{
-    color: white;
-    border-radius: 3px;
+QPushButton:hover {
+    background-color: lightslategrey;
+    border-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+    border-color: #333333;
+    color: antiquewhite;
+}
+
+QPushButton:disabled {
+    color: #333333;
 }
 
 /**********表格**********/
-QTableView {
+QTableView, QTableWidget {
         border: 1px solid gray;
         background: white;
         gridline-color: gray;
 }
 
-QTableView::item {
+QTableView::item, QTableWidget::item {
         padding-left: 5px;
         padding-right: 5px;
         border: none;
-        background: gray;
-        border-right: 1px solid rgb(45, 45, 45);
-        border-bottom: 1px solid rgb(45, 45, 45);
+        background: lightgrey;
+        border-right: 1px solid gray;
+        border-bottom: 1px solid gray;
 }
 
-QTableView:: item: selected {
-        background: darkblue;
+QTableView::item:selected, QTableWidget::item:selected {
+        background: aquamarine;
+    color: #444444;
 }
 
-QTableView:: item: selected: !active {
-        color: white;
+QTableView::item:selected:!active, QTableWidget::item:selected:!active {
+        color: black;
 }
 
-QTableView:: indicator {
+QTableView::indicator, QTableWidget::indicator {
         width: 20px;
         height: 20px;
 }
+
+QHeaderView::section{
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+    stop:0 rgba(160, 160, 160, 255), stop:1 rgba(140, 140, 140, 255));
+    color: #333333;
+    border: 1px solid gray;
+}
+

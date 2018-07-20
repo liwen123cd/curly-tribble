@@ -261,7 +261,7 @@ bool isTableExist(QString tableName)
  * */
 bool userCheck(QString inputText, int num)
 {
-    bool exists;
+    bool exists = true;
 
     QSqlQuery query;
     QString checkName;
@@ -315,7 +315,7 @@ bool userCheck(QString inputText, int num)
  * */
 bool pwdCheck(QString name, QString inputText)
 {
-    bool flag;
+    bool flag = false;
 
     QSqlQuery query;
     QString checkName = QString("(select User_Pwd "
@@ -343,7 +343,7 @@ bool pwdCheck(QString name, QString inputText)
  * */
 bool identityCheck(QString name, int inputText)
 {
-    bool flag;
+    bool flag = false;
 
     QSqlQuery query;
     QString checkName = QString("select User_Is_Admin "
@@ -405,7 +405,7 @@ void sqlOperator(QString sql)
  * */
 bool checkExist(QString input, int number)
 {
-    bool flag;
+    bool flag = false;
 
     QSqlQuery query;
     QString checkSql;
@@ -488,7 +488,7 @@ int Sale_Sql(const QString &sql)
  * **/
 bool sellerViewNull()
 {
-    bool flag;
+    bool flag = false;
     QString checkSql = QString("select count(*) "
                                "from Seller_View ");
     qDebug()<<checkSql;

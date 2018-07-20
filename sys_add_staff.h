@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：sys_add_staff.h
+  * @brief 内容: 添加职工头文件
+  * @date 作成日期: 2018-6-29
+  * @date 修正日期：2018-7-16
+  *
+  * */
 #ifndef SYS_ADD_STAFF_H
 #define SYS_ADD_STAFF_H
 

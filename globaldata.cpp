@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：globaldata.cpp
+  * @brief 内容: 初始化全局变量
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-10
+  *
+  * */
 #include "globaldata.h"
 
 // 初始化变量信息

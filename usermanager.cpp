@@ -7,6 +7,12 @@ UserManager::UserManager(QWidget *parent) :
     ui(new Ui::UserManager)
 {
     ui->setupUi(this);
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
     //    tableModel();
     addUser = new sys_add_user(this);
     tableModel();

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
-    <height>300</height>
+    <width>500</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="font">
@@ -24,11 +24,14 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
+  </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>210</y>
+     <x>80</x>
+     <y>240</y>
      <width>75</width>
      <height>25</height>
     </rect>
@@ -40,8 +43,8 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>210</y>
+     <x>180</x>
+     <y>240</y>
      <width>75</width>
      <height>25</height>
     </rect>
@@ -53,8 +56,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>60</y>
+     <x>80</x>
+     <y>90</y>
      <width>177</width>
      <height>112</height>
     </rect>
@@ -69,6 +72,9 @@
     </item>
     <item row="0" column="1">
      <widget class="QLineEdit" name="lineEdit">
+      <property name="styleSheet">
+       <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
+      </property>
       <property name="placeholderText">
        <string>请输入卖家姓名！</string>
       </property>
@@ -83,6 +89,9 @@
     </item>
     <item row="1" column="1">
      <widget class="QLineEdit" name="lineEdit_2">
+      <property name="styleSheet">
+       <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
+      </property>
       <property name="placeholderText">
        <string>请输入卖家电话！</string>
       </property>
@@ -97,6 +106,9 @@
     </item>
     <item row="2" column="1">
      <widget class="QLineEdit" name="lineEdit_3">
+      <property name="styleSheet">
+       <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
+      </property>
       <property name="placeholderText">
        <string>请输入卖家地址！</string>
       </property>
@@ -114,28 +126,27 @@
     </item>
    </layout>
   </widget>
-  <widget class="QListView" name="listView">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>330</x>
-     <y>80</y>
-     <width>111</width>
-     <height>151</height>
+     <x>310</x>
+     <y>90</y>
+     <width>121</width>
+     <height>171</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>50</y>
-     <width>81</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>分配仓库列表：</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>分配仓库列表：</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListView" name="listView"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

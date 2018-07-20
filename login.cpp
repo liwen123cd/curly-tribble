@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：login.cpp
+  * @brief 内容: 实现登录功能
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #include "login.h"
 #include "ui_login.h"
 
@@ -9,16 +17,16 @@ Login::Login(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
-//    mainw = new MainWindow(this);
-//    QIcon *icon = new QIcon("/new/img/img/login/user.png");
-//    QMessageBox mess;
-//    mess.setWindowIcon(*icon);
 
-//    QFile file(":/css/style/default.css");
-//    file.open(QFile::ReadOnly);
-//    QString styleSheet = tr(file.readAll());
-//    this->setStyleSheet(styleSheet);
-//    file.close();
+    // 添加背景图片
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
+
+    // 连接数据库并初始化表
     createConnectSqlite();
 
 }
@@ -33,11 +41,22 @@ void Login::reshow()
     this->show();
 }
 
+/**
+  * @functionName Function Name : on_pushButton_clicked()
+  * @brief Description: 验证身份并登录
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Login::on_pushButton_clicked()
 {
     QString login_name = ui->lineEdit->text();
     QString login_pwd = ui->lineEdit_2->text();
     QString admin = ui->comboBox->currentText();
+
+    // 记录登录人员的身份
     int identify;
     if (admin == "管理员")
         identify = 1;
@@ -45,6 +64,8 @@ void Login::on_pushButton_clicked()
         identify = 0;
         recordSeller(login_name);
     }
+
+    // 判断输入是否为空
     if (NULL == login_name)
         QMessageBox::warning(this, "警告",
                              "用户名为空，请输入用户名！");
@@ -65,13 +86,13 @@ void Login::on_pushButton_clicked()
         // 表示密码验证正确，登陆成功
         QMessageBox::information(this, "登录", "恭喜您登录成功！");
 
-        //留着跳转到主窗口
+        // 留着跳转到主窗口
         Data::is_admin = identify;
-//        User::name = login_name;
         qDebug() << Data::is_admin;
         mainw = new MainWindow(this);
         mainw->show();
         this->hide();
+
     } else if (userCheck(login_name, SYS_USER_NUMBER)) {
         QMessageBox::warning(this, "警告",
                              "用户名不存在，请去注册！");
@@ -84,12 +105,14 @@ void Login::on_pushButton_clicked()
     }
 }
 
+// 重置操作
 void Login::on_pushButton_2_clicked()
 {
     ui->lineEdit->clear();
     ui->lineEdit_2->clear();
 }
 
+// 打开新的注册窗口
 void Login::on_pushButton_3_clicked()
 {
 //    Register *r = new Register;
