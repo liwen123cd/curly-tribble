@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：Sys_Maintain_Staff.cpp
+  * @brief 内容: 维护职工信息窗口
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #include "sys_maintain_staff.h"
 #include "ui_sys_maintain_staff.h"
 #include "globaldata.h"
@@ -8,6 +16,7 @@ Sys_Maintain_Staff::Sys_Maintain_Staff(QWidget *parent) :
     ui(new Ui::Sys_Maintain_Staff)
 {
     ui->setupUi(this);
+    // 安装事件过滤器
     ui->lineEdit->installEventFilter(this);
     ui->lineEdit_2->installEventFilter(this);
     init();
@@ -18,7 +27,8 @@ Sys_Maintain_Staff::Sys_Maintain_Staff(QWidget *parent) :
         description += QString(Staff::description +
                                " " + QDateTime::currentDateTime().toString("yyyy-MM-dd"));
     }
-//    qDebug()<<description;
+
+    // 标签自适应调整大小
     ui->label_15->adjustSize();
     ui->label_15->setWordWrap(true);
     ui->label_15->setAlignment(Qt::AlignTop);
@@ -29,14 +39,19 @@ Sys_Maintain_Staff::~Sys_Maintain_Staff()
     delete ui;
 }
 
-/*
- *
- * 事件过滤器实现当鼠标点击LineEdit时
- * 将默认的背景文字填充到文本框内
- *
- * */
+/**
+  * @functionName Function Name : eventFilter(QObject *obj, QEvent *e)
+  * @brief Description: 事件过滤器实现当鼠标点击LineEdit时
+  *                     将默认的背景文字填充到文本框内
+  * @date Date: 2018-7-4
+  * @param Parameter: obj e
+  * @return Return Code: true
+  * @author Author: 张岩森
+  *
+  * */
 bool Sys_Maintain_Staff::eventFilter(QObject *obj, QEvent *e)
 {
+    // 先判断事件对象 再判断事件类型 重写操作处理函数
     if (obj == ui->lineEdit) {
         if (e->type() == QEvent::MouseButtonPress) {
             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(e);
@@ -59,13 +74,23 @@ bool Sys_Maintain_Staff::eventFilter(QObject *obj, QEvent *e)
     return QDialog::eventFilter(obj, e);
 }
 
+// 重置操作
 void Sys_Maintain_Staff::on_pushButton_2_clicked()
 {
     init();
-//    ui->lineEdit->clear();
-//    ui->lineEdit_2->clear();
+    //    ui->lineEdit->clear();
+    //    ui->lineEdit_2->clear();
 }
 
+/**
+  * @functionName Function Name : init()
+  * @brief Description: 初始化操作函数
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Maintain_Staff::init()
 {
     ui->lineEdit->clear();
@@ -98,8 +123,18 @@ void Sys_Maintain_Staff::init()
     ui->label_22->setVisible(false);
 }
 
+/**
+  * @functionName Function Name : statusChange()
+  * @brief Description: 员工状态改变函数
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Maintain_Staff::statusChange()
 {
+    // 如果职工换岗 变换职位为换岗
     if (Staff::deperment != ui->comboBox->currentText()) {
         ui->label_21->setText(STATUS_CHANGE);
         qDebug() << description;
@@ -107,12 +142,23 @@ void Sys_Maintain_Staff::statusChange()
                                ui->comboBox->currentText() + " ");
         ui->label_15->setText(description);
     } else {
+        // 如果没有职位变动保持不变
         ui->label_21->setText(STATUS_AT);
     }
 }
 
+/**
+  * @functionName Function Name : on_pushButton_clicked()
+  * @brief Description: 更新职工信息
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Maintain_Staff::on_pushButton_clicked()
 {
+    // 判断输入合法性
     if (NULL == ui->lineEdit->text())
         QMessageBox::warning(this, tr("提示"),
                              "请填写职工姓名！");
@@ -120,12 +166,14 @@ void Sys_Maintain_Staff::on_pushButton_clicked()
         QMessageBox::warning(this, tr("提示"),
                              "请填写职工电话！");
     if (NULL != ui->lineEdit->text()
-        && NULL != ui->lineEdit_2->text()) {
+            && NULL != ui->lineEdit_2->text()) {
         int ok = QMessageBox::warning(this, tr("确定修改职工？"),
                                       tr("你确定修改当前职工吗？"),
                                       QMessageBox::Yes,
                                       QMessageBox::No);
         if (ok == QMessageBox::Yes) {
+
+            // 判断职位和部门是否改变
             statusChange();
             positionChange();
 
@@ -165,7 +213,15 @@ void Sys_Maintain_Staff::on_pushButton_clicked()
     }
 }
 
-
+/**
+  * @functionName Function Name : positionChange()
+  * @brief Description: 判断职工职位是否改变
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Maintain_Staff::positionChange()
 {
     ui->label_22->setVisible(false);
@@ -173,43 +229,44 @@ void Sys_Maintain_Staff::positionChange()
     qDebug() << ui->comboBox_2->currentText();
     if (Staff::position != ui->comboBox_2->currentText()) {
         ui->label_22->setVisible(true);
+        // 对各种职位变动设置相应的备注和日期记录
         if (Staff::position == POSITION_COMMON
-            && ui->comboBox_2->currentText() == POSITION_MANAGER) {
+                && ui->comboBox_2->currentText() == POSITION_MANAGER) {
             ui->label_22->setText(POSITION_PROMOTE);
             description += QString(tr("从") + POSITION_COMMON +
                                    tr("到") + POSITION_MANAGER + " ");
             ui->label_15->setText(description);
         }
         if (Staff::position == POSITION_COMMON
-            && ui->comboBox_2->currentText() == POSITION_SECRETARY) {
+                && ui->comboBox_2->currentText() == POSITION_SECRETARY) {
             ui->label_22->setText(POSITION_PROMOTE);
             description += QString(tr("从") + POSITION_COMMON +
                                    tr("到") + POSITION_SECRETARY + " ");
             ui->label_15->setText(description);
         }
         if (Staff::position == POSITION_SECRETARY
-            && ui->comboBox_2->currentText() == POSITION_MANAGER) {
+                && ui->comboBox_2->currentText() == POSITION_MANAGER) {
             ui->label_22->setText(POSITION_PROMOTE);
             description += QString(tr("从") + POSITION_SECRETARY +
                                    tr("到") + POSITION_MANAGER + " ");
             ui->label_15->setText(description);
         }
         if (Staff::position == POSITION_SECRETARY
-            && ui->comboBox_2->currentText() == POSITION_COMMON) {
+                && ui->comboBox_2->currentText() == POSITION_COMMON) {
             ui->label_22->setText(POSITION_DOWN);
             description += QString(tr("从") + POSITION_SECRETARY +
                                    tr("到") + POSITION_COMMON + " ");
             ui->label_15->setText(description);
         }
         if (Staff::position == POSITION_MANAGER
-            && ui->comboBox_2->currentText() == POSITION_COMMON) {
+                && ui->comboBox_2->currentText() == POSITION_COMMON) {
             ui->label_22->setText(POSITION_DOWN);
             description += QString(tr("从") + POSITION_MANAGER +
                                    tr("到") + POSITION_COMMON + " ");
             ui->label_15->setText(description);
         }
         if (Staff::position == POSITION_MANAGER
-            && ui->comboBox_2->currentText() == POSITION_SECRETARY) {
+                && ui->comboBox_2->currentText() == POSITION_SECRETARY) {
             ui->label_22->setText(POSITION_DOWN);
             description += QString(tr("从") + POSITION_MANAGER +
                                    tr("到") + POSITION_SECRETARY + " ");
@@ -218,13 +275,16 @@ void Sys_Maintain_Staff::positionChange()
     }
 }
 
-
-/*
- *
- * 删除职工并不是将职工真正删除
- * 而是将职工的久之状态改为离职
- *
- * */
+/**
+  * @functionName Function Name : on_pushButton_3_clicked()
+  * @brief Description: 删除职工并不是将职工真正删除
+  *                     而是将职工的久之状态改为离职
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Maintain_Staff::on_pushButton_3_clicked()
 {
     int ok = QMessageBox::warning(this, tr("确定删除职工？"),
@@ -232,6 +292,8 @@ void Sys_Maintain_Staff::on_pushButton_3_clicked()
                                   QMessageBox::Yes,
                                   QMessageBox::No);
     if (ok == QMessageBox::Yes) {
+
+        // 更新职工信息并改变相应状态
         QSqlQuery query;
         QString updateSql = QString("update Sys_Staff "
                                     "set Staff_Status = :Staff_Status, "

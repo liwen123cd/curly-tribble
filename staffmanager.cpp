@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：StaffManager.cpp
+  * @brief 内容: 管理职工源文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #include "staffmanager.h"
 #include "ui_staffmanager.h"
 #include "sys_add_staff.h"
@@ -10,12 +18,15 @@ StaffManager::StaffManager(QWidget *parent) :
     ui(new Ui::StaffManager)
 {
     ui->setupUi(this);
+
+    // 添加背景图片
     QPixmap _image;
     _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-                            Qt::SmoothTransformation)));
+                                                        Qt::SmoothTransformation)));
     setPalette(pal);
+
     model = new QSqlTableModel(this);
     init();
     init2();
@@ -26,6 +37,7 @@ StaffManager::~StaffManager()
     delete ui;
 }
 
+// 添加新职工窗口
 void StaffManager::on_pushButton_clicked()
 {
     addStaff = new Sys_Add_Staff(this);
@@ -33,20 +45,22 @@ void StaffManager::on_pushButton_clicked()
     model->select();
 }
 
+// 初始化界面操作
 void StaffManager::on_pushButton_9_clicked()
 {
     qDebug() << "选择全部";
     init();
-    //    model->select();
 }
 
-/*
- *
- *
- * 维护员工的信息
- * 由于员工牵扯到离职等
- *
- * */
+/**
+  * @functionName Function Name : on_pushButton_2_clicked()
+  * @brief Description: 选中一行维护职工信息，牵扯到离职等
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void StaffManager::on_pushButton_2_clicked()
 {
     int curRow = ui->tableView->currentIndex().row();
@@ -55,6 +69,8 @@ void StaffManager::on_pushButton_2_clicked()
         QMessageBox::warning(this, tr("提示"),
                              "请先选中一行！");
     } else {
+
+        // 新生成一个职工实例保存选中行职工信息
         staff = new Staff;
         QSqlRecord record = model->record(curRow);
         staff->id = record.value(0).toString();
@@ -67,6 +83,7 @@ void StaffManager::on_pushButton_2_clicked()
         staff->image = record.value(7).toString();
         staff->description = record.value(8).toString();
 
+        // 生成新的维护职工信息窗口
         mainTain = new Sys_Maintain_Staff(this);
         mainTain->exec();
         //  sms->exec();
@@ -74,6 +91,7 @@ void StaffManager::on_pushButton_2_clicked()
     model->select();
 }
 
+// 保存数据库修改操作
 void StaffManager::on_pushButton_3_clicked()
 {
     if (NULL == ui->tableView->currentIndex().data(0).toString()) {
@@ -94,11 +112,13 @@ void StaffManager::on_pushButton_3_clicked()
     }
 }
 
+// 撤销数据库操作
 void StaffManager::on_pushButton_4_clicked()
 {
     model->revertAll();
 }
 
+// 查询职工信息
 void StaffManager::on_pushButton_11_clicked()
 {
     QString inputQuery = ui->lineEdit->text();
@@ -111,11 +131,15 @@ void StaffManager::on_pushButton_11_clicked()
     }
 }
 
-/*
- *
- * 根据输入查询职工的信息
- *
- * */
+/**
+  * @functionName Function Name : queryStaff(QString input)
+  * @brief Description: 根据输入查询职工的信息
+  * @date Date: 2018-7-10
+  * @param Parameter: input
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void StaffManager::queryStaff(QString input)
 {
     QString comboxText = ui->comboBox->currentText();
@@ -149,13 +173,22 @@ void StaffManager::queryStaff(QString input)
     }
 }
 
-
+/**
+  * @functionName Function Name : init()
+  * @brief Description: 初始化 QTableview 函数
+  * @date Date: 2018-7-10
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void StaffManager::init()
 {
     model = new QSqlTableModel(this);
     model->setTable("Sys_Staff");
-    // 系统管理只能物流公司使用，即管理系统管理员
     model->select();
+
+    // 系统管理只能物流公司使用，即管理系统管理员
     model->setHeaderData(0, Qt::Horizontal, tr("编号"));
     model->setHeaderData(1, Qt::Horizontal, tr("姓名"));
     model->setHeaderData(2, Qt::Horizontal, tr("所在部门"));
@@ -167,11 +200,15 @@ void StaffManager::init()
     model->setHeaderData(8, Qt::Horizontal, tr("备注"));
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ui->tableView->setModel(model);
+
     // ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    ui->tableView->hideColumn(0);   // 职工ID隐藏，其余信息可修改
+    // 职工ID隐藏，其余信息可修改
+    ui->tableView->hideColumn(0);
+    ui->tableView->setFocusPolicy(Qt::NoFocus);
 }
 
+// 删除离职职工信息
 void StaffManager::on_pushButton_12_clicked()
 {
     int curRow = ui->tableView->currentIndex().row();
@@ -201,6 +238,7 @@ void StaffManager::on_pushButton_12_clicked()
     }
 }
 
+// 增加新职工窗口
 void StaffManager::on_pushButton_5_clicked()
 {
     addSeller = new Sys_Add_Seller(this);
@@ -208,6 +246,7 @@ void StaffManager::on_pushButton_5_clicked()
     model2->select();
 }
 
+// 查询卖家信息窗口
 void StaffManager::on_pushButton_13_clicked()
 {
     QString inputQuery = ui->lineEdit_2->text();
@@ -220,6 +259,15 @@ void StaffManager::on_pushButton_13_clicked()
     }
 }
 
+/**
+  * @functionName Function Name : querySeller(QString inputText)
+  * @brief Description: 根据条件查询卖家信息
+  * @date Date: 2018-7-4
+  * @param Parameter: inptText
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void StaffManager::querySeller(QString inputText)
 {
     QString comboxText = ui->comboBox_2->currentText();
@@ -244,12 +292,22 @@ void StaffManager::querySeller(QString inputText)
     }
 }
 
+// 初始化卖家管理的 QTabeView
 void StaffManager::on_pushButton_10_clicked()
 {
     init2();
     model2->select();
 }
 
+/**
+  * @functionName Function Name : init2()
+  * @brief Description: 初始化卖家 QTableView 操作函数
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void StaffManager::init2()
 {
     model2 = new QSqlTableModel(this);
@@ -272,6 +330,7 @@ void StaffManager::init2()
     ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
+// 删除卖家的信息
 void StaffManager::on_pushButton_6_clicked()
 {
     int curRow = ui->tableView_2->currentIndex().row();
@@ -314,6 +373,15 @@ void StaffManager::on_pushButton_6_clicked()
     model2->select();
 }
 
+/**
+  * @functionName Function Name : on_pushButton_7_clicked()
+  * @brief Description: 维护卖家信息
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void StaffManager::on_pushButton_7_clicked()
 {
     int curRow = ui->tableView_2->currentIndex().row();
@@ -322,6 +390,7 @@ void StaffManager::on_pushButton_7_clicked()
         QMessageBox::warning(this, tr("提示"),
                              "请先选中一行！");
     } else {
+        // 实例化一个新的卖家 保存现在信息
         seller = new Seller;
         QSqlRecord record = model2->record(curRow);
         seller->id = record.value(0).toInt();
@@ -330,6 +399,7 @@ void StaffManager::on_pushButton_7_clicked()
         seller->addr = record.value(3).toString();
         seller->number = record.value(4).toInt();
 
+        // 打开新的维护卖家信息窗口
         mainTainSeller = new Sys_Maintain_Seller(this);
         mainTainSeller->exec();
     }

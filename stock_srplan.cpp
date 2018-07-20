@@ -12,33 +12,24 @@ void stock_MainWindow::stock_srplan_query(int index)
 {
     switch (index) {
     case 0:
-        if(is_admin)
-        {
-           stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成')"));
-        }
-        else
-        {
-           stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成') and p.seller_id=%1").arg(user_id));
+        if (is_admin) {
+            stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成')"));
+        } else {
+            stock_srplan_basic->setQuery(tr("select * from stock_plan p where not exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成') and p.seller_id=%1").arg(user_id));
         }
         break;
     case 1:
-        if(is_admin)
-        {
-           stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成')"));
-        }
-        else
-        {
-           stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成') and p.seller_id=%1").arg(user_id));
+        if (is_admin) {
+            stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成')"));
+        } else {
+            stock_srplan_basic->setQuery(tr("select * from stock_plan p where exists(select * from stock_plan_detail d where d.plan_id=p.id and d.state='进货未完成') and p.seller_id=%1").arg(user_id));
         }
         break;
     case 2:
-        if(is_admin)
-        {
-           stock_srplan_basic->setQuery("select * from stock_canceledplan");
-        }
-        else
-        {
-           stock_srplan_basic->setQuery(QString("select * from stock_canceledplan where seller_id=%1").arg(user_id));
+        if (is_admin) {
+            stock_srplan_basic->setQuery("select * from stock_canceledplan");
+        } else {
+            stock_srplan_basic->setQuery(QString("select * from stock_canceledplan where seller_id=%1").arg(user_id));
         }
         break;
     default:
@@ -70,8 +61,7 @@ void stock_MainWindow::stock_srplan_init_aux(int row)
 void stock_MainWindow::stock_srplan_noncompleted(int row)
 {
     stock_srplan_query(1);
-    if(!is_admin)
-    {
+    if (!is_admin) {
         ui->pushButton_10->setVisible(true);
         ui->pushButton_11->setVisible(true);
     }
@@ -158,7 +148,7 @@ void stock_MainWindow::on_pushButton_10_clicked()
         QMessageBox::warning(this, tr("取消失败"), tr("这个计划有的条目已经进货完成，不能取消！！！"));
         return;
     }
-    QMessageBox box(QMessageBox::Warning, tr("删除当前进货计划！"), tr("你确定删除当前进货计划吗？"),QMessageBox::NoButton,this);
+    QMessageBox box(QMessageBox::Warning, tr("删除当前进货计划！"), tr("你确定删除当前进货计划吗？"), QMessageBox::NoButton, this);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setButtonText(QMessageBox::Yes, tr("确认"));
     box.setButtonText(QMessageBox::No, tr("取消"));
@@ -191,7 +181,7 @@ void stock_MainWindow::on_pushButton_11_clicked()
         QMessageBox::warning(this, tr("取消失败"), tr("这个条目已经进货完成，无法取消！！！"));
         return;
     }
-    QMessageBox box(QMessageBox::Warning, tr("删除当前进货条目！"), tr("你确定删除当前进货条目吗？"),QMessageBox::NoButton,this);
+    QMessageBox box(QMessageBox::Warning, tr("删除当前进货条目！"), tr("你确定删除当前进货条目吗？"), QMessageBox::NoButton, this);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setButtonText(QMessageBox::Yes, tr("确认"));
     box.setButtonText(QMessageBox::No, tr("取消"));
@@ -297,13 +287,13 @@ void stock_MainWindow::stock_tableview_doubleclicked(const QModelIndex &index)
     int provider_id = query.value(1).toInt();
     QString product_name = query.value(2).toString();
     float price = query.value(3).toFloat();
-    QString path=query.value(4).toString();
+    QString path = query.value(4).toString();
     query.exec(tr("select * from stock_provider where id=%1").arg(provider_id));
     query.next();
     QString provider_name = query.value(2).toString();
     QString address = query.value(3).toString();
     stock_Dialog *dialog = new stock_Dialog(this);
-    dialog->set_content(product_name, price, provider_name, address,path);
+    dialog->set_content(product_name, price, provider_name, address, path);
     dialog->setModal(false);
     dialog->show();
 

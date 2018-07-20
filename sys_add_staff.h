@@ -30,23 +30,23 @@ class Sys_Add_Staff;
 
 class Sys_Add_Staff : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Sys_Add_Staff(QWidget *parent = 0);
-	~Sys_Add_Staff();
+    explicit Sys_Add_Staff(QWidget *parent = 0);
+    ~Sys_Add_Staff();
 
     void init();
 private slots:
-	void on_pushButton_2_clicked();
+    void on_pushButton_2_clicked();
 
-	void on_pushButton_clicked();
+    void on_pushButton_clicked();
 
-	void on_pushButton_3_clicked();
+    void on_pushButton_3_clicked();
 
 private:
-	Ui::Sys_Add_Staff *ui;
-	QString staff_filename;
+    Ui::Sys_Add_Staff *ui;
+    QString staff_filename;
 };
 
 #endif // SYS_ADD_STAFF_H

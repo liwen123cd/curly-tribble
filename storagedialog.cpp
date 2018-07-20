@@ -28,7 +28,7 @@ StorageDialog::StorageDialog(QWidget *parent) :
     _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-                            Qt::SmoothTransformation)));
+                                                        Qt::SmoothTransformation)));
     setPalette(pal);
     queryDialog = new QueryDialog(this);
     insertDialog = new InsertDialog(this);
@@ -142,10 +142,10 @@ void StorageDialog::getQuery(QString option, QString content)
 {
     if ("卖家姓名" == option) {
         model->setQuery(QString("select * from Main_view "
-                                "where sellerName='%1'").arg(content), db);
+                                "where Seller_Name='%1'").arg(content), db);
     } else {
         model->setQuery(QString("select * from Main_view "
-                                "where productName='%1'").arg(content), db);
+                                "where name='%1'").arg(content), db);
     }
     QString record;
     record += "共" + QString::number(model->rowCount()) + "条记录";
@@ -371,7 +371,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
 
         // 调用接口修改订单状态并获取订单内商品所属卖家和数量
         QStringList list = stock_MainWindow::stock_change_PlanState(
-                               orderID.toInt(), productID.toInt());
+                    orderID.toInt(), productID.toInt());
         if (list.empty()) {
             qDebug() << "stock_change_PlanState返回的list为空";
             ui->label_prompt_2->setText("提示：输入数据有误！");
@@ -437,7 +437,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
         //StorageManage::tempOccupied -= amount;
         StorageManage::changeOccu(StorageManage::getOccu() - amount);
         qDebug() << "tempOccupied:" << StorageManage::getOccu();
-        ui->label_prompt_2->setText("提示：出库成功!");
+        ui->label_prompt_2->setText("提示：入库成功!");
     }
 }
 

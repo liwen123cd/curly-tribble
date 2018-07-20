@@ -9,7 +9,7 @@ Sys_Add_Staff::Sys_Add_Staff(QWidget *parent) :
     ui->setupUi(this);
     staff_filename = ":/img/img/na.jpg";
     ui->radioButton->setChecked(true);
-//    init();
+    init();
 }
 
 Sys_Add_Staff::~Sys_Add_Staff()
@@ -17,12 +17,15 @@ Sys_Add_Staff::~Sys_Add_Staff()
     delete ui;
 }
 
-/*
- *
- * 添加员工
- * 默认员工在职
- *
- * */
+/**
+  * @functionName Function Name : on_pushButton_2_clicked()
+  * @brief Description: 添加职工操作函数 默认职工在职
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Add_Staff::on_pushButton_2_clicked()
 {
     int number;
@@ -47,8 +50,7 @@ void Sys_Add_Staff::on_pushButton_2_clicked()
     // 从数据库中读取职工的数量
     QSqlQuery query;
     query.exec("select count(*) from Sys_Staff");
-    while(query.next())
-    {
+    while (query.next()) {
         number = query.value(0).toInt();
     }
     if (STOCK_DEPENTMENT == staff_deperment)
@@ -75,15 +77,15 @@ void Sys_Add_Staff::on_pushButton_2_clicked()
                                       "Staff_Image, Staff_Description)");
             add_sql += QString(" VALUES('%1','%2','%3','%4',"
                                "'%5', '%6', '%7', '%8', '%9')")
-                       .arg(staff_id)
-                       .arg(staff_name)
-                       .arg(staff_deperment)
-                       .arg(staff_position)
-                       .arg(staff_status)
-                       .arg(staff_phone)
-                       .arg(staff_date)
-                       .arg(staff_filename)
-                       .arg(staff_description);
+                    .arg(staff_id)
+                    .arg(staff_name)
+                    .arg(staff_deperment)
+                    .arg(staff_position)
+                    .arg(staff_status)
+                    .arg(staff_phone)
+                    .arg(staff_date)
+                    .arg(staff_filename)
+                    .arg(staff_description);
 
             QSqlQuery query;
             query.exec(add_sql);
@@ -97,10 +99,11 @@ void Sys_Add_Staff::on_pushButton_2_clicked()
 
 }
 
+// 为职工选择图片
 void Sys_Add_Staff::on_pushButton_clicked()
 {
     staff_filename = QFileDialog::getOpenFileName(this, tr("选择图片"),
-                     "", tr("Images(*.png *.jpg *.jpeg)"));
+                                                  "", tr("Images(*.png *.jpg *.jpeg)"));
     if (QString::compare(staff_filename, QString()) != 0) {
         QImage image;
         bool valid = image.load(staff_filename);
@@ -112,11 +115,13 @@ void Sys_Add_Staff::on_pushButton_clicked()
     qDebug() << staff_filename;
 }
 
+// 重置操作
 void Sys_Add_Staff::on_pushButton_3_clicked()
 {
     init();
 }
 
+// 初始化操作
 void Sys_Add_Staff::init()
 {
     ui->radioButton->setChecked(true);

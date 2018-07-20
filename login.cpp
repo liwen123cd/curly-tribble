@@ -23,7 +23,7 @@ Login::Login(QWidget *parent) :
     _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-                            Qt::SmoothTransformation)));
+                                                        Qt::SmoothTransformation)));
     setPalette(pal);
 
     // 连接数据库并初始化表
@@ -115,16 +115,17 @@ void Login::on_pushButton_2_clicked()
 // 打开新的注册窗口
 void Login::on_pushButton_3_clicked()
 {
-//    Register *r = new Register;
+    //    Register *r = new Register;
     reg = new Register(this);
     reg->setWindowFlags(Qt::Window);
     this->hide();
     reg->show();
 }
 
+// 打开找回密码窗口
 void Login::on_pushButton_4_clicked()
 {
-//    RecovePwd *rp = new RecovePwd;
+    //    RecovePwd *rp = new RecovePwd;
     rp = new RecovePwd(this);
     rp->setWindowFlags(Qt::Window);
     rp->show();
