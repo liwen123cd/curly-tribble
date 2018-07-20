@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：globaldata.h
+  * @brief 内容: 全局变量头文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7.19
+  *
+  * */
 #ifndef GLOBALDATA
 #define GLOBALDATA
 #include <QString>

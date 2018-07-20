@@ -109,7 +109,6 @@ RESOURCES += \
     style.qrc
 
 DISTFILES += \
-    LogisticsManagementSystem.pro.user \
-    number.txt
+    LogisticsManagementSystem.pro.user
 
 QMAKE_CXXFLAGS += -std=c++11

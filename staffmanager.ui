@@ -9,20 +9,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>487</width>
-    <height>359</height>
+    <width>600</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="font">
    <font>
-    <family>Microsoft YaHei</family>
+    <family>Microsoft YaHei UI</family>
    </font>
   </property>
   <property name="windowTitle">
    <string>人事管理窗口</string>
-  </property>
-  <property name="autoFillBackground">
-   <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">

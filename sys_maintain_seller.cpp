@@ -8,10 +8,11 @@ Sys_Maintain_Seller::Sys_Maintain_Seller(QWidget *parent) :
 {
     ui->setupUi(this);
     sellerID = Seller::id;   // 从上一个界面获取到的卖家ID
+    init();
+    this->setCursor(Qt::BlankCursor);
     ui->lineEdit->installEventFilter(this);
     ui->lineEdit_2->installEventFilter(this);
     ui->lineEdit_3->installEventFilter(this);
-    init();
 }
 
 Sys_Maintain_Seller::~Sys_Maintain_Seller()

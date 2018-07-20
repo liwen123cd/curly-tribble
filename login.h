@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：login.h
+  * @brief 内容: 登录头文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-19
+  *
+  * */
 #ifndef LOGIN_H
 #define LOGIN_H
 
@@ -7,6 +15,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlQuery>
+#include <QIcon>
 #include "register.h"
 #include "globaldata.h"
 #include "mainwindow.h"

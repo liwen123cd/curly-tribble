@@ -23,7 +23,7 @@ void Sys_Add_Seller::on_pushButton_clicked()
     QString add_seller_phone = ui->lineEdit_2->text();
     QString add_seller_addr = ui->lineEdit_3->text();
     int add_seller_number = ui->spinBox->text().toInt();
-    int sellerID;
+    int sellerID = 0;
 
     if(NULL == add_seller_name)
         QMessageBox::warning(this, tr("提示"),
@@ -86,6 +86,7 @@ void Sys_Add_Seller::on_pushButton_clicked()
         init();
         QMessageBox::information(this, "添加成功",
                                  "您已成功添加新用户！");
+        this->close();
     }
     else {
         QMessageBox::information(this, "警告",

@@ -10,6 +10,12 @@ StaffManager::StaffManager(QWidget *parent) :
     ui(new Ui::StaffManager)
 {
     ui->setupUi(this);
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
     model = new QSqlTableModel(this);
     init();
     init2();
@@ -262,6 +268,8 @@ void StaffManager::init2()
     ui->tableView_2->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     ui->tableView_2->hideColumn(4);
     ui->tableView_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tableView_2->setFocusPolicy(Qt::NoFocus);
+    ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 void StaffManager::on_pushButton_6_clicked()

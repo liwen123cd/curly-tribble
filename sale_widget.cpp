@@ -28,13 +28,18 @@ Sale_Widget::Sale_Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+//    QPixmap _image;
+//    _image.load(":/img/login/logo3.jpg");
+//    QPalette pal(palette());
+//    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+//                            Qt::SmoothTransformation)));
+//    setPalette(pal);
     QPixmap _image;
-    _image.load("img/background");
+    _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
                             Qt::SmoothTransformation)));
     setPalette(pal);
-
     if(!Sale_New_Table()){
         qDebug()<<tr("模型初始化失败");
     }

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>系统主窗口</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="style.qrc">
+    <normaloff>:/img/login/main.png</normaloff>:/img/login/main.png</iconset>
+  </property>
   <property name="statusTip">
    <string>欢迎使用我们制作的智能物流管理系统，希望你拥有快乐的一天！</string>
   </property>
@@ -20,7 +24,10 @@
    <bool>true</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
+   <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;
+
+
+</string>
   </property>
   <property name="documentMode">
    <bool>false</bool>
@@ -73,6 +80,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_6">
+       <property name="styleSheet">
+        <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
+       </property>
        <property name="text">
         <string>退出系统</string>
        </property>
@@ -87,12 +97,253 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+     <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>工具(&amp;T)</string>
+    </property>
+    <addaction name="action1"/>
+    <addaction name="action2"/>
+    <addaction name="action3"/>
+    <addaction name="action4"/>
+    <addaction name="action5"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>开始(&amp;S)</string>
+    </property>
+    <addaction name="action2_2"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>帮助(&amp;H)</string>
+    </property>
+    <addaction name="action1_3"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>关于(&amp;A)</string>
+    </property>
+    <addaction name="action1_4"/>
+    <addaction name="action2_3"/>
+   </widget>
+   <addaction name="menu_2"/>
+   <addaction name="menu"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action3"/>
+   <addaction name="action5"/>
+   <addaction name="action2_3"/>
+   <addaction name="action2"/>
+   <addaction name="action4"/>
+   <addaction name="action1"/>
+   <addaction name="action1_3"/>
+   <addaction name="action2_2"/>
+  </widget>
+  <action name="action1">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/compose.png</normaloff>:/img/login/compose.png</iconset>
+   </property>
+   <property name="text">
+    <string>库存管理</string>
+   </property>
+  </action>
+  <action name="action2">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/feedback.png</normaloff>:/img/login/feedback.png</iconset>
+   </property>
+   <property name="text">
+    <string>销售管理</string>
+   </property>
+  </action>
+  <action name="action3">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/account.png</normaloff>:/img/login/account.png</iconset>
+   </property>
+   <property name="text">
+    <string>进货管理</string>
+   </property>
+  </action>
+  <action name="action4">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/cm2_btm_icn_account.png</normaloff>:/img/login/cm2_btm_icn_account.png</iconset>
+   </property>
+   <property name="text">
+    <string>人事管理</string>
+   </property>
+  </action>
+  <action name="action5">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/user.png</normaloff>:/img/login/user.png</iconset>
+   </property>
+   <property name="text">
+    <string>系统管理</string>
+   </property>
+  </action>
+  <action name="action1_2">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/found.png</normaloff>:/img/login/found.png</iconset>
+   </property>
+   <property name="text">
+    <string>说明</string>
+   </property>
+  </action>
+  <action name="action2_2">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/page.png</normaloff>:/img/login/page.png</iconset>
+   </property>
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="action1_3">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/found.png</normaloff>:/img/login/found.png</iconset>
+   </property>
+   <property name="text">
+    <string>说明</string>
+   </property>
+  </action>
+  <action name="action1_4">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/mine.png</normaloff>:/img/login/mine.png</iconset>
+   </property>
+   <property name="text">
+    <string>作者</string>
+   </property>
+  </action>
+  <action name="action2_3">
+   <property name="icon">
+    <iconset resource="style.qrc">
+     <normaloff>:/img/login/wechat.png</normaloff>:/img/login/wechat.png</iconset>
+   </property>
+   <property name="text">
+    <string>联系作者</string>
+   </property>
+  </action>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="style.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>action1</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton_2</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>96</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action2</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton_5</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action3</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton_4</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action4</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton_3</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action5</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action2_2</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton_6</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>126</x>
+     <y>251</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

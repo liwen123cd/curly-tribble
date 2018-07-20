@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：sys_add_user.h
+  * @brief 内容: 添加用户头文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-11
+  *
+  * */
 #ifndef SYS_ADD_USER_H
 #define SYS_ADD_USER_H
 

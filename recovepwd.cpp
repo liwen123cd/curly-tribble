@@ -6,6 +6,12 @@ RecovePwd::RecovePwd(QWidget *parent) :
     ui(new Ui::RecovePwd)
 {
     ui->setupUi(this);
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                            Qt::SmoothTransformation)));
+    setPalette(pal);
     m_model = new QStandardItemModel(0, 1, this);
     QCompleter *m_completer = new QCompleter(m_model, this);
     ui->lineEdit->setCompleter(m_completer);
@@ -30,6 +36,7 @@ void RecovePwd::on_pushButton_clicked()
         QMessageBox::information(this, "提示", "发送成功！"
                                  "请按提示步骤找回密码！");
     }
+    this->close();
 }
 
 void RecovePwd::on_pushButton_2_clicked()

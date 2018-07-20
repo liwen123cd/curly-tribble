@@ -1,1 +1,32 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/css">
+        <file>style/default.css</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>img/login/people.png</file>
+        <file>img/login/main.png</file>
+        <file>img/login/tab_personal.png</file>
+        <file>img/login/default.jpg</file>
+        <file>img/login/log2.jpg</file>
+        <file>img/login/logo3.jpg</file>
+        <file>img/login/account.png</file>
+        <file>img/login/btn_cross (2).png</file>
+        <file>img/login/btn_del (2).png</file>
+        <file>img/login/btn_search (2).png</file>
+        <file>img/login/btn_searchadd (2).png</file>
+        <file>img/login/cm2_act_delete@2x.png</file>
+        <file>img/login/cm2_btm_icn_account.png</file>
+        <file>img/login/cm2_playlist_icn_dlt@2x.png</file>
+        <file>img/login/compose.png</file>
+        <file>img/login/feedback.png</file>
+        <file>img/login/found.png</file>
+        <file>img/login/mail.png</file>
+        <file>img/login/mine.png</file>
+        <file>img/login/note.png</file>
+        <file>img/login/page.png</file>
+        <file>img/login/user.png</file>
+        <file>img/login/user_privatemsg.png</file>
+        <file>img/login/wechat.png</file>
+        <file>img/login/xx.png</file>
+    </qresource>
+</RCC>

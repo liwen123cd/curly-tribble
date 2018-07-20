@@ -33,6 +33,29 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: 1px solid #333333;
+    padding: 3px;
+    min-width: 65px;
+    min-height: 12px;
+}
+
+QPushButton:hover {
+    background-color: lightslategrey;
+    border-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+    border-color: #333333;
+    color: antiquewhite;
+}
+
+QPushButton:disabled {
+    color: #333333;
+}</string>
+   </property>
    <property name="text">
     <string>确认</string>
    </property>
@@ -45,6 +68,29 @@
      <width>75</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: 1px solid #333333;
+    padding: 3px;
+    min-width: 65px;
+    min-height: 12px;
+}
+
+QPushButton:hover {
+    background-color: lightslategrey;
+    border-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+    border-color: #333333;
+    color: antiquewhite;
+}
+
+QPushButton:disabled {
+    color: #333333;
+}</string>
    </property>
    <property name="text">
     <string>清除</string>
@@ -76,7 +122,18 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+    border: 1px solid #333333;
+    padding: 3px;
+    min-width: 65px;
+    min-height: 12px;
+}
+
+</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

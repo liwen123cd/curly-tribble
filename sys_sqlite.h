@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：sys_sqlite.h
+  * @brief 内容: 数据库操作头文件
+  * @date 作成日期: 2018-6-26
+  * @date 修正日期：2018-7-15
+  *
+  * */
 #ifndef SYS_SQLITE_H
 #define SYS_SQLITE_H
 

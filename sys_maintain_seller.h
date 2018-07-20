@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：sys_maintain_seller.h
+  * @brief 内容: 维护麦基头文件
+  * @date 作成日期: 2018-7-1
+  * @date 修正日期：2018-7-19
+  *
+  * */
 #ifndef SYS_MAINTAIN_SELLER_H
 #define SYS_MAINTAIN_SELLER_H
 
