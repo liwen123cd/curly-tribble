@@ -476,7 +476,7 @@ int Sale_Sql(const QString &sql)
     QSqlQuery query;
     query.exec(sql);
     // 这个地方初始化会 -1
-    qDebug()<<query.lastError();
+   //qDebug()<<query.lastError();
     return query.lastError().number();
 }
 
