@@ -228,6 +228,8 @@ bool stock_MainWindow::stock_save_ProductPicture(QString src_path,QString dest_p
         int ret=src_file.read(buffer,4096);
         dest_file.write(buffer,ret);
     }
+    src_file.close();
+    dest_file.close();
     return true;
 
 }
