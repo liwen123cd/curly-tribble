@@ -142,10 +142,10 @@ void StorageDialog::getQuery(QString option, QString content)
 {
     if ("卖家姓名" == option) {
         model->setQuery(QString("select * from Main_view "
-                                "where sellerName='%1'").arg(content), db);
+                                "where Seller_Name='%1'").arg(content), db);
     } else {
         model->setQuery(QString("select * from Main_view "
-                                "where productName='%1'").arg(content), db);
+                                "where name='%1'").arg(content), db);
     }
     QString record;
     record += "共" + QString::number(model->rowCount()) + "条记录";
@@ -437,7 +437,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
         //StorageManage::tempOccupied -= amount;
         StorageManage::changeOccu(StorageManage::getOccu() - amount);
         qDebug() << "tempOccupied:" << StorageManage::getOccu();
-        ui->label_prompt_2->setText("提示：出库成功!");
+        ui->label_prompt_2->setText("提示：入库成功!");
     }
 }
 
