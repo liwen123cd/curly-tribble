@@ -215,9 +215,9 @@ QStringList StorageManage::getProductList()
                            "from Storage_product"));
     } else {
         query.exec(QString("select sp.productID "
-                        "from Storage_product sp, Storage_info si "
-                        "where sp.storageID=si.storageID "
-                        "and si.sellerID=%1").arg(QString::number(User::id)));
+                           "from Storage_product sp, Storage_info si "
+                           "where sp.storageID=si.storageID "
+                           "and si.sellerID=%1").arg(QString::number(User::id)));
     }
     if (query.lastError().isValid()) qDebug() << query.lastError().text();
     while (query.next()) {

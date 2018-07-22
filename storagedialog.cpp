@@ -28,7 +28,7 @@ StorageDialog::StorageDialog(QWidget *parent) :
     _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-                            Qt::SmoothTransformation)));
+                                                        Qt::SmoothTransformation)));
     setPalette(pal);
     queryDialog = new QueryDialog(this);
     insertDialog = new InsertDialog(this);
@@ -371,7 +371,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
 
         // 调用接口修改订单状态并获取订单内商品所属卖家和数量
         QStringList list = stock_MainWindow::stock_change_PlanState(
-                               orderID.toInt(), productID.toInt());
+                    orderID.toInt(), productID.toInt());
         if (list.empty()) {
             qDebug() << "stock_change_PlanState返回的list为空";
             ui->label_prompt_2->setText("提示：输入数据有误！");

@@ -28,20 +28,20 @@ Sale_Widget::Sale_Widget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    QPixmap _image;
-//    _image.load(":/img/login/logo3.jpg");
-//    QPalette pal(palette());
-//    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-//                            Qt::SmoothTransformation)));
-//    setPalette(pal);
+    //    QPixmap _image;
+    //    _image.load(":/img/login/logo3.jpg");
+    //    QPalette pal(palette());
+    //    pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+    //                            Qt::SmoothTransformation)));
+    //    setPalette(pal);
     QPixmap _image;
     _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-                            Qt::SmoothTransformation)));
+                                                        Qt::SmoothTransformation)));
     setPalette(pal);
-    if(!Sale_New_Table()){
-        qDebug()<<tr("模型初始化失败");
+    if (!Sale_New_Table()) {
+        qDebug() << tr("模型初始化失败");
     }
     ui->tableView->setModel(Sale_Table_Model);
     //子窗口订单详细信息
@@ -158,7 +158,7 @@ void Sale_Widget::on_Sale_pushButton_new_clicked()
     Sale_Get_Order_Detail(detail, RowNum);
     detail.Sale_State = QString("创建订单");
     detail.Sale_IS_Dirty = true;
-    detail.Sale_Item_ID=-1;
+    detail.Sale_Item_ID = -1;
     emit Sale_Send_Detail(detail);
     //显示订单详细页面
     Sale_Dialog->show();
@@ -182,10 +182,9 @@ void Sale_Widget::on_Sale_pushButton_change_clicked()
         QMessageBox::warning(this, tr("警告"), tr("不能修改被删除项"), QMessageBox::Ok);
     } else if (record.value(8).toString() != "0") {
         QMessageBox::warning(this, tr("警告"), tr("不能修改已取消项"), QMessageBox::Ok);
-    }else if(!(Sale_Table_Model->isDirty(ui->tableView->currentIndex()))) {
-        QMessageBox::warning(this,tr("警告"),tr("不能修改已保存项"),QMessageBox::Ok);
-    }
-    else {
+    } else if (!(Sale_Table_Model->isDirty(ui->tableView->currentIndex()))) {
+        QMessageBox::warning(this, tr("警告"), tr("不能修改已保存项"), QMessageBox::Ok);
+    } else {
         //dialog读入选中记录内容，暂定用结构体保存数据，用信号发数据
         Sale_Get_Order_Detail(detail, RowNum);
         detail.Sale_State = QString("修改订单");
@@ -205,21 +204,22 @@ void Sale_Widget::on_Sale_pushButton_delete_clicked()
     int Row = ui->tableView->currentIndex().row();
     if (Row == -1) {
         QMessageBox::warning(this, tr("警告"), tr("请选中一行"), QMessageBox::Ok);
-    }else {
+    } else {
         QSqlRecord record = Sale_Table_Model->record(Row);
-        if(Sale_Table_Model->isDirty(ui->tableView->currentIndex())){
+        if (Sale_Table_Model->isDirty(ui->tableView->currentIndex())) {
             for (std::vector<Sale_State_Detail>::iterator i = Sale_State.begin();
-                 i < Sale_State.end(); ++i){
-                if(i->Sale_Order_ID==record.value(0).toString()){
+                 i < Sale_State.end(); ++i) {
+                if (i->Sale_Order_ID == record.value(0).toString()) {
                     Sale_State.erase(i);
                 }
             }
-        }else{
-            Sale_State_Order(record.value(0).toString(),QString("删除订单"));
+        } else {
+            Sale_State_Order(record.value(0).toString(), QString("删除订单"));
         }
         Sale_Table_Model->removeRow(Row);
     }
 }
+
 //取消订单
 void Sale_Widget::on_Sale_pushButton_cancel_clicked()
 {
@@ -289,19 +289,19 @@ void Sale_Widget::on_Sale_pushButton_select_order_clicked()
     //关键字查询（以后），高亮（呵呵）
     if (ui->Sale_lineEdit_item_id->text() != "") {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
-                ui->Sale_lineEdit_item_id->text());
+                   ui->Sale_lineEdit_item_id->text());
     }
     if (ui->Sale_lineEdit_buyer_tel->text() != "") {
         sql << QString(" and Sale_Order.Sale_Buyer_Tel='%1'").arg(
-                ui->Sale_lineEdit_buyer_tel->text());
+                   ui->Sale_lineEdit_buyer_tel->text());
     }
     if (ui->Sale_lineEdit_order_id->text() != "") {
         sql << QString(" and Sale_Order.Sale_Order_ID='%1'").arg(
-                ui->Sale_lineEdit_order_id->text());
+                   ui->Sale_lineEdit_order_id->text());
     }
     if (ui->Sale_lineEdit_seller_id->text() != "") {
         sql << QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
-                ui->Sale_lineEdit_seller_id->text());
+                   ui->Sale_lineEdit_seller_id->text());
     }
     sql << " order by Sale_Order.Sale_Order_ID DESC";
     Sale_Sql(sql.join(""));
@@ -344,11 +344,11 @@ void Sale_Widget::on_Sale_pushButton_select_number_clicked()
     }
     if (ui->Sale_lineEdit_item_id->text() != "") {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
-                ui->Sale_lineEdit_item_id->text());
+                   ui->Sale_lineEdit_item_id->text());
     }
     if (ui->Sale_lineEdit_seller_id->text() != "") {
         sql << QString(" and Sale_Order.Sale_Seller_ID='%1'").arg(
-                ui->Sale_lineEdit_seller_id->text());
+                   ui->Sale_lineEdit_seller_id->text());
     }
     sql << " order by Sale_Order.Sale_Item_ID";
     Sale_Sql(sql.join(""));
@@ -419,21 +419,21 @@ bool Sale_Widget::Sale_Get_Order_Detail(Sale_Order_Detail &Sale_Detail, int Row)
     //将第Row行数据读入结构体
     //qDebug()<<Sale_Table_Model->record(Row).value(0).toString();
     Sale_Detail.Sale_Order_ID =
-        Sale_Table_Model->record(Row).value(0).toString();
+            Sale_Table_Model->record(Row).value(0).toString();
     Sale_Detail.Sale_Buyer_Name =
-        Sale_Table_Model->record(Row).value(1).toString();
+            Sale_Table_Model->record(Row).value(1).toString();
     Sale_Detail.Sale_Buyer_Tel =
-        Sale_Table_Model->record(Row).value(2).toString();
+            Sale_Table_Model->record(Row).value(2).toString();
     Sale_Detail.Sale_Buyer_Address =
-        Sale_Table_Model->record(Row).value(3).toString();
+            Sale_Table_Model->record(Row).value(3).toString();
     Sale_Detail.Sale_Seller_ID =
-        Sale_Table_Model->record(Row).value(4).toInt();
+            Sale_Table_Model->record(Row).value(4).toInt();
     Sale_Detail.Sale_Item_ID =
-        Sale_Table_Model->record(Row).value(5).toInt();
+            Sale_Table_Model->record(Row).value(5).toInt();
     Sale_Detail.Sale_Item_Num =
-        Sale_Table_Model->record(Row).value(6).toInt();
+            Sale_Table_Model->record(Row).value(6).toInt();
     Sale_Detail.Sale_Item_Price =
-        Sale_Table_Model->record(Row).value(7).toFloat();
+            Sale_Table_Model->record(Row).value(7).toFloat();
     Sale_Detail.Sale_Row = Row;
     return true;
 }
@@ -522,7 +522,7 @@ void Sale_Widget::on_Sale_pushButton_save_clicked()
 //暂存一条修改记录
 bool Sale_Widget::Sale_State_Order(const QString &Order_ID, const QString &Order_State)
 {
-    if(Order_ID==""||Order_State==""){
+    if (Order_ID == "" || Order_State == "") {
         return false;
     }
     Sale_State_Detail detail;
@@ -543,7 +543,7 @@ bool Sale_Widget::Sale_Save_Record()
     for (std::vector<Sale_State_Detail>::iterator i = Sale_State.begin();
          i < Sale_State.end(); ++i) {
         sql << "insert into Sale_State(Sale_Order_ID,Sale_Order_State,Sale_Date) values('";
-        sql << i->Sale_Order_ID;        
+        sql << i->Sale_Order_ID;
         sql << "','";
         sql << i->Sale_Order_State;
         //qDebug()<<i->Sale_Order_State;
@@ -554,7 +554,7 @@ bool Sale_Widget::Sale_Save_Record()
             int row = 0;
             while (1) {
                 if (Sale_Table_Model->record(row).value(0).toString() ==
-                    i->Sale_Order_ID) break;
+                        i->Sale_Order_ID) break;
                 ++row;
             }
             QSqlRecord record = Sale_Table_Model->record(row);
@@ -564,10 +564,10 @@ bool Sale_Widget::Sale_Save_Record()
             if (-1 != Sale_Sql(sql.join(""))) {
                 QMessageBox::warning(this, tr("警告"), sql.join(""), QMessageBox::Ok);
             }
-        }else if(i->Sale_Order_State== "删除订单"){
+        } else if (i->Sale_Order_State == "删除订单") {
             //改函数
             StorageManage::cancelSellOut(i->Sale_Order_ID);
-        }else{
+        } else {
             return false;
         }
 
@@ -598,7 +598,7 @@ bool Sale_Widget::Sale_New_Table()
         ui->Sale_pushButton_change->setEnabled(false);
         ui->Sale_pushButton_delete->setEnabled(false);
         ui->Sale_pushButton_cancel->setEnabled(false);
-    }else {
+    } else {
         ui->Sale_pushButton_recive->hide();
         ui->Sale_lineEdit_seller_id->hide();
         ui->label_6->hide();
@@ -607,7 +607,7 @@ bool Sale_Widget::Sale_New_Table()
     ui->Sale_pushButton_change->hide();
     //时间初始化
     ui->Sale_dateEdit_start->setDateTimeRange(ui->Sale_dateEdit_start->dateTime(),
-            QDateTime::currentDateTime());
+                                              QDateTime::currentDateTime());
     ui->Sale_dateEdit_end->setDateTime(QDateTime(QDate::currentDate(), QTime(23, 59, 59)));
 
     ui->Sale_dateEdit_end->setDateTimeRange(ui->Sale_dateEdit_start->dateTime(),
@@ -622,7 +622,7 @@ bool Sale_Widget::Sale_New_Table()
     }
     Sale_Table_Model->setSort(0, Qt::DescendingOrder);
     Sale_Table_Model->select();
-    if(Sale_Table_Model->lastError().number()!=-1){
+    if (Sale_Table_Model->lastError().number() != -1) {
         return false;
     }
     //qDebug()<<Sale_Table_Model->lastError();
@@ -655,7 +655,7 @@ void Sale_Widget::on_tableView_doubleClicked(const QModelIndex &index)
     int Row = 0;
     while (1) {
         if (Sale_Table_Model->record(Row).value(0).toString() ==
-            index.sibling(index.row(), 0).data().toString()) {
+                index.sibling(index.row(), 0).data().toString()) {
             break;
         }
         ++Row;

@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：UserManager.cpp
+  * @brief 内容: 用户管理源文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #include "usermanager.h"
 #include "ui_usermanager.h"
 #include "sys_sqlite.h"
@@ -7,14 +15,16 @@ UserManager::UserManager(QWidget *parent) :
     ui(new Ui::UserManager)
 {
     ui->setupUi(this);
+
+    // 添加背景图片
     QPixmap _image;
     _image.load(":/img/login/log2.jpg");
     QPalette pal(palette());
     pal.setBrush(QPalette::Window, QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
-                            Qt::SmoothTransformation)));
+                                                        Qt::SmoothTransformation)));
     setPalette(pal);
     //    tableModel();
-    addUser = new sys_add_user(this);
+
     tableModel();
 }
 
@@ -23,6 +33,7 @@ UserManager::~UserManager()
     delete ui;
 }
 
+// 删除用户信息
 void UserManager::on_pushButton_2_clicked()
 {
     int curRow = ui->tableView->currentIndex().row();
@@ -44,20 +55,21 @@ void UserManager::on_pushButton_2_clicked()
     }
 }
 
+// 打开新的添加用户窗口
 void UserManager::on_pushButton_clicked()
 {
+    addUser = new sys_add_user(this);
     addUser->exec();
-//    add->exec();
+    //    add->exec();
     model->select();
 }
 
+// 修改用户信息操作函数
 void UserManager::on_pushButton_3_clicked()
 {
-    //    qDebug()<<ui->tableView->currentIndex().data(0);
-    //    qDebug()<<ui->tableView->currentIndex().row();
-    //    qDebug()<<ui->tableView->currentIndex().column();
     if (1 == ui->tableView->currentIndex().column()) {
-        if (userCheck(ui->tableView->currentIndex().data(0).toString(), SYS_USER_NUMBER)) {
+        if (userCheck(ui->tableView->currentIndex().data(0).toString(),
+                      SYS_USER_NUMBER)) {
             sqLite();
         } else {
             QMessageBox::warning(this, tr("提示"),
@@ -70,11 +82,13 @@ void UserManager::on_pushButton_3_clicked()
 
 }
 
+// 撤销数据库操作函数
 void UserManager::on_pushButton_4_clicked()
 {
     model->revertAll();
 }
 
+// 数据库操作函数
 void UserManager::sqLite()
 {
     if (NULL == ui->tableView->currentIndex().data(0).toString()) {
@@ -95,7 +109,7 @@ void UserManager::sqLite()
     }
 }
 
-
+// 查询用户信息
 void UserManager::on_pushButton_5_clicked()
 {
     QString name = ui->lineEdit->text();
@@ -115,11 +129,13 @@ void UserManager::on_pushButton_5_clicked()
     ui->lineEdit->clear();
 }
 
+// 重置操作
 void UserManager::on_pushButton_6_clicked()
 {
     tableModel();
 }
 
+// 初始化操作
 void UserManager::tableModel()
 {
     model = new QSqlTableModel(this);

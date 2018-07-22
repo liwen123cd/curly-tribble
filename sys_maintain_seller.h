@@ -19,7 +19,8 @@
 #include <QSqlQuery>
 #include <QString>
 
-namespace Ui {
+namespace Ui
+{
 class Sys_Maintain_Seller;
 }
 

@@ -34,7 +34,7 @@ public:
     explicit Login(QWidget *parent = 0);
     ~Login();
 
-//    bool userCheck();
+    //    bool userCheck();
 public slots:
     void reshow();
 private slots:

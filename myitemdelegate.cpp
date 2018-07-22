@@ -63,8 +63,8 @@ void MyItemDelegate::setModelData(QWidget *editor,
 
 // 设置外观
 void MyItemDelegate::updateEditorGeometry(QWidget *editor,
-        const QStyleOptionViewItem &option,
-        const QModelIndex &) const
+                                          const QStyleOptionViewItem &option,
+                                          const QModelIndex &) const
 {
     editor->setGeometry(option.rect);
 }

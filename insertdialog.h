@@ -12,22 +12,22 @@ class InsertDialog;
 
 class InsertDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit InsertDialog(QWidget *parent = 0);
-	~InsertDialog();
+    explicit InsertDialog(QWidget *parent = 0);
+    ~InsertDialog();
 
 signals:
-	void sendMsg(QString stoName, QString proName, QString amount);
+    void sendMsg(QString stoName, QString proName, QString amount);
 
 private slots:
-	void on_buttonBox_accepted();
+    void on_buttonBox_accepted();
 
-	void on_buttonBox_rejected();
+    void on_buttonBox_rejected();
 
 private:
-	Ui::InsertDialog *ui;
+    Ui::InsertDialog *ui;
 };
 
 #endif // INSERTDIALOG_H

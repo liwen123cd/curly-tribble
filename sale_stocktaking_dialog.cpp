@@ -26,7 +26,7 @@ Sale_Stocktaking_Dialog::Sale_Stocktaking_Dialog(QWidget *parent) :
     ui->Sale_item_id_combobox->clear();
     ui->Sale_item_id_combobox->addItem(QString("全部商品"));
     foreach (QString item_id, Sale_Item_ID_Lists) {
-        stock_MainWindow::stock_get_ProductDetail(detail,item_id.toInt());
+        stock_MainWindow::stock_get_ProductDetail(detail, item_id.toInt());
         ui->Sale_item_id_combobox->addItem(detail.Product_Name);
     }
     ui->Sale_item_id_combobox->setCurrentIndex(0);
@@ -56,13 +56,13 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         item_id = ui->Sale_item_id_combobox->currentText().toInt();
         item_count = StorageManage::getRecordNum(
-                         ui->Sale_dateEdit_start->dateTime(),
-                         ui->Sale_dateEdit_end->dateTime(),
-                         item_id);
+                    ui->Sale_dateEdit_start->dateTime(),
+                    ui->Sale_dateEdit_end->dateTime(),
+                    item_id);
     } else {
         item_count = StorageManage::getRecordNum(
-                         ui->Sale_dateEdit_start->dateTime(),
-                         ui->Sale_dateEdit_end->dateTime());
+                    ui->Sale_dateEdit_start->dateTime(),
+                    ui->Sale_dateEdit_end->dateTime());
     }
     ui->Sale_lineEdit_depot_out->setText(QString::number(item_count));
     //统计订单中出库情况
@@ -84,7 +84,7 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     }
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
-                ui->Sale_item_id_combobox->currentText());
+                   ui->Sale_item_id_combobox->currentText());
     }
     QSqlQuery query;
     query.exec(sql.join(""));
@@ -112,8 +112,8 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     }
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
-                ui->Sale_item_id_combobox->itemText(
-                    ui->Sale_item_id_combobox->currentIndex()));
+                   ui->Sale_item_id_combobox->itemText(
+                       ui->Sale_item_id_combobox->currentIndex()));
     }
     query.exec(sql.join(""));
     //qDebug()<<query.lastError();
@@ -140,8 +140,8 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     }
     if (ui->Sale_item_id_combobox->currentIndex() != 0) {
         sql << QString(" and Sale_Order.Sale_Item_ID='%1'").arg(
-                ui->Sale_item_id_combobox->itemText(
-                    ui->Sale_item_id_combobox->currentIndex()));
+                   ui->Sale_item_id_combobox->itemText(
+                       ui->Sale_item_id_combobox->currentIndex()));
     }
     query.exec(sql.join(""));
     //qDebug()<<query.lastError();

@@ -68,7 +68,6 @@ struct Sale_Order_Detail {
     float Sale_Item_Price;//单价
     QString Sale_State;
     bool Sale_IS_Dirty;//是否可改
-
 };
 
 // 订单修改记录的信息
@@ -80,12 +79,11 @@ struct Sale_State_Detail {
 
 // 商品信息
 struct Product_Detail {
-	//商品信息
-	QString Product_Name;
-	float Product_Price;
-	QString Product_Provider;
+    //商品信息
+    QString Product_Name;
+    float Product_Price;
+    QString Product_Provider;
     QString Path;
-
 };
 
 #endif // GLOBALDATA
