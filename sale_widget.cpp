@@ -219,6 +219,7 @@ void Sale_Widget::on_Sale_pushButton_delete_clicked()
         Sale_Table_Model->removeRow(Row);
     }
 }
+
 //取消订单
 void Sale_Widget::on_Sale_pushButton_cancel_clicked()
 {

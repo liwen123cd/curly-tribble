@@ -76,7 +76,7 @@ void RecovePwd::onEmailChoosed(const QString& email)
   * */
 void RecovePwd::onTextChanged(const QString& str)
 {
-    // 如果已经输入了@符号，我们就停止补全了。
+    // 如果已经输入了@符号，我们就停止补全。
     // 因为到了这一步，我们再补全意义也不大了。
     if (str.contains("@")) {
         return;

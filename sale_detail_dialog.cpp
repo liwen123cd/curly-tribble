@@ -253,5 +253,3 @@ bool Sale_Detail_Dialog::Sale_New_Table()
     ui->Sale_item_pic->resize(ui->widget->size());
     return true;
 }
-
-

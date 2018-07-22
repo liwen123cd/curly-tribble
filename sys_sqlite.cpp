@@ -78,7 +78,7 @@ void createConnectSqlite()
                              "Staff_Phone varchar(20), "
                              "Staff_Date varchar(30), "
                              "Staff_Image varchar(50), "
-                             "Staff_Description varchar(50)"
+                             "Staff_Description varchar(100)"
                              ")";
 
     // 卖家信息表
@@ -222,6 +222,7 @@ void createConnectSqlite()
     createTable(createUserSql, userTable);
     createTable(createStaffSql, staffTable);
     createTable(createSellerSql, sellerTable);
+    createTable(stockProviderProductSql, stockProviderProductTable);
     createTable(createSaleOrderSql, saleOrderTable);
     createTable(createSaleStateSql, saleStateTable);
     createTable(createStorageInfoSql, storageInfoTable);
@@ -229,7 +230,6 @@ void createConnectSqlite()
     createTable(createOrderRecordSql, storageOrderRecordTable);
     createTable(createWaitProduct, storageWaitProduct);
     createTable(stockPlanSql, stockPlanTable);
-    createTable(stockProviderProductSql, stockProviderProductTable);
     createTable(stockPlanDetailSql, stockPlanDetailTable);
     createTable(stockCanceledplanDetailSql, stockCanceledplanDetailTable);
     createTable(stockCanceledplanSql, stockCanceledplanTable);
