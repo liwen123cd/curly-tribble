@@ -25,10 +25,12 @@ Sale_Stocktaking_Dialog::Sale_Stocktaking_Dialog(QWidget *parent) :
     Sale_Item_ID_Lists << StorageManage::getProductList();
     ui->Sale_item_id_combobox->clear();
     ui->Sale_item_id_combobox->addItem(QString("全部商品"));
-    foreach (QString item_id, Sale_Item_ID_Lists) {
+    /*foreach (QString item_id, Sale_Item_ID_Lists) {
         stock_MainWindow::stock_get_ProductDetail(detail, item_id.toInt());
         ui->Sale_item_id_combobox->addItem(detail.Product_Name);
     }
+    */
+    ui->Sale_item_id_combobox->addItems(Sale_Item_ID_Lists);
     ui->Sale_item_id_combobox->setCurrentIndex(0);
 
     //根据时间，商品编号对账
@@ -122,7 +124,7 @@ void Sale_Stocktaking_Dialog::Sale_Stocktaking()
     ui->Sale_lineEdit_turnover->setText(query.record().value(0).toString());
     //统计销量（已完成）
     sql.clear();
-    sql << "select Sale_Order.Sale_Item_Num from ";
+    sql << "select sum(Sale_Order.Sale_Item_Num) from ";
     sql << "Sale_Order join Sale_State on ";
     sql << "Sale_State.Sale_Order_ID=Sale_Order.Sale_Order_ID ";
     sql << "where Sale_Order.Sale_Order_Finished='1' ";

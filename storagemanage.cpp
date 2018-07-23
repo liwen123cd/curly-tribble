@@ -174,13 +174,13 @@ int StorageManage::getRecordNum(QDateTime startTime, QDateTime endTime, int prod
         // 查询所有商品数量
         query.exec(QString("select sum(amount) from Storage_order_record "
                            "where orderDate between '%1' and '%2'").arg(
-                       startTime.toString(), endTime.toString()));
+                       startTime.toString("yyyy-MM-dd hh:mm:ss"), endTime.toString("yyyy-MM-dd hh:mm:ss")));
     } else {
         // 查询指定商品数量
         query.exec(QString("select sum(amount) from Storage_order_record "
                            "where productID=%1 "
                            "and orderDate between '%2' and '%3'").arg(
-                       QString::number(productID), startTime.toString(), endTime.toString()));
+                       QString::number(productID), startTime.toString("yyyy-MM-dd hh:mm:ss"), endTime.toString("yyyy-MM-dd hh:mm:ss")));
     }
     if (!query.next()) {
         qDebug() << "查询出错";

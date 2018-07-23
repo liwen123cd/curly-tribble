@@ -347,7 +347,7 @@ void StorageDialog::on_pushBtn_confirm_clicked()
                            "values('%1',%2,'%3',%4)").arg(
                        orderID,
                        productID,
-                       curTime.toString(),
+                       curTime.toString("yyyy-MM-dd hh:mm:ss"),
                        QString::number(amount)));
         if (query.lastError().isValid()) qDebug() << query.lastError().text();
 
