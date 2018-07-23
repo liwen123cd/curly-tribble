@@ -15,17 +15,18 @@ Sys_Maintain_Seller::Sys_Maintain_Seller(QWidget *parent) :
     ui(new Ui::Sys_Maintain_Seller)
 {
     ui->setupUi(this);
+    // 从上一个界面获取到的卖家ID
+    sellerID = Seller::id;
+
     init();
     ui->lineEdit->clearFocus();
 
     // 为三个 QLineEdit 安装事件过滤器
-    ui->lineEdit->setCursor(Qt::BlankCursor);
+//    ui->lineEdit->setCursor(Qt::BlankCursor);
     ui->lineEdit->installEventFilter(this);
     ui->lineEdit_2->installEventFilter(this);
     ui->lineEdit_3->installEventFilter(this);
 
-    // 从上一个界面获取到的卖家ID
-    sellerID = Seller::id;
 }
 
 Sys_Maintain_Seller::~Sys_Maintain_Seller()
@@ -51,7 +52,6 @@ void Sys_Maintain_Seller::init()
     ui->label_5->setText(Seller::name);
     ui->label_6->setText(Seller::phone);
     ui->label_7->setText(Seller::addr);
-    ui->label_8->setNum(Seller::number);
     ui->lineEdit->setPlaceholderText(Seller::name);
     ui->lineEdit_2->setPlaceholderText(Seller::phone);
     ui->lineEdit_3->setPlaceholderText(Seller::addr);
@@ -60,6 +60,8 @@ void Sys_Maintain_Seller::init()
     QString stoPro;
     QSqlQuery query;
 
+    qDebug()<<sellerID;
+    qDebug()<<"sas";
     // 查询空闲仓库
     query.exec("select storageName from Storage_info "
                "where sellerID = -1");
@@ -74,7 +76,15 @@ void Sys_Maintain_Seller::init()
         stoPro += query.value(0).toString() + "\n";
     }
 
+    // 查询仓库数量
+    query.exec(QString("select count(*) from Storage_info "
+               "where sellerID = '%1'").arg(QString::number(sellerID)));
+    while(query.next()) {
+        Seller::number = query.value(0).toInt();
+    }
+
     // 显示
+    ui->label_8->setNum(Seller::number);
     ui->textBrowser_pro->setText(stoPro);
     ui->textBrowser_free->setText(stofree);
 }
