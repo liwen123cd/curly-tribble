@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：globaldata.h
+  * @brief 内容: 全局变量头文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7.19
+  *
+  * */
 #ifndef GLOBALDATA
 #define GLOBALDATA
 #include <QString>
@@ -60,7 +68,6 @@ struct Sale_Order_Detail {
     float Sale_Item_Price;//单价
     QString Sale_State;
     bool Sale_IS_Dirty;//是否可改
-
 };
 
 // 订单修改记录的信息
@@ -72,12 +79,11 @@ struct Sale_State_Detail {
 
 // 商品信息
 struct Product_Detail {
-	//商品信息
-	QString Product_Name;
-	float Product_Price;
-	QString Product_Provider;
+    //商品信息
+    QString Product_Name;
+    float Product_Price;
+    QString Product_Provider;
     QString Path;
-
 };
 
 #endif // GLOBALDATA

@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>查询</string>
+   <string>查询窗口</string>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>

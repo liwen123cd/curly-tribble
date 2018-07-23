@@ -10,43 +10,73 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>273</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="font">
    <font>
-    <family>Microsoft YaHei</family>
+    <family>Microsoft YaHei UI</family>
    </font>
   </property>
   <property name="windowTitle">
    <string>登录窗口</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="staff_img.qrc">
-    <normaloff>:/new/img/img/login/user.png</normaloff>:/new/img/img/login/user.png</iconset>
+   <iconset resource="style.qrc">
+    <normaloff>:/img/login/tab_personal.png</normaloff>:/img/login/tab_personal.png</iconset>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
   <property name="autoFillBackground">
-   <bool>false</bool>
-=======
    <bool>true</bool>
->>>>>>> e1ed8846bf6c8f42f6ff56b209d6182aac7777d8
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+font: 9pt &quot;Microsoft YaHei UI&quot;;
+}
+</string>
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>180</y>
+     <y>200</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Microsoft YaHei</family>
+     <family>Microsoft YaHei UI</family>
+     <pointsize>9</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: 1px solid #333333;
+    padding: 3px;
+    min-width: 65px;
+    min-height: 12px;
+}
+
+QPushButton:hover {
+    background-color: lightslategrey;
+    border-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+    border-color: #333333;
+    color: antiquewhite;
+}
+
+QPushButton:disabled {
+    color: #333333;
+}</string>
    </property>
    <property name="text">
     <string>登录</string>
@@ -56,15 +86,42 @@
    <property name="geometry">
     <rect>
      <x>190</x>
-     <y>180</y>
+     <y>200</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Microsoft YaHei</family>
+     <family>Microsoft YaHei UI</family>
+     <pointsize>9</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: 1px solid #333333;
+    padding: 3px;
+    min-width: 65px;
+    min-height: 12px;
+}
+
+QPushButton:hover {
+    background-color: lightslategrey;
+    border-color: #444444;
+}
+
+QPushButton:pressed {
+    background-color: #444444;
+    border-color: #333333;
+    color: antiquewhite;
+}
+
+QPushButton:disabled {
+    color: #333333;
+}</string>
    </property>
    <property name="text">
     <string>取消</string>
@@ -74,7 +131,7 @@
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>80</y>
+     <y>100</y>
      <width>82</width>
      <height>54</height>
     </rect>
@@ -97,18 +154,20 @@
       <property name="styleSheet">
        <string notr="true">QPushButton
 {
-    color:rgb(38 , 133 , 227);
+    color:dodgerblue;
     background-color:transparent;
 }
 
 QPushButton:hover
 {
-    color:rgb(97 , 179 , 246);
+    color:gray;
+background-color:white;
 }
 
 QPushButton:pressed
 {
     color:rgb(0 , 109 , 176);
+background-color:white;
 }</string>
       </property>
       <property name="text">
@@ -121,18 +180,20 @@ QPushButton:pressed
       <property name="styleSheet">
        <string notr="true">QPushButton
 {
-    color:rgb(38 , 133 , 227);
+    color:dodgerblue;
     background-color:transparent;
 }
 
 QPushButton:hover
 {
-    color:rgb(97 , 179 , 246);
+    color:gray;
+background-color:white;
 }
 
 QPushButton:pressed
 {
     color:rgb(0 , 109 , 176);
+background-color:white;
 }</string>
       </property>
       <property name="text">
@@ -142,12 +203,12 @@ QPushButton:pressed
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>81</x>
-     <y>51</y>
-     <width>189</width>
+     <x>82</x>
+     <y>72</y>
+     <width>179</width>
      <height>83</height>
     </rect>
    </property>
@@ -167,6 +228,12 @@ QPushButton:pressed
       <property name="enabled">
        <bool>true</bool>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QComboBox{
+	font: 9pt &quot;Microsoft YaHei UI&quot;;
+	min-width:133px;
+}</string>
+      </property>
       <item>
        <property name="text">
         <string>管理员</string>
@@ -183,11 +250,15 @@ QPushButton:pressed
      <widget class="QLabel" name="label">
       <property name="font">
        <font>
-        <family>Microsoft YaHei</family>
+        <family>Microsoft YaHei UI</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>用户名：</string>
+       <string>用户名</string>
       </property>
      </widget>
     </item>
@@ -217,7 +288,11 @@ QPushButton:pressed
      <widget class="QLabel" name="label_2">
       <property name="font">
        <font>
-        <family>Microsoft YaHei</family>
+        <family>Microsoft YaHei UI</family>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
@@ -243,7 +318,7 @@ QPushButton:pressed
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="staff_img.qrc"/>
+  <include location="style.qrc"/>
  </resources>
  <connections/>
 </ui>

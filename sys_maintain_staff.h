@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：sys_maintain_staff.h
+  * @brief 内容: 维护职工信息头文件
+  * @date 作成日期: 2018-6-31
+  * @date 修正日期：2018-7-18
+  *
+  * */
 #ifndef SYS_MAINTAIN_STAFF_H
 #define SYS_MAINTAIN_STAFF_H
 

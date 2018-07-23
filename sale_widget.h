@@ -80,7 +80,7 @@ private:
     bool Sale_New_Table();
 
     //临时保存订单状态修改（销售系统自用）
-    bool Sale_State_Order(const QString&,const QString&);
+    bool Sale_State_Order(const QString&, const QString&);
     //写到订单状态表
     bool Sale_Save_Record();
     //创建订单号(未确定方法)

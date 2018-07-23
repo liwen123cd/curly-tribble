@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：sys_add_staff.h
+  * @brief 内容: 添加职工头文件
+  * @date 作成日期: 2018-6-29
+  * @date 修正日期：2018-7-16
+  *
+  * */
 #ifndef SYS_ADD_STAFF_H
 #define SYS_ADD_STAFF_H
 
@@ -22,23 +30,23 @@ class Sys_Add_Staff;
 
 class Sys_Add_Staff : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Sys_Add_Staff(QWidget *parent = 0);
-	~Sys_Add_Staff();
+    explicit Sys_Add_Staff(QWidget *parent = 0);
+    ~Sys_Add_Staff();
 
     void init();
 private slots:
-	void on_pushButton_2_clicked();
+    void on_pushButton_2_clicked();
 
-	void on_pushButton_clicked();
+    void on_pushButton_clicked();
 
-	void on_pushButton_3_clicked();
+    void on_pushButton_3_clicked();
 
 private:
-	Ui::Sys_Add_Staff *ui;
-	QString staff_filename;
+    Ui::Sys_Add_Staff *ui;
+    QString staff_filename;
 };
 
 #endif // SYS_ADD_STAFF_H

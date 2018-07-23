@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>413</width>
-    <height>288</height>
+    <width>500</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="font">
@@ -21,8 +21,15 @@
   <property name="windowTitle">
    <string>系统管理窗口</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="style.qrc">
+    <normaloff>:/img/login/people.png</normaloff>:/img/login/people.png</iconset>
+  </property>
   <property name="autoFillBackground">
    <bool>true</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -35,12 +42,26 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="lineEdit">
+       <property name="styleSheet">
+        <string notr="true">min-height:12px;</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_5">
        <property name="text">
         <string>查询</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/img/login/btn_search (2).png</normaloff>:/img/login/btn_search (2).png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
        </property>
       </widget>
      </item>
@@ -60,12 +81,20 @@
        <property name="text">
         <string>增加用户</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/img/login/btn_searchadd (2).png</normaloff>:/img/login/btn_searchadd (2).png</iconset>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_2">
        <property name="text">
         <string>删除用户</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/img/login/btn_del (2).png</normaloff>:/img/login/btn_del (2).png</iconset>
        </property>
       </widget>
      </item>
@@ -74,12 +103,20 @@
        <property name="text">
         <string>保存修改</string>
        </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/img/login/feedback.png</normaloff>:/img/login/feedback.png</iconset>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_4">
        <property name="text">
         <string>撤销修改</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/img/login/page.png</normaloff>:/img/login/page.png</iconset>
        </property>
       </widget>
      </item>
@@ -90,6 +127,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="style.qrc"/>
+ </resources>
  <connections/>
 </ui>

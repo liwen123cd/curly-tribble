@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：Sys_Add_Seller.cpp
+  * @brief 内容: 添加卖家源文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #include "sys_add_seller.h"
 #include "ui_sys_add_seller.h"
 #include "storagemanage.h"
@@ -17,13 +25,23 @@ Sys_Add_Seller::~Sys_Add_Seller()
     delete ui;
 }
 
+/**
+  * @functionName Function Name : on_pushButton_clicked()
+  * @brief Description: 添加卖家操作 要查看仓库是否可以分配
+  *                     没有仓库无法添加卖家
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Sys_Add_Seller::on_pushButton_clicked()
 {
     QString add_seller_name = ui->lineEdit->text();
     QString add_seller_phone = ui->lineEdit_2->text();
     QString add_seller_addr = ui->lineEdit_3->text();
     int add_seller_number = ui->spinBox->text().toInt();
-    int sellerID;
+    int sellerID = 0;
 
     if(NULL == add_seller_name)
         QMessageBox::warning(this, tr("提示"),
@@ -36,13 +54,15 @@ void Sys_Add_Seller::on_pushButton_clicked()
                              "请填写卖家地址！");
 
     qDebug()<<add_seller_number;
-    qDebug()<<"skajs";
     qDebug()<<StorageManage::restStorage();
+
     // 判断仓库数量是否满足 不满足添加不了用户
     // 不用检测卖家姓名，因为卖家区分是由ID辨别的
     if(NULL != add_seller_name && NULL != add_seller_phone
             && NULL != add_seller_addr &&
             add_seller_number <= StorageManage::restStorage()) {
+
+        // 添加卖家信息到数据库
         QString add_sql = QString("insert into Sys_Seller("
                                   "Seller_Name, Seller_Phone, "
                                   "Seller_Addr)");
@@ -86,6 +106,7 @@ void Sys_Add_Seller::on_pushButton_clicked()
         init();
         QMessageBox::information(this, "添加成功",
                                  "您已成功添加新用户！");
+        this->close();
     }
     else {
         QMessageBox::information(this, "警告",
@@ -93,11 +114,13 @@ void Sys_Add_Seller::on_pushButton_clicked()
     }
 }
 
+// 初始化操作
 void Sys_Add_Seller::on_pushButton_2_clicked()
 {
     init();
 }
 
+// 重置选项
 void Sys_Add_Seller::init()
 {
     ui->lineEdit->clear();

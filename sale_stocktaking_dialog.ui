@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>498</width>
+    <width>506</width>
     <height>300</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>销售记录盘点</string>
+   <string>销售记录盘点窗口</string>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>

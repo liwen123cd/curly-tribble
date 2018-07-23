@@ -22,7 +22,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>订单详细信息</string>
+   <string>订单详细信息窗口</string>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>

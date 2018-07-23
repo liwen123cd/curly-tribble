@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：staffmanager.h
+  * @brief 内容: 职工管理头文件
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #ifndef STAFFMANAGER_H
 #define STAFFMANAGER_H
 

@@ -1,3 +1,11 @@
+/**
+  * @author 著作权所有者: 张岩森
+  * @projectName 文件名：register.cpp
+  * @brief 内容: 注册功能
+  * @date 作成日期: 2018-6-28
+  * @date 修正日期：2018-7-17
+  *
+  * */
 #include "register.h"
 #include "ui_register.h"
 #include "sys_sqlite.h"
@@ -7,12 +15,24 @@ Register::Register(QWidget *parent) :
     ui(new Ui::Register)
 {
     ui->setupUi(this);
+
+    // 设置背景图片
+    this->setAutoFillBackground(true);
+    QPixmap _image;
+    _image.load(":/img/login/log2.jpg");
+    QPalette pal(palette());
+    pal.setBrush(QPalette::Window,
+                 QBrush(_image.scaled(size(), Qt::IgnoreAspectRatio,
+                                      Qt::SmoothTransformation)));
+    setPalette(pal);
+
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
     ui->lineEdit_3->setEchoMode(QLineEdit::Password);
     ui->label_6->setVisible(false);
     ui->lineEdit_5->setVisible(false);
     ui->label_7->setVisible(false);
     ui->lineEdit_6->setVisible(false);
+
 }
 
 Register::~Register()
@@ -20,6 +40,7 @@ Register::~Register()
     delete ui;
 }
 
+// 重写closeEvent 事件
 void Register::closeEvent(QCloseEvent *event)
 {
     event->accept();
@@ -27,6 +48,15 @@ void Register::closeEvent(QCloseEvent *event)
     this->parentWidget()->show();
 }
 
+/**
+  * @functionName Function Name : on_pushButton_clicked()
+  * @brief Description: 注册操作主函数
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Register::on_pushButton_clicked()
 {
     if (textCheck()) {
@@ -46,21 +76,22 @@ void Register::on_pushButton_clicked()
             QString add_sql = QString("insert into Sys_User(User_Name, "
                                       "User_Pwd, User_Email, User_Is_Admin)");
             add_sql += QString(" VALUES('%1','%2','%3','%4')")
-                       .arg(reg_name)
-                       .arg(reg_pwd)
-                       .arg(reg_emial)
-                       .arg(admin);
+                    .arg(reg_name)
+                    .arg(reg_pwd)
+                    .arg(reg_emial)
+                    .arg(admin);
 
             QSqlQuery query;
             query.exec(add_sql);
 
+            // 如果是卖家，把信息添加到卖家信息表中
             if (admin == 0) {
                 QString add_seller_sql = QString("insert into Sys_Seller( "
                                                  "Seller_Name, Seller_Phone, Seller_Addr) ");
                 add_seller_sql += QString("VALUES('%1', '%2', '%3')")
-                                  .arg(reg_name)
-                                  .arg(reg_phone)
-                                  .arg(reg_addr);
+                        .arg(reg_name)
+                        .arg(reg_phone)
+                        .arg(reg_addr);
                 QSqlQuery query2;
                 query2.exec(add_seller_sql);
             }
@@ -75,6 +106,7 @@ void Register::on_pushButton_clicked()
     }
 }
 
+// 重置操作
 void Register::on_pushButton_2_clicked()
 {
     ui->comboBox->setCurrentIndex(0);
@@ -86,11 +118,15 @@ void Register::on_pushButton_2_clicked()
     ui->lineEdit_6->clear();
 }
 
-/*
- *
- * 增强程序的鲁棒性
- *
- * */
+/**
+  * @functionName Function Name : textCheck()
+  * @brief Description: 增强程序鲁棒性，检测是否为空
+  * @date Date: 2018-7-4
+  * @param Parameter: none
+  * @return Return Code: true
+  * @author Author: 张岩森
+  *
+  * */
 bool Register::textCheck()
 {
     if (NULL == ui->lineEdit->text())
@@ -108,14 +144,23 @@ bool Register::textCheck()
                              "两次密码输入不一致，请重新输入！");
     }
     if (ui->lineEdit->text() != NULL
-        && ui->lineEdit_2->text() != NULL
-        && ui->lineEdit_3->text() != NULL
-        && ui->lineEdit_4->text() != NULL
-        && ui->lineEdit_2->text() == ui->lineEdit_3->text())
+            && ui->lineEdit_2->text() != NULL
+            && ui->lineEdit_3->text() != NULL
+            && ui->lineEdit_4->text() != NULL
+            && ui->lineEdit_2->text() == ui->lineEdit_3->text())
         return true;
     return false;
 }
 
+/**
+  * @functionName Function Name : on_comboBox_currentIndexChanged
+  * @brief Description: 当组合框选择用户或卖家时，出现不同选项
+  * @date Date: 2018-7-4
+  * @param Parameter: index
+  * @return Return Code: none
+  * @author Author: 张岩森
+  *
+  * */
 void Register::on_comboBox_currentIndexChanged(int index)
 {
     if (index == 0) {
