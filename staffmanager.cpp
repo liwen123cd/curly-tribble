@@ -83,6 +83,7 @@ void StaffManager::on_pushButton_2_clicked()
         staff->image = record.value(7).toString();
         staff->description = record.value(8).toString();
 
+        qDebug()<<staff->id;
         // 生成新的维护职工信息窗口
         mainTain = new Sys_Maintain_Staff(this);
         mainTain->exec();
@@ -397,11 +398,13 @@ void StaffManager::on_pushButton_7_clicked()
         seller->name = record.value(1).toString();
         seller->phone = record.value(2).toString();
         seller->addr = record.value(3).toString();
-        seller->number = record.value(4).toInt();
+//        seller->number = record.value(4).toInt();
 
+        qDebug()<<seller->id;
         // 打开新的维护卖家信息窗口
         mainTainSeller = new Sys_Maintain_Seller(this);
         mainTainSeller->exec();
+        qDebug()<<"打开维护卖家信息窗口！";
     }
     model2->select();
 }
