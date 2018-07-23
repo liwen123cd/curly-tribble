@@ -97,7 +97,7 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
     //}
 
     //初始化,遍历一次库存列表，判断所选商品索引,库存,读入结构体中数据
-    int count = StorageManage::getAmount(detail.Sale_Item_ID); //库存
+
     int num = 0; //索引，默认0
     if(detail.Sale_Item_ID != -1){
         foreach (QString item_id, items) {
@@ -110,6 +110,7 @@ void Sale_Detail_Dialog::Sale_Recive_Detail(const Sale_Order_Detail &detail)
                                                    detail.Sale_Item_ID));
         }
     }
+    int count = StorageManage::getAmount(ui->Sale_item_id_combobox->itemText(num).toInt()); //库存
     //设置销售数量范围
     ui->Sale_item_num_lineedit->setValidator(
         new QIntValidator(0, count, this));
